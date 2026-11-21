@@ -19,41 +19,17 @@ Class {
 	#tag : 'Modelo'
 }
 
-{ #category : 'inicializacion' }
-Juego >> initialize [
+{ #category : 'privado' }
+Juego >> actualizarDificultad [
 
-	super initialize.
-	tamanioEscenario := 640 @ 266.
-	alturaSuelo := 226.
-	personaje := Personaje new.
-	obstaculos := OrderedCollection new.
-	aleatorio := Random new.
-	self reiniciar
+	velocidadDesplazamiento := (255 + (tiempoTranscurrido * 3)) min: 460.
+	intervaloObstaculos := (1.55 - (tiempoTranscurrido * 0.012)) max: 0.95
 ]
 
-{ #category : 'partida' }
-Juego >> iniciar [
+{ #category : 'acceso' }
+Juego >> alturaSuelo [
 
-	estado = #enEspera ifTrue: [ estado := #enCurso ]
-]
-
-{ #category : 'partida' }
-Juego >> reiniciar [
-
-	obstaculos removeAll.
-	estado := #enEspera.
-	puntaje := 0.
-	tiempoTranscurrido := 0.
-	velocidadDesplazamiento := 255.
-	intervaloObstaculos := 1.55.
-	tiempoHastaObstaculo := 0.65.
-	personaje reiniciarEn: 86 @ 0 suelo: alturaSuelo
-]
-
-{ #category : 'partida' }
-Juego >> saltar [
-
-	self estaEnCurso ifTrue: [ personaje saltar ]
+	^ alturaSuelo
 ]
 
 { #category : 'partida' }
@@ -65,48 +41,6 @@ Juego >> avanzar: segundos [
 		paso := restante min: 0.01.
 		self avanzarPaso: paso.
 		restante := restante - paso ]
-]
-
-{ #category : 'acceso' }
-Juego >> estaEnCurso [
-
-	^ estado = #enCurso
-]
-
-{ #category : 'acceso' }
-Juego >> estado [
-
-	^ estado
-]
-
-{ #category : 'acceso' }
-Juego >> puntaje [
-
-	^ puntaje
-]
-
-{ #category : 'acceso' }
-Juego >> personaje [
-
-	^ personaje
-]
-
-{ #category : 'acceso' }
-Juego >> obstaculos [
-
-	^ obstaculos
-]
-
-{ #category : 'acceso' }
-Juego >> tamanioEscenario [
-
-	^ tamanioEscenario
-]
-
-{ #category : 'acceso' }
-Juego >> alturaSuelo [
-
-	^ alturaSuelo
 ]
 
 { #category : 'privado' }
@@ -123,19 +57,13 @@ Juego >> avanzarPaso: segundos [
 ]
 
 { #category : 'privado' }
-Juego >> actualizarDificultad [
+Juego >> contabilizarObstaculosSuperados [
 
-	velocidadDesplazamiento := (255 + (tiempoTranscurrido * 3)) min: 460.
-	intervaloObstaculos := (1.55 - (tiempoTranscurrido * 0.012)) max: 0.95
-]
-
-{ #category : 'privado' }
-Juego >> generarObstaculoSiCorresponde: segundos [
-
-	tiempoHastaObstaculo := tiempoHastaObstaculo - segundos.
-	tiempoHastaObstaculo <= 0 ifTrue: [
-		self crearObstaculo.
-		tiempoHastaObstaculo := tiempoHastaObstaculo + intervaloObstaculos + (aleatorio next * 0.32) ]
+	obstaculos do: [ :obstaculo |
+		(obstaculo estaContabilizado not and: [ obstaculo fueSuperadoPor: personaje ])
+			ifTrue: [
+				puntaje := puntaje + 1.
+				obstaculo marcarContabilizado ] ]
 ]
 
 { #category : 'privado' }
@@ -149,11 +77,31 @@ Juego >> crearObstaculo [
 	obstaculos add: obstaculo
 ]
 
-{ #category : 'privado' }
-Juego >> moverObstaculos: segundos [
+{ #category : 'acceso' }
+Juego >> estaEnCurso [
 
-	obstaculos do: [ :obstaculo |
-		obstaculo avanzar: segundos velocidad: velocidadDesplazamiento ]
+	^ estado = #enCurso
+]
+
+{ #category : 'acceso' }
+Juego >> estado [
+
+	^ estado
+]
+
+{ #category : 'privado' }
+Juego >> finalizar [
+
+	estado := #finalizada
+]
+
+{ #category : 'privado' }
+Juego >> generarObstaculoSiCorresponde: segundos [
+
+	tiempoHastaObstaculo := tiempoHastaObstaculo - segundos.
+	tiempoHastaObstaculo <= 0 ifTrue: [
+		self crearObstaculo.
+		tiempoHastaObstaculo := tiempoHastaObstaculo + intervaloObstaculos + (aleatorio next * 0.32) ]
 ]
 
 { #category : 'privado' }
@@ -163,14 +111,60 @@ Juego >> hayColision [
 		personaje limites intersects: obstaculo limites ]
 ]
 
+{ #category : 'partida' }
+Juego >> iniciar [
+
+	estado = #enEspera ifTrue: [ estado := #enCurso ]
+]
+
+{ #category : 'inicializacion' }
+Juego >> initialize [
+
+	super initialize.
+	tamanioEscenario := 640 @ 266.
+	alturaSuelo := 226.
+	personaje := Personaje new.
+	obstaculos := OrderedCollection new.
+	aleatorio := Random new.
+	self reiniciar
+]
+
 { #category : 'privado' }
-Juego >> contabilizarObstaculosSuperados [
+Juego >> moverObstaculos: segundos [
 
 	obstaculos do: [ :obstaculo |
-		(obstaculo estaContabilizado not and: [ obstaculo fueSuperadoPor: personaje ])
-			ifTrue: [
-				puntaje := puntaje + 1.
-				obstaculo marcarContabilizado ] ]
+		obstaculo avanzar: segundos velocidad: velocidadDesplazamiento ]
+]
+
+{ #category : 'acceso' }
+Juego >> obstaculos [
+
+	^ obstaculos
+]
+
+{ #category : 'acceso' }
+Juego >> personaje [
+
+	^ personaje
+]
+
+{ #category : 'acceso' }
+Juego >> puntaje [
+
+	^ puntaje
+]
+
+{ #category : 'partida' }
+Juego >> reiniciar [
+
+	obstaculos removeAll.
+	estado := #enEspera.
+	puntaje := 0.
+	tiempoTranscurrido := 0.
+	velocidadDesplazamiento := 255.
+	intervaloObstaculos := 1.55.
+	tiempoHastaObstaculo := 0.65.
+	personaje reiniciarEn: 86 @ 0 suelo: alturaSuelo
 ]
 
 { #category : 'privado' }
@@ -179,8 +173,20 @@ Juego >> retirarObstaculosFueraDeEscena [
 	obstaculos removeAllSuchThat: [ :obstaculo | obstaculo estaFueraDelEscenario ]
 ]
 
-{ #category : 'privado' }
-Juego >> finalizar [
+{ #category : 'partida' }
+Juego >> saltar [
 
-	estado := #finalizada
+	self estaEnCurso ifTrue: [ personaje saltar ]
+]
+
+{ #category : 'acceso' }
+Juego >> tamanioEscenario [
+
+	^ tamanioEscenario
+]
+
+{ #category : 'acceso' }
+Juego >> tiempoTranscurrido [
+
+	^ tiempoTranscurrido
 ]

@@ -1,0 +1,111 @@
+Class {
+	#name : 'SistemaEscenario',
+	#superclass : 'Object',
+	#instVars : [
+		'coordinador',
+		'juego',
+		'panel'
+	],
+	#category : 'DinoGoogle-Interfaz',
+	#package : 'DinoGoogle',
+	#tag : 'Interfaz'
+}
+
+{ #category : 'partida' }
+SistemaEscenario >> avanzar: segundos [
+
+	juego avanzar: segundos.
+	self refrescarPanel
+]
+
+{ #category : 'inicializacion' }
+SistemaEscenario >> configurarCoordinador: unCoordinador juego: unJuego panel: unPanel [
+
+	coordinador := unCoordinador.
+	juego := unJuego.
+	panel := unPanel.
+	panel configurarSistema: self juego: juego
+]
+
+{ #category : 'partida' }
+SistemaEscenario >> ejecutarSalto [
+
+	juego saltar.
+	self refrescarPanel
+]
+
+{ #category : 'acceso' }
+SistemaEscenario >> estaEnCurso [
+
+	^ juego estaEnCurso
+]
+
+{ #category : 'acceso' }
+SistemaEscenario >> estado [
+
+	^ juego estado
+]
+
+{ #category : 'partida' }
+SistemaEscenario >> iniciarJuego [
+
+	juego iniciar.
+	self refrescarPanel
+]
+
+{ #category : 'interfaz' }
+SistemaEscenario >> montarEn: unContenedor posicion: unaPosicion [
+
+	unContenedor addMorph: panel.
+	panel position: unaPosicion
+]
+
+{ #category : 'acceso' }
+SistemaEscenario >> panel [
+
+	^ panel
+]
+
+{ #category : 'partida' }
+SistemaEscenario >> prepararJuego [
+
+	juego reiniciar.
+	self refrescarPanel
+]
+
+{ #category : 'acceso' }
+SistemaEscenario >> puntaje [
+
+	^ juego puntaje
+]
+
+{ #category : 'interfaz' }
+SistemaEscenario >> refrescarPanel [
+
+	panel changed
+]
+
+{ #category : 'partida' }
+SistemaEscenario >> reiniciarJuego [
+
+	juego reiniciar.
+	self iniciarJuego
+]
+
+{ #category : 'partida' }
+SistemaEscenario >> solicitarSalto [
+
+	coordinador solicitarSalto
+]
+
+{ #category : 'acceso' }
+SistemaEscenario >> tiempoTranscurrido [
+
+	^ juego tiempoTranscurrido
+]
+
+{ #category : 'interfaz' }
+SistemaEscenario >> tomarFoco [
+
+	panel tomarFoco
+]

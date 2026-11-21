@@ -11,6 +11,30 @@ Class {
 	#tag : 'Modelo'
 }
 
+{ #category : 'movimiento' }
+Obstaculo >> avanzar: segundos velocidad: unaVelocidad [
+
+	posicion := posicion - ((unaVelocidad * segundos) @ 0)
+]
+
+{ #category : 'acceso' }
+Obstaculo >> estaContabilizado [
+
+	^ contabilizado
+]
+
+{ #category : 'puntaje' }
+Obstaculo >> estaFueraDelEscenario [
+
+	^ self limites right <= 0
+]
+
+{ #category : 'puntaje' }
+Obstaculo >> fueSuperadoPor: unPersonaje [
+
+	^ self limites right <= unPersonaje limites left
+]
+
 { #category : 'inicializacion' }
 Obstaculo >> inicializarEn: unaPosicion tamanio: unTamanio [
 
@@ -19,10 +43,16 @@ Obstaculo >> inicializarEn: unaPosicion tamanio: unTamanio [
 	contabilizado := false
 ]
 
-{ #category : 'movimiento' }
-Obstaculo >> avanzar: segundos velocidad: unaVelocidad [
+{ #category : 'acceso' }
+Obstaculo >> limites [
 
-	posicion := posicion - ((unaVelocidad * segundos) @ 0)
+	^ posicion extent: tamanio
+]
+
+{ #category : 'puntaje' }
+Obstaculo >> marcarContabilizado [
+
+	contabilizado := true
 ]
 
 { #category : 'acceso' }
@@ -35,34 +65,4 @@ Obstaculo >> posicion [
 Obstaculo >> tamanio [
 
 	^ tamanio
-]
-
-{ #category : 'acceso' }
-Obstaculo >> limites [
-
-	^ posicion extent: tamanio
-]
-
-{ #category : 'acceso' }
-Obstaculo >> estaContabilizado [
-
-	^ contabilizado
-]
-
-{ #category : 'puntaje' }
-Obstaculo >> fueSuperadoPor: unPersonaje [
-
-	^ self limites right <= unPersonaje limites left
-]
-
-{ #category : 'puntaje' }
-Obstaculo >> estaFueraDelEscenario [
-
-	^ self limites right <= 0
-]
-
-{ #category : 'puntaje' }
-Obstaculo >> marcarContabilizado [
-
-	contabilizado := true
 ]
