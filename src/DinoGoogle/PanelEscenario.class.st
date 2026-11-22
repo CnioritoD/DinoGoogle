@@ -126,9 +126,12 @@ PanelEscenario >> dibujarPersonajeAgachadoEn: canvas [
 { #category : 'dibujo' }
 PanelEscenario >> dibujarPersonajeEn: canvas [
 
-	| origen silueta sombra |
-	juego personaje estaAgachado ifTrue: [ ^ self dibujarPersonajeAgachadoEn: canvas ].
+	| origen silueta sombra imagen |
 	origen := self position + (0 @ 60) + juego personaje posicion rounded.
+	"Si hay un PNG en la carpeta de sprites se usa; si no, se dibuja por codigo."
+	imagen := Sprites dinosaurioDe: juego personaje tiempo: juego tiempoTranscurrido.
+	imagen ifNotNil: [ ^ canvas paintImage: imagen at: origen ].
+	juego personaje estaAgachado ifTrue: [ ^ self dibujarPersonajeAgachadoEn: canvas ].
 	silueta := {
 		21 @ 1. 33 @ 1. 33 @ 3. 35 @ 3. 35 @ 13. 28 @ 13.
 		28 @ 17. 34 @ 17. 34 @ 21. 27 @ 21. 27 @ 31. 24 @ 31.
