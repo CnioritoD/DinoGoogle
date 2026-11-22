@@ -61,7 +61,7 @@ Personaje >> initialize [
 
 	super initialize.
 	tamanioDePie := 36 @ 42.
-	tamanioAgachado := 44 @ 24.
+	tamanioAgachado := 58 @ 24.
 	agachado := false.
 	tamanio := tamanioDePie.
 	gravedad := 1600.
