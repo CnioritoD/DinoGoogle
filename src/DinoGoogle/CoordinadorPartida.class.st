@@ -5,7 +5,6 @@ Class {
 		'escenario',
 		'controles',
 		'reloj',
-		'accionSalida',
 		'resultadoGuardado'
 	],
 	#classVars : [
@@ -61,12 +60,6 @@ CoordinadorPartida >> actualizar: segundos [
 CoordinadorPartida >> actualizarControles [
 
 	controles mostrarPuntaje: escenario puntaje estado: escenario estado
-]
-
-{ #category : 'ventana' }
-CoordinadorPartida >> alSalir: unBloque [
-
-	accionSalida := unBloque
 ]
 
 { #category : 'partida' }
@@ -154,11 +147,10 @@ CoordinadorPartida >> reiniciarPartida [
 	reloj iniciar
 ]
 
-{ #category : 'ventana' }
+{ #category : 'partida' }
 CoordinadorPartida >> salir [
 
-	self cerrar.
-	accionSalida ifNotNil: [ accionSalida value ]
+	self prepararSiguientePartida
 ]
 
 { #category : 'partida' }

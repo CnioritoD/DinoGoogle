@@ -61,7 +61,7 @@ SistemaControles >> solicitarInicio [
 SistemaControles >> solicitarReinicio [
 
 	coordinador guardarResultado: entrada nick.
-	coordinador prepararSiguientePartida
+	coordinador reiniciarPartida
 ]
 
 { #category : 'acciones' }

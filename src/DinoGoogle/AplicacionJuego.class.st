@@ -2,7 +2,8 @@ Class {
 	#name : 'AplicacionJuego',
 	#superclass : 'SystemWindow',
 	#instVars : [
-		'coordinador'
+		'coordinador',
+		'estilo'
 	],
 	#classVars : [
 		'Glifos'
@@ -30,9 +31,21 @@ AplicacionJuego >> cerrar [
 { #category : 'inicializacion' }
 AplicacionJuego >> construirInterfaz [
 
-	| contenedor |
-	contenedor := Morph new color: self class pantalla; yourself.
-	coordinador montarInterfazEn: contenedor.
+	| contenedor tablero mitad marcoCentrado |
+	contenedor := Morph new
+		color: Color transparent;
+		layoutPolicy: ProportionalLayout new;
+		yourself.
+	tablero := Morph new color: Color transparent; extent: 656 @ 360; yourself.
+	coordinador montarInterfazEn: tablero.
+	mitad := tablero extent // 2.
+	marcoCentrado := LayoutFrame new
+		leftFraction: 0.5 offset: mitad x negated;
+		rightFraction: 0.5 offset: mitad x;
+		topFraction: 0.5 offset: mitad y negated;
+		bottomFraction: 0.5 offset: mitad y;
+		yourself.
+	contenedor addMorph: tablero fullFrame: marcoCentrado.
 	self addMorph: contenedor frame: (0 @ 0 corner: 1 @ 1).
 	self minimumExtent: 680 @ 401.
 	self extent: 680 @ 401
@@ -51,8 +64,8 @@ AplicacionJuego >> initialize [
 	super initialize.
 	self setLabel: 'DINO GOOGLE'.
 	coordinador := CoordinadorPartida new.
-	coordinador configurarEstilo: self class estilo.
-	coordinador alSalir: [ self delete ].
+	estilo := self class estilo.
+	coordinador configurarEstilo: estilo.
 	self construirInterfaz
 ]
 
@@ -176,4 +189,52 @@ AplicacionJuego class >> estilo [
 		at: #marco put: (self pintorDeMarcosCon: recursos);
 		at: #texto put: self pintorDeTexto.
 	^ recursos
+]
+
+{ #category : 'ventana' }
+AplicacionJuego >> initializeLabelArea [
+
+	super initializeLabelArea.
+	self basicLabel hide
+]
+
+{ #category : 'ventana' }
+AplicacionJuego >> activeTitleFillStyle [
+
+	^ Color transparent
+]
+
+{ #category : 'ventana' }
+AplicacionJuego >> inactiveTitleFillStyle [
+
+	^ self activeTitleFillStyle
+]
+
+{ #category : 'ventana' }
+AplicacionJuego >> labelHeight [
+
+	^ super labelHeight max: 30
+]
+
+{ #category : 'ventana' }
+AplicacionJuego >> preferredCornerStyle [
+
+	^ #square
+]
+
+{ #category : 'ventana' }
+AplicacionJuego >> wantsRoundedCorners [
+
+	^ false
+]
+
+{ #category : 'dibujo' }
+AplicacionJuego >> drawOn: canvas [
+
+	| titulo |
+	estilo ifNil: [ ^ super drawOn: canvas ].
+	(estilo at: #marco) value: self bounds value: (estilo at: #metal) value: false value: canvas.
+	titulo := (self position + (0 @ 3)) extent: self width @ self labelHeight.
+	(estilo at: #texto) valueWithArguments: {
+		self labelString. titulo. 2. (estilo at: #tinta). canvas }
 ]
