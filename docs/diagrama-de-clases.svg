@@ -244,7 +244,7 @@
 <!-- asociacion -->
 <g id="node14" class="node">
 <title>asociacion</title>
-<text xml:space="preserve" text-anchor="middle" x="593.15" y="-133" font-family="Arial" font-size="10.00" fill="#172431">Asociaci�n</text>
+<text xml:space="preserve" text-anchor="middle" x="593.15" y="-133" font-family="Arial" font-size="10.00" fill="#172431">Asociación</text>
 </g>
 <!-- h -->
 <!-- asociacion&#45;&gt;h -->
@@ -256,7 +256,7 @@
 <!-- composicion -->
 <g id="node16" class="node">
 <title>composicion</title>
-<text xml:space="preserve" text-anchor="middle" x="592.15" y="-80" font-family="Arial" font-size="10.00" fill="#172431">Composici�n</text>
+<text xml:space="preserve" text-anchor="middle" x="592.15" y="-80" font-family="Arial" font-size="10.00" fill="#172431">Composición</text>
 </g>
 <!-- d -->
 <!-- composicion&#45;&gt;d -->
@@ -268,14 +268,14 @@
 <!-- agregacion -->
 <g id="node18" class="node">
 <title>agregacion</title>
-<text xml:space="preserve" text-anchor="middle" x="589.15" y="-27" font-family="Arial" font-size="10.00" fill="#172431">Agregaci�n</text>
+<text xml:space="preserve" text-anchor="middle" x="589.15" y="-27" font-family="Arial" font-size="10.00" fill="#172431">Agregación</text>
 </g>
 <!-- r -->
 <!-- agregacion&#45;&gt;r -->
 <!-- realizacion -->
 <g id="node19" class="node">
 <title>realizacion</title>
-<text xml:space="preserve" text-anchor="middle" x="741.15" y="-27" font-family="Arial" font-size="10.00" fill="#172431">Realizaci�n / implementaci�n</text>
+<text xml:space="preserve" text-anchor="middle" x="741.15" y="-27" font-family="Arial" font-size="10.00" fill="#172431">Realización / implementación</text>
 </g>
 <!-- a&#45;&gt;asociacion -->
 <g id="edge17" class="edge">
