@@ -55,10 +55,6 @@ digraph DinoGoogle {
     <TR><TD><B>Pajaro</B></TD></TR>
     <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">alaArriba<BR ALIGN="LEFT"/>esPajaro</TD></TR>
   </TABLE>>];
-  BotonRetro [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#f0f0f1">
-    <TR><TD><B>BotonRetro</B></TD></TR>
-    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">drawOn:</TD></TR>
-  </TABLE>>];
   EstiloRetro [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#f0f0f1">
     <TR><TD><B>EstiloRetro</B></TD></TR>
     <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">marco:fondo:hundido:en:<BR ALIGN="LEFT"/>texto:centradoEn:escala:color:en:</TD></TR>
@@ -68,12 +64,6 @@ digraph DinoGoogle {
     <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">dinosaurioDe:tiempo:<BR ALIGN="LEFT"/>limpiarCache</TD></TR>
   </TABLE>>];
 
-  // Superclases directas provistas por Pharo.
-  node [shape=box, style="dashed,filled", fillcolor="#fbfcfd", color="#6c7783"];
-  SystemWindow [label="SystemWindow\n(Pharo)"];
-  Morph [label="Morph\n(Pharo)"];
-  SimpleButtonMorph [label="SimpleButtonMorph\n(Pharo)"];
-
   // El rombo relleno va del lado del objeto que contiene al componente.
   edge [dir=back, arrowtail=diamond, arrowhead=none];
   AplicacionJuego -> VistaJuego [headlabel="0..1"];
@@ -82,8 +72,7 @@ digraph DinoGoogle {
   CoordinadorPartida -> SistemaEscenario;
   CoordinadorPartida -> SistemaReloj;
   Juego -> Personaje [headlabel="1", labeldistance=1.6, labelangle=-46];
-  Juego -> Obstaculo [headlabel="0..*", labeldistance=1.7, labelangle=45];
-  PanelControles -> BotonRetro [headlabel="3"];
+  Juego -> Obstaculo [headlabel="0..*", labeldistance=1.7, labelangle=-30];
 
   // La asociación muestra una referencia conservada por la clase.
   edge [dir=forward, arrowtail=none, arrowhead=vee];
@@ -98,26 +87,17 @@ digraph DinoGoogle {
   VistaJuego:e -> EstiloRetro:nw [constraint=false];
   PanelControles -> EstiloRetro;
   PanelEscenario -> EstiloRetro [constraint=false];
-  BotonRetro -> EstiloRetro [constraint=false];
 
   // El triángulo hueco señala la superclase.
   edge [style=solid, color="#435365", arrowhead=onormal, constraint=false];
   Pajaro -> Obstaculo;
-  VistaJuego -> SystemWindow;
-  PanelControles:ne -> Morph:nw;
-  PanelEscenario:ne -> Morph:w;
-  SistemaReloj -> Morph:n;
-  BotonRetro -> SimpleButtonMorph;
 
-  {rank=same; VistaJuego; SystemWindow}
   {rank=same; SistemaControles; SistemaEscenario; SistemaReloj}
-  {rank=same; PanelControles; PanelEscenario; Juego; Morph}
-  {rank=same; BotonRetro; EstiloRetro; Sprites; Personaje; Obstaculo}
-  {rank=same; SimpleButtonMorph; Pajaro}
+  {rank=same; PanelControles; PanelEscenario; Juego}
+  {rank=same; EstiloRetro; Sprites; Personaje; Obstaculo}
   edge [style=invis, constraint=true, weight=10];
-  PanelControles -> PanelEscenario -> Juego -> Morph;
-  BotonRetro -> EstiloRetro -> Sprites -> Personaje -> Obstaculo;
-  BotonRetro -> SimpleButtonMorph;
+  PanelControles -> PanelEscenario -> Juego;
+  EstiloRetro -> Sprites -> Personaje -> Obstaculo;
   Obstaculo -> Pajaro;
 
   subgraph cluster_leyenda {
@@ -147,6 +127,6 @@ digraph DinoGoogle {
     h -> d -> r [style=invis, minlen=1];
   }
   // Mantiene la leyenda debajo del diagrama.
-  SimpleButtonMorph -> a [style=invis];
+  Pajaro -> a [style=invis];
 
 }

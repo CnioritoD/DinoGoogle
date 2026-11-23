@@ -20,14 +20,25 @@ Class {
 { #category : 'inicializacion' }
 PanelControles >> boton: texto selector: selector en: posicionLocal tamanio: medida [
 
-	^ BotonRetro new
+	| boton lienzo rotulo |
+	boton := SimpleButtonMorph new
 		label: texto;
 		extent: medida;
 		position: self position + posicionLocal;
 		color: EstiloRetro relieve;
+		borderStyle: (BorderStyle raised width: 4; color: EstiloRetro metal; yourself);
 		target: sistema;
 		actionSelector: selector;
-		yourself
+		yourself.
+	boton submorphs first hide.
+	lienzo := FormCanvas extent: (((texto size * 6) - 1) * 2) @ 14.
+	EstiloRetro texto: texto centradoEn: lienzo form boundingBox escala: 2
+		color: EstiloRetro tinta en: lienzo.
+	rotulo := ImageMorph withForm: lienzo form.
+	rotulo position: boton center - (rotulo extent // 2).
+	boton addMorph: rotulo.
+	rotulo lock.
+	^ boton
 ]
 
 { #category : 'inicializacion' }
