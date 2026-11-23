@@ -9,11 +9,7 @@ digraph DinoGoogle {
 
   AplicacionJuego [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#fcfcfc">
     <TR><TD><B>AplicacionJuego</B></TD></TR>
-    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">abrir<BR ALIGN="LEFT"/>cerrar</TD></TR>
-  </TABLE>>];
-  VistaJuego [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#fcfcfc">
-    <TR><TD><B>VistaJuego</B></TD></TR>
-    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">abrir<BR ALIGN="LEFT"/>construirInterfaz<BR ALIGN="LEFT"/>estilo</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">abrir<BR ALIGN="LEFT"/>cerrar<BR ALIGN="LEFT"/>construirInterfaz<BR ALIGN="LEFT"/>estilo</TD></TR>
   </TABLE>>];
   CoordinadorPartida [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#fcfcfc">
     <TR><TD><B>CoordinadorPartida</B></TD></TR>
@@ -58,8 +54,7 @@ digraph DinoGoogle {
 
   // El rombo relleno va del lado del objeto que contiene al componente.
   edge [dir=back, arrowtail=diamond, arrowhead=none];
-  AplicacionJuego -> VistaJuego [headlabel="0..1"];
-  VistaJuego -> CoordinadorPartida;
+  AplicacionJuego -> CoordinadorPartida;
   CoordinadorPartida -> SistemaControles;
   CoordinadorPartida -> SistemaEscenario;
   CoordinadorPartida -> SistemaReloj;
