@@ -135,3 +135,9 @@ SistemaEscenario >> tomarFoco [
 
 	panel tomarFoco
 ]
+
+{ #category : 'inicializacion' }
+SistemaEscenario >> configurarEstilo: unEstilo [
+
+	panel configurarEstilo: unEstilo
+]

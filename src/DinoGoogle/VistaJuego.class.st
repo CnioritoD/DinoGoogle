@@ -43,6 +43,7 @@ VistaJuego >> initialize [
 	super initialize.
 	self setLabel: 'DINO GOOGLE'.
 	coordinador := CoordinadorPartida new.
+	coordinador configurarEstilo: self class estilo.
 	coordinador alSalir: [ self delete ].
 	self construirInterfaz
 ]
@@ -84,33 +85,42 @@ VistaJuego class >> luz [
 ]
 
 { #category : 'dibujo' }
-VistaJuego class >> marco: unRectangulo fondo: unColor hundido: hundido en: canvas [
+VistaJuego class >> pintorDeMarcosCon: unaPaleta [
 
-	| interior arriba abajo |
-	arriba := hundido ifTrue: [ self sombra ] ifFalse: [ self luz ].
-	abajo := hundido ifTrue: [ self relieve ] ifFalse: [ self sombra ].
-	interior := unRectangulo insetBy: 3.
-	canvas fillRectangle: unRectangulo color: self tinta.
-	canvas fillRectangle: interior color: abajo.
-	canvas fillRectangle: (interior origin extent: interior width @ 4) color: arriba.
-	canvas fillRectangle: (interior origin extent: 4 @ interior height) color: arriba.
-	canvas fillRectangle: (interior insetBy: 4) color: unColor
+	| sombra luz relieve tinta |
+	sombra := unaPaleta at: #sombra.
+	luz := unaPaleta at: #luz.
+	relieve := unaPaleta at: #relieve.
+	tinta := unaPaleta at: #tinta.
+	^ [ :unRectangulo :unColor :hundido :canvas |
+		| interior arriba abajo |
+		arriba := hundido ifTrue: [ sombra ] ifFalse: [ luz ].
+		abajo := hundido ifTrue: [ relieve ] ifFalse: [ sombra ].
+		interior := unRectangulo insetBy: 3.
+		canvas fillRectangle: unRectangulo color: tinta.
+		canvas fillRectangle: interior color: abajo.
+		canvas fillRectangle: (interior origin extent: interior width @ 4) color: arriba.
+		canvas fillRectangle: (interior origin extent: 4 @ interior height) color: arriba.
+		canvas fillRectangle: (interior insetBy: 4) color: unColor ]
 ]
 
 { #category : 'dibujo' }
-VistaJuego class >> texto: texto centradoEn: unRectangulo escala: escala color: unColor en: canvas [
+VistaJuego class >> pintorDeTexto [
 
-	| medida origen |
-	medida := ((texto size * 6 - 1) * escala) @ (7 * escala).
-	origen := unRectangulo origin + ((unRectangulo extent - medida) // 2).
-	texto doWithIndex: [ :letra :columna |
-		| filas |
-		filas := self glifos at: letra ifAbsent: [ #(0 0 0 0 0 0 0) ].
-		filas doWithIndex: [ :fila :y |
-			1 to: 5 do: [ :x |
-				(fila bitAt: 6 - x) = 1 ifTrue: [
-					canvas fillRectangle: ((origen + ((((columna - 1) * 6 + x - 1) * escala)
-						@ ((y - 1) * escala))) extent: escala @ escala) color: unColor ] ] ] ]
+	| glifos |
+	glifos := self glifos.
+	^ [ :texto :unRectangulo :escala :unColor :canvas |
+		| medida origen |
+		medida := ((texto size * 6 - 1) * escala) @ (7 * escala).
+		origen := unRectangulo origin + ((unRectangulo extent - medida) // 2).
+		texto doWithIndex: [ :letra :columna |
+			| filas |
+			filas := glifos at: letra ifAbsent: [ #(0 0 0 0 0 0 0) ].
+			filas doWithIndex: [ :fila :y |
+				1 to: 5 do: [ :x |
+					(fila bitAt: 6 - x) = 1 ifTrue: [
+						canvas fillRectangle: ((origen + ((((columna - 1) * 6 + x - 1) * escala)
+							@ ((y - 1) * escala))) extent: escala @ escala) color: unColor ] ] ] ] ]
 ]
 
 { #category : 'dibujo' }
@@ -141,4 +151,21 @@ VistaJuego class >> glifos [
 			(0 4 4 31 4 4 0))
 			do: [ :letra :filas | Glifos at: letra put: filas ].
 		Glifos ]
+]
+
+{ #category : 'paleta' }
+VistaJuego class >> estilo [
+
+	| recursos |
+	recursos := Dictionary new.
+	recursos
+		at: #tinta put: self tinta;
+		at: #metal put: self metal;
+		at: #relieve put: self relieve;
+		at: #sombra put: self sombra;
+		at: #pantalla put: self pantalla;
+		at: #luz put: self luz;
+		at: #marco put: (self pintorDeMarcosCon: recursos);
+		at: #texto put: self pintorDeTexto.
+	^ recursos
 ]

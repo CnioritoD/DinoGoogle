@@ -178,3 +178,10 @@ CoordinadorPartida >> solicitarSalto [
 
 	escenario ejecutarSalto
 ]
+
+{ #category : 'inicializacion' }
+CoordinadorPartida >> configurarEstilo: unEstilo [
+
+	escenario configurarEstilo: unEstilo.
+	controles configurarEstilo: unEstilo
+]

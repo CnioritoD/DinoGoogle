@@ -2,6 +2,7 @@ Class {
 	#name : 'PanelControles',
 	#superclass : 'Morph',
 	#instVars : [
+		'estilo',
 		'sistema',
 		'botonInicio',
 		'cuadroFinal',
@@ -25,15 +26,15 @@ PanelControles >> boton: texto selector: selector en: posicionLocal tamanio: med
 		label: texto;
 		extent: medida;
 		position: self position + posicionLocal;
-		color: VistaJuego relieve;
-		borderStyle: (BorderStyle raised width: 4; color: VistaJuego metal; yourself);
+		color: (estilo at: #relieve);
+		borderStyle: (BorderStyle raised width: 4; color: (estilo at: #metal); yourself);
 		target: sistema;
 		actionSelector: selector;
 		yourself.
 	boton submorphs first hide.
 	lienzo := FormCanvas extent: (((texto size * 6) - 1) * 2) @ 14.
-	VistaJuego texto: texto centradoEn: lienzo form boundingBox escala: 2
-		color: VistaJuego tinta en: lienzo.
+	self dibujarTexto: texto centradoEn: lienzo form boundingBox escala: 2
+		color: (estilo at: #tinta) en: lienzo.
 	rotulo := ImageMorph withForm: lienzo form.
 	rotulo position: boton center - (rotulo extent // 2).
 	boton addMorph: rotulo.
@@ -44,8 +45,7 @@ PanelControles >> boton: texto selector: selector en: posicionLocal tamanio: med
 { #category : 'inicializacion' }
 PanelControles >> configurarSistema: unSistema [
 
-	sistema := unSistema.
-	self construirComponentes
+	sistema := unSistema
 ]
 
 { #category : 'inicializacion' }
@@ -64,12 +64,12 @@ PanelControles >> construirComponentes [
 
 	campoNick := RubTextFieldMorph new
 		font: fuenteTabla;
-		color: VistaJuego pantalla;
+		color: (estilo at: #pantalla);
 		borderWidth: 0;
 		maxLength: 20;
 		extent: 246 @ 24;
 		yourself.
-	campoNick textArea textColor: VistaJuego luz.
+	campoNick textArea textColor: (estilo at: #luz).
 	cuadroFinal addMorph: campoNick.
 	campoNick position: cuadroFinal position + (160 @ 166).
 
@@ -77,7 +77,8 @@ PanelControles >> construirComponentes [
 		en: 57 @ 254 tamanio: 170 @ 43).
 	cuadroFinal addMorph: (self boton: 'SALIR' selector: #solicitarSalida
 		en: 413 @ 254 tamanio: 170 @ 43).
-	cuadroFinal hide
+	botonInicio visible: estado = #enEspera.
+	cuadroFinal visible: estado = #finalizada
 ]
 
 { #category : 'dibujo' }
@@ -85,20 +86,20 @@ PanelControles >> dibujarFinalEn: canvas [
 
 	| origen titulo marcador entrada |
 	origen := cuadroFinal position.
-	canvas fillRectangle: self bounds color: VistaJuego pantalla.
-	VistaJuego marco: cuadroFinal bounds fondo: VistaJuego metal hundido: false en: canvas.
+	canvas fillRectangle: self bounds color: (estilo at: #pantalla).
+	self dibujarMarco: cuadroFinal bounds fondo: (estilo at: #metal) hundido: false en: canvas.
 	titulo := (origen + (30 @ 22)) extent: 506 @ 54.
-	VistaJuego marco: titulo fondo: VistaJuego relieve hundido: false en: canvas.
-	VistaJuego texto: 'PARTIDA TERMINADA' centradoEn: titulo escala: 4 color: VistaJuego tinta en: canvas.
+	self dibujarMarco: titulo fondo: (estilo at: #relieve) hundido: false en: canvas.
+	self dibujarTexto: 'PARTIDA TERMINADA' centradoEn: titulo escala: 4 color: (estilo at: #tinta) en: canvas.
 
 	marcador := (origen + (153 @ 89)) extent: 260 @ 42.
-	VistaJuego marco: marcador fondo: VistaJuego pantalla hundido: true en: canvas.
-	VistaJuego texto: 'PUNTOS ', puntaje printString centradoEn: marcador escala: 2
-		color: VistaJuego luz en: canvas.
-	VistaJuego texto: 'APODO OPCIONAL' centradoEn: ((origen + (153 @ 137)) extent: 260 @ 20)
-		escala: 2 color: VistaJuego tinta en: canvas.
+	self dibujarMarco: marcador fondo: (estilo at: #pantalla) hundido: true en: canvas.
+	self dibujarTexto: 'PUNTOS ', puntaje printString centradoEn: marcador escala: 2
+		color: (estilo at: #luz) en: canvas.
+	self dibujarTexto: 'APODO OPCIONAL' centradoEn: ((origen + (153 @ 137)) extent: 260 @ 20)
+		escala: 2 color: (estilo at: #tinta) en: canvas.
 	entrada := (origen + (153 @ 159)) extent: 260 @ 38.
-	VistaJuego marco: entrada fondo: VistaJuego pantalla hundido: true en: canvas
+	self dibujarMarco: entrada fondo: (estilo at: #pantalla) hundido: true en: canvas
 ]
 
 { #category : 'dibujo' }
@@ -106,16 +107,16 @@ PanelControles >> dibujarInicioEn: canvas [
 
 	| origen titulo |
 	origen := self position.
-	VistaJuego marco: self bounds fondo: VistaJuego metal hundido: false en: canvas.
+	self dibujarMarco: self bounds fondo: (estilo at: #metal) hundido: false en: canvas.
 	titulo := (origen + (28 @ 22)) extent: 584 @ 55.
-	VistaJuego marco: titulo fondo: VistaJuego relieve hundido: false en: canvas.
-	VistaJuego texto: 'DINO GOOGLE' centradoEn: titulo escala: 5 color: VistaJuego tinta en: canvas.
-	VistaJuego texto: 'MEJORES PARTIDAS' centradoEn: ((origen + (52 @ 143)) extent: 536 @ 22)
-		escala: 2 color: VistaJuego tinta en: canvas.
+	self dibujarMarco: titulo fondo: (estilo at: #relieve) hundido: false en: canvas.
+	self dibujarTexto: 'DINO GOOGLE' centradoEn: titulo escala: 5 color: (estilo at: #tinta) en: canvas.
+	self dibujarTexto: 'MEJORES PARTIDAS' centradoEn: ((origen + (52 @ 143)) extent: 536 @ 22)
+		escala: 2 color: (estilo at: #tinta) en: canvas.
 	self dibujarTablaEn: canvas.
-	VistaJuego texto: 'ESPACIO O CLIC PARA SALTAR   ABAJO PARA AGACHARSE'
+	self dibujarTexto: 'ESPACIO O CLIC PARA SALTAR   ABAJO PARA AGACHARSE'
 		centradoEn: ((origen + (20 @ 307)) extent: 600 @ 24) escala: 2
-		color: VistaJuego tinta en: canvas
+		color: (estilo at: #tinta) en: canvas
 ]
 
 { #category : 'dibujo' }
@@ -129,7 +130,7 @@ PanelControles >> dibujarFila: valores en: origen columnas: columnas sobre: canv
 		izquierda := ((ancho - (fuenteTabla widthOfString: texto)) // 2) max: 4.
 		canvas clipBy: celda during: [ :lienzo |
 			lienzo drawString: texto from: 1 to: texto size
-				at: origen + ((x + izquierda) @ 2) font: fuenteTabla color: VistaJuego tinta ] ]
+				at: origen + ((x + izquierda) @ 2) font: fuenteTabla color: (estilo at: #tinta) ] ]
 ]
 
 { #category : 'dibujo' }
@@ -139,15 +140,15 @@ PanelControles >> dibujarTablaEn: canvas [
 	origen := self position + (59 @ 177).
 	columnas := #(0 44 229 377 522).
 	encabezados := #('N' 'APODO' 'TIEMPO' 'PUNTOS').
-	VistaJuego marco: ((origen - (7 @ 7)) extent: 536 @ 140)
-		fondo: VistaJuego relieve hundido: true en: canvas.
-	canvas fillRectangle: (origen extent: 522 @ 20) color: VistaJuego pantalla.
+	self dibujarMarco: ((origen - (7 @ 7)) extent: 536 @ 140)
+		fondo: (estilo at: #relieve) hundido: true en: canvas.
+	canvas fillRectangle: (origen extent: 522 @ 20) color: (estilo at: #pantalla).
 	encabezados doWithIndex: [ :texto :indice |
 		| inicio ancho |
 		inicio := columnas at: indice.
 		ancho := (columnas at: indice + 1) - inicio.
-		VistaJuego texto: texto centradoEn: ((origen + (inicio @ 0)) extent: ancho @ 20)
-			escala: 2 color: VistaJuego luz en: canvas ].
+		self dibujarTexto: texto centradoEn: ((origen + (inicio @ 0)) extent: ancho @ 20)
+			escala: 2 color: (estilo at: #luz) en: canvas ].
 	1 to: 5 do: [ :fila |
 		canvas fillRectangle: ((origen + (0 @ (fila * 21))) extent: 522 @ 20)
 			color: (Color gray: (fila odd ifTrue: [ 0.9 ] ifFalse: [ 0.79 ])) ].
@@ -160,13 +161,14 @@ PanelControles >> dibujarTablaEn: canvas [
 			columnas: columnas
 			sobre: canvas ].
 	resultados isEmpty ifTrue: [
-		VistaJuego texto: 'SIN RESULTADOS' centradoEn: ((origen + (0 @ 21)) extent: 522 @ 105)
-			escala: 2 color: VistaJuego tinta en: canvas ]
+		self dibujarTexto: 'SIN RESULTADOS' centradoEn: ((origen + (0 @ 21)) extent: 522 @ 105)
+			escala: 2 color: (estilo at: #tinta) en: canvas ]
 ]
 
 { #category : 'dibujo' }
 PanelControles >> drawOn: canvas [
 
+	estilo ifNil: [ ^ self ].
 	estado = #enEspera ifTrue: [ self dibujarInicioEn: canvas ].
 	estado = #finalizada ifTrue: [ self dibujarFinalEn: canvas ]
 ]
@@ -189,6 +191,7 @@ PanelControles >> mostrarPuntaje: unPuntaje estado: unEstado [
 	estado = unEstado ifTrue: [ ^ self ].
 	estado := unEstado.
 	puntaje := unPuntaje.
+	botonInicio ifNil: [ ^ self ].
 	botonInicio visible: estado = #enEspera.
 	cuadroFinal visible: estado = #finalizada.
 	estado = #finalizada ifTrue: [
@@ -207,5 +210,24 @@ PanelControles >> mostrarResultados: unaColeccion [
 { #category : 'interfaz' }
 PanelControles >> nick [
 
-	^ campoNick text asString trimBoth
+	^ campoNick ifNil: [ '' ] ifNotNil: [ campoNick text asString trimBoth ]
+]
+
+{ #category : 'inicializacion' }
+PanelControles >> configurarEstilo: unEstilo [
+
+	estilo := unEstilo.
+	self construirComponentes
+]
+
+{ #category : 'dibujo' }
+PanelControles >> dibujarMarco: unRectangulo fondo: unColor hundido: hundido en: canvas [
+
+	(estilo at: #marco) value: unRectangulo value: unColor value: hundido value: canvas
+]
+
+{ #category : 'dibujo' }
+PanelControles >> dibujarTexto: unTexto centradoEn: unRectangulo escala: escala color: unColor en: canvas [
+
+	(estilo at: #texto) valueWithArguments: { unTexto. unRectangulo. escala. unColor. canvas }
 ]

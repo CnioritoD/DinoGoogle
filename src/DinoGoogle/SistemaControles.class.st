@@ -62,3 +62,9 @@ SistemaControles >> solicitarSalida [
 	coordinador guardarResultado: panel nick.
 	coordinador salir
 ]
+
+{ #category : 'inicializacion' }
+SistemaControles >> configurarEstilo: unEstilo [
+
+	panel configurarEstilo: unEstilo
+]

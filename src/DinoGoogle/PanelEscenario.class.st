@@ -2,6 +2,7 @@ Class {
 	#name : 'PanelEscenario',
 	#superclass : 'Morph',
 	#instVars : [
+		'estilo',
 		'sistema',
 		'juego'
 	],
@@ -31,17 +32,17 @@ PanelEscenario >> dibujarCieloEn: canvas [
 	origen := self position.
 	canvas fillRectangle: ((origen + (7 @ 7)) extent: 626 @ 279) color: (Color gray: 0.87).
 	"Sol, nubes y colinas en bloques de píxeles."
-	canvas fillRectangle: ((origen + (521 @ 32)) extent: 38 @ 60) color: VistaJuego luz.
-	canvas fillRectangle: ((origen + (510 @ 43)) extent: 60 @ 38) color: VistaJuego luz.
+	canvas fillRectangle: ((origen + (521 @ 32)) extent: 38 @ 60) color: (estilo at: #luz).
+	canvas fillRectangle: ((origen + (510 @ 43)) extent: 60 @ 38) color: (estilo at: #luz).
 	#(54 261 415) do: [ :x |
-		canvas fillRectangle: ((origen + (x @ 92)) extent: 68 @ 5) color: VistaJuego relieve.
-		canvas fillRectangle: ((origen + ((x + 12) @ 86)) extent: 34 @ 6) color: VistaJuego relieve ].
+		canvas fillRectangle: ((origen + (x @ 92)) extent: 68 @ 5) color: (estilo at: #relieve).
+		canvas fillRectangle: ((origen + ((x + 12) @ 86)) extent: 34 @ 6) color: (estilo at: #relieve) ].
 	#(27 202 390 531) do: [ :x |
 		1 to: 4 do: [ :nivel |
 			| escalon |
 			escalon := nivel * 12.
 			canvas fillRectangle: ((origen + ((x + escalon) @ (286 - (nivel * 9))))
-				extent: (116 - (escalon * 2)) @ 9) color: VistaJuego relieve ] ]
+				extent: (116 - (escalon * 2)) @ 9) color: (estilo at: #relieve) ] ]
 ]
 
 { #category : 'dibujo' }
@@ -50,12 +51,12 @@ PanelEscenario >> dibujarIndicadoresEn: canvas [
 	| puntaje tiempo |
 	puntaje := (self position + (16 @ 300)) extent: 218 @ 34.
 	tiempo := (self position + (406 @ 300)) extent: 218 @ 34.
-	VistaJuego marco: puntaje fondo: VistaJuego pantalla hundido: true en: canvas.
-	VistaJuego marco: tiempo fondo: VistaJuego pantalla hundido: true en: canvas.
-	VistaJuego texto: 'PUNTOS ', juego puntaje printString
-		centradoEn: puntaje escala: 2 color: VistaJuego luz en: canvas.
-	VistaJuego texto: 'TIEMPO ', juego tiempoTranscurrido floor printString, ' S'
-		centradoEn: tiempo escala: 2 color: VistaJuego luz en: canvas
+	self dibujarMarco: puntaje fondo: (estilo at: #pantalla) hundido: true en: canvas.
+	self dibujarMarco: tiempo fondo: (estilo at: #pantalla) hundido: true en: canvas.
+	self dibujarTexto: 'PUNTOS ', juego puntaje printString
+		centradoEn: puntaje escala: 2 color: (estilo at: #luz) en: canvas.
+	self dibujarTexto: 'TIEMPO ', juego tiempoTranscurrido floor printString, ' S'
+		centradoEn: tiempo escala: 2 color: (estilo at: #luz) en: canvas
 ]
 
 { #category : 'dibujo' }
@@ -67,9 +68,9 @@ PanelEscenario >> dibujarCactus: obstaculo en: canvas [
 		19 @ 9. 19 @ 18. 17 @ 20. 13 @ 20. 13 @ 27. 7 @ 27.
 		7 @ 17. 3 @ 17. 1 @ 15. 1 @ 7. 4 @ 7. 4 @ 13.
 		7 @ 13. 7 @ 2 }.
-	cuerpo := VistaJuego pantalla.
-	luz := VistaJuego metal.
-	borde := VistaJuego tinta.
+	cuerpo := (estilo at: #pantalla).
+	luz := (estilo at: #metal).
+	borde := (estilo at: #tinta).
 	origen := self position + (0 @ 60) + obstaculo posicion rounded.
 	escala := obstaculo tamanio / (20 @ 28).
 	vertices := silueta collect: [ :punto | origen + (punto * escala) rounded ].
@@ -101,9 +102,9 @@ PanelEscenario >> dibujarPajaro: pajaro en: canvas [
 	ala := pajaro alaArriba
 		ifTrue: [ { 19 @ 9. 25 @ 0. 34 @ 2. 30 @ 9 } ]
 		ifFalse: [ { 19 @ 14. 25 @ 21. 34 @ 19. 30 @ 14 } ].
-	colorCuerpo := VistaJuego pantalla.
-	colorAla := VistaJuego metal.
-	borde := VistaJuego tinta.
+	colorCuerpo := (estilo at: #pantalla).
+	colorAla := (estilo at: #metal).
+	borde := (estilo at: #tinta).
 	canvas drawPolygon: (cuerpo collect: [ :punto | origen + punto ])
 		color: colorCuerpo borderWidth: 2 borderColor: borde.
 	canvas drawPolygon: (ala collect: [ :punto | origen + punto ])
@@ -122,12 +123,12 @@ PanelEscenario >> dibujarPersonajeAgachadoEn: canvas [
 		22 @ 18. 20 @ 18. 20 @ 22. 17 @ 22. 17 @ 23. 12 @ 23. 12 @ 16.
 		5 @ 15. 2 @ 12 }.
 	canvas drawPolygon: (silueta collect: [ :punto | origen + punto ])
-		color: VistaJuego pantalla
-		borderWidth: 2 borderColor: VistaJuego tinta.
-	sombra := VistaJuego sombra.
+		color: (estilo at: #pantalla)
+		borderWidth: 2 borderColor: (estilo at: #tinta).
+	sombra := (estilo at: #sombra).
 	canvas fillRectangle: ((origen + (10 @ 10)) extent: 12 @ 3) color: sombra.
 	canvas fillRectangle: ((origen + (29 @ 3)) extent: 8 @ 2)
-		color: VistaJuego metal.
+		color: (estilo at: #metal).
 	canvas fillRectangle: ((origen + (33 @ 4)) extent: 3 @ 3) color: Color black
 ]
 
@@ -149,13 +150,13 @@ PanelEscenario >> dibujarPersonajeEn: canvas [
 		4 @ 20. 9 @ 20. 9 @ 22. 13 @ 22. 13 @ 18. 17 @ 18.
 		17 @ 13. 19 @ 13. 19 @ 3. 21 @ 3 }.
 	canvas drawPolygon: (silueta collect: [ :punto | origen + punto ])
-		color: VistaJuego pantalla
-		borderWidth: 2 borderColor: VistaJuego tinta.
+		color: (estilo at: #pantalla)
+		borderWidth: 2 borderColor: (estilo at: #tinta).
 
-	sombra := VistaJuego sombra.
+	sombra := (estilo at: #sombra).
 	canvas fillRectangle: ((origen + (12 @ 26)) extent: 11 @ 4) color: sombra.
 	canvas fillRectangle: ((origen + (23 @ 3)) extent: 8 @ 2)
-		color: VistaJuego metal.
+		color: (estilo at: #metal).
 	canvas fillRectangle: ((origen + (25 @ 6)) extent: 3 @ 3) color: Color black.
 	canvas fillRectangle: ((origen + (31 @ 11)) extent: 3 @ 1) color: sombra
 ]
@@ -165,20 +166,20 @@ PanelEscenario >> dibujarSueloEn: canvas [
 
 	| borde desplazamiento |
 	borde := self position + (7 @ (juego alturaSuelo + 60)).
-	canvas fillRectangle: (borde extent: (self width - 14) @ 4) color: VistaJuego tinta.
+	canvas fillRectangle: (borde extent: (self width - 14) @ 4) color: (estilo at: #tinta).
 	desplazamiento := (juego tiempoTranscurrido * 80) floor.
 	0 to: 15 do: [ :i |
 		| x |
 		x := (i * 43 - desplazamiento) \\ 620.
-		canvas fillRectangle: ((borde + (x @ 7)) extent: 6 @ 2) color: VistaJuego sombra ]
+		canvas fillRectangle: ((borde + (x @ 7)) extent: 6 @ 2) color: (estilo at: #sombra) ]
 ]
 
 { #category : 'dibujo' }
 PanelEscenario >> drawOn: canvas [
 
-	juego ifNil: [ ^ super drawOn: canvas ].
+	(juego isNil or: [ estilo isNil ]) ifTrue: [ ^ super drawOn: canvas ].
 	canvas clipBy: self bounds during: [ :lienzo |
-		VistaJuego marco: self bounds fondo: VistaJuego metal hundido: false en: lienzo.
+		self dibujarMarco: self bounds fondo: (estilo at: #metal) hundido: false en: lienzo.
 		self dibujarCieloEn: lienzo.
 		self dibujarSueloEn: lienzo.
 		lienzo clipBy: (self bounds insetBy: 7) during: [ :escena |
@@ -376,4 +377,22 @@ PanelEscenario class >> enGrises: unaImagen [
 			nivel := (pixel red * 0.299) + (pixel green * 0.587) + (pixel blue * 0.114).
 			resultado colorAt: x @ y put: ((Color gray: nivel) alpha: pixel alpha) ] ].
 	^ resultado
+]
+
+{ #category : 'inicializacion' }
+PanelEscenario >> configurarEstilo: unEstilo [
+
+	estilo := unEstilo
+]
+
+{ #category : 'dibujo' }
+PanelEscenario >> dibujarMarco: unRectangulo fondo: unColor hundido: hundido en: canvas [
+
+	(estilo at: #marco) value: unRectangulo value: unColor value: hundido value: canvas
+]
+
+{ #category : 'dibujo' }
+PanelEscenario >> dibujarTexto: unTexto centradoEn: unRectangulo escala: escala color: unColor en: canvas [
+
+	(estilo at: #texto) valueWithArguments: { unTexto. unRectangulo. escala. unColor. canvas }
 ]

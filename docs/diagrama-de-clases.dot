@@ -13,19 +13,19 @@ digraph DinoGoogle {
   </TABLE>>];
   VistaJuego [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#fcfcfc">
     <TR><TD><B>VistaJuego</B></TD></TR>
-    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">abrir<BR ALIGN="LEFT"/>construirInterfaz<BR ALIGN="LEFT"/>marco:fondo:hundido:en:</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">abrir<BR ALIGN="LEFT"/>construirInterfaz<BR ALIGN="LEFT"/>estilo</TD></TR>
   </TABLE>>];
   CoordinadorPartida [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#fcfcfc">
     <TR><TD><B>CoordinadorPartida</B></TD></TR>
-    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">iniciarPartida<BR ALIGN="LEFT"/>actualizar:<BR ALIGN="LEFT"/>guardarResultado:</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">iniciarPartida<BR ALIGN="LEFT"/>actualizar:<BR ALIGN="LEFT"/>guardarResultado:<BR ALIGN="LEFT"/>configurarEstilo:</TD></TR>
   </TABLE>>];
   SistemaControles [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#fcfcfc">
     <TR><TD><B>SistemaControles</B></TD></TR>
-    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">solicitarInicio<BR ALIGN="LEFT"/>solicitarReinicio<BR ALIGN="LEFT"/>solicitarSalida</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">solicitarInicio<BR ALIGN="LEFT"/>solicitarReinicio<BR ALIGN="LEFT"/>solicitarSalida<BR ALIGN="LEFT"/>configurarEstilo:</TD></TR>
   </TABLE>>];
   SistemaEscenario [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#fcfcfc">
     <TR><TD><B>SistemaEscenario</B></TD></TR>
-    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">avanzar:<BR ALIGN="LEFT"/>ejecutarSalto<BR ALIGN="LEFT"/>ejecutarAgacharse</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">avanzar:<BR ALIGN="LEFT"/>ejecutarSalto<BR ALIGN="LEFT"/>ejecutarAgacharse<BR ALIGN="LEFT"/>configurarEstilo:</TD></TR>
   </TABLE>>];
   SistemaReloj [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#fcfcfc">
     <TR><TD><B>SistemaReloj</B></TD></TR>
@@ -33,11 +33,11 @@ digraph DinoGoogle {
   </TABLE>>];
   PanelControles [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#fcfcfc">
     <TR><TD><B>PanelControles</B></TD></TR>
-    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">mostrarPuntaje:estado:<BR ALIGN="LEFT"/>mostrarResultados:</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">mostrarPuntaje:estado:<BR ALIGN="LEFT"/>mostrarResultados:<BR ALIGN="LEFT"/>configurarEstilo:</TD></TR>
   </TABLE>>];
   PanelEscenario [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#fcfcfc">
     <TR><TD><B>PanelEscenario</B></TD></TR>
-    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">drawOn:<BR ALIGN="LEFT"/>tomarFoco<BR ALIGN="LEFT"/>dinosaurioDe:tiempo:</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">drawOn:<BR ALIGN="LEFT"/>tomarFoco<BR ALIGN="LEFT"/>dinosaurioDe:tiempo:<BR ALIGN="LEFT"/>configurarEstilo:</TD></TR>
   </TABLE>>];
   Juego [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#e9f0f5">
     <TR><TD><B>Juego</B></TD></TR>
@@ -76,8 +76,6 @@ digraph DinoGoogle {
   // La dependencia indica uso sin una referencia de instancia propia.
   edge [style=dashed, arrowhead=vee, color="#657487"];
 
-  PanelControles:w -> VistaJuego:w [constraint=false];
-  PanelEscenario:e -> VistaJuego:e [constraint=false];
 
   // El triángulo hueco señala la superclase.
   edge [style=solid, color="#435365", arrowhead=onormal, constraint=false];
