@@ -270,3 +270,23 @@ Juego >> tiempoTranscurrido [
 
 	^ tiempoTranscurrido
 ]
+
+{ #category : 'acceso' }
+Juego >> estadoEscenario [
+
+	^ {
+		#personaje -> personaje limites.
+		#agachado -> personaje estaAgachado.
+		#obstaculos -> (obstaculos collect: [ :obstaculo |
+			| vuela |
+			vuela := obstaculo esPajaro.
+			{
+				#limites -> obstaculo limites.
+				#vuela -> vuela.
+				#alaArriba -> (vuela and: [ obstaculo alaArriba ])
+			} asDictionary ]).
+		#suelo -> alturaSuelo.
+		#puntos -> puntaje.
+		#tiempo -> tiempoTranscurrido
+	} asDictionary
+]

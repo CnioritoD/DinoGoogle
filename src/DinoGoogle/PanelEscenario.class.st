@@ -3,7 +3,12 @@ Class {
 	#superclass : 'Morph',
 	#instVars : [
 		'estilo',
-		'juego'
+		'limitesPersonaje',
+		'agachado',
+		'obstaculos',
+		'alturaSuelo',
+		'puntos',
+		'tiempoTranscurrido'
 	],
 	#classVars : [
 		'CacheSprites',
@@ -16,10 +21,9 @@ Class {
 }
 
 { #category : 'inicializacion' }
-PanelEscenario >> configurarJuego: unJuego [
+PanelEscenario >> configurarTamanio: unTamanio [
 
-	juego := unJuego.
-	self extent: juego tamanioEscenario + (0 @ 78).
+	self extent: unTamanio + (0 @ 78).
 	self clipSubmorphs: true
 ]
 
@@ -51,9 +55,9 @@ PanelEscenario >> dibujarIndicadoresEn: canvas [
 	tiempo := (self position + (406 @ 300)) extent: 218 @ 34.
 	self dibujarMarco: puntaje fondo: (estilo at: #pantalla) hundido: true en: canvas.
 	self dibujarMarco: tiempo fondo: (estilo at: #pantalla) hundido: true en: canvas.
-	self dibujarTexto: 'PUNTOS ', juego puntaje printString
+	self dibujarTexto: 'PUNTOS ', puntos printString
 		centradoEn: puntaje escala: 2 color: (estilo at: #luz) en: canvas.
-	self dibujarTexto: 'TIEMPO ', juego tiempoTranscurrido floor printString, ' S'
+	self dibujarTexto: 'TIEMPO ', tiempoTranscurrido floor printString, ' S'
 		centradoEn: tiempo escala: 2 color: (estilo at: #luz) en: canvas
 ]
 
@@ -69,8 +73,8 @@ PanelEscenario >> dibujarCactus: obstaculo en: canvas [
 	cuerpo := (estilo at: #pantalla).
 	luz := (estilo at: #metal).
 	borde := (estilo at: #tinta).
-	origen := self position + (0 @ 60) + obstaculo posicion rounded.
-	escala := obstaculo tamanio / (20 @ 28).
+	origen := self position + (0 @ 60) + (obstaculo at: #limites) origin rounded.
+	escala := (obstaculo at: #limites) extent / (20 @ 28).
 	vertices := silueta collect: [ :punto | origen + (punto * escala) rounded ].
 	canvas drawPolygon: vertices color: cuerpo borderWidth: 2 borderColor: borde.
 	canvas
@@ -83,8 +87,8 @@ PanelEscenario >> dibujarCactus: obstaculo en: canvas [
 { #category : 'dibujo' }
 PanelEscenario >> dibujarObstaculosEn: canvas [
 
-	juego obstaculos do: [ :obstaculo |
-		obstaculo esPajaro
+	obstaculos do: [ :obstaculo |
+		(obstaculo at: #vuela)
 			ifTrue: [ self dibujarPajaro: obstaculo en: canvas ]
 			ifFalse: [ self dibujarCactus: obstaculo en: canvas ] ]
 ]
@@ -94,10 +98,10 @@ PanelEscenario >> dibujarPajaro: pajaro en: canvas [
 	"El dibujo ocupa la caja de 46 x 22 del pajaro; el ala sube y baja (aletea)."
 
 	| origen cuerpo ala colorCuerpo colorAla borde |
-	origen := self position + (0 @ 60) + pajaro posicion rounded.
+	origen := self position + (0 @ 60) + (pajaro at: #limites) origin rounded.
 	cuerpo := {
 		0 @ 10. 11 @ 6. 17 @ 8. 31 @ 9. 45 @ 11. 31 @ 14. 18 @ 15. 11 @ 13 }.
-	ala := pajaro alaArriba
+	ala := (pajaro at: #alaArriba)
 		ifTrue: [ { 19 @ 9. 25 @ 0. 34 @ 2. 30 @ 9 } ]
 		ifFalse: [ { 19 @ 14. 25 @ 21. 34 @ 19. 30 @ 14 } ].
 	colorCuerpo := (estilo at: #pantalla).
@@ -114,7 +118,7 @@ PanelEscenario >> dibujarPajaro: pajaro en: canvas [
 PanelEscenario >> dibujarPersonajeAgachadoEn: canvas [
 
 	| origen silueta sombra |
-	origen := self position + (0 @ 60) + juego personaje posicion rounded.
+	origen := self position + (0 @ 60) + limitesPersonaje origin rounded.
 	silueta := {
 		0 @ 8. 6 @ 6. 27 @ 6. 28 @ 2. 41 @ 2. 41 @ 8. 35 @ 8. 35 @ 11.
 		40 @ 11. 40 @ 13. 30 @ 13. 30 @ 19. 27 @ 19. 27 @ 23. 22 @ 23.
@@ -134,11 +138,12 @@ PanelEscenario >> dibujarPersonajeAgachadoEn: canvas [
 PanelEscenario >> dibujarPersonajeEn: canvas [
 
 	| origen silueta sombra imagen |
-	origen := self position + (0 @ 60) + juego personaje posicion rounded.
+	origen := self position + (0 @ 60) + limitesPersonaje origin rounded.
 	"Si hay un PNG en la carpeta de sprites se usa; si no, se dibuja por codigo."
-	imagen := self class dinosaurioDe: juego personaje tiempo: juego tiempoTranscurrido.
+	imagen := self class dinosaurioAgachado: agachado
+		tamanio: limitesPersonaje extent tiempo: tiempoTranscurrido.
 	imagen ifNotNil: [ ^ canvas paintImage: imagen at: origen ].
-	juego personaje estaAgachado ifTrue: [ ^ self dibujarPersonajeAgachadoEn: canvas ].
+	agachado ifTrue: [ ^ self dibujarPersonajeAgachadoEn: canvas ].
 	silueta := {
 		21 @ 1. 33 @ 1. 33 @ 3. 35 @ 3. 35 @ 13. 28 @ 13.
 		28 @ 17. 34 @ 17. 34 @ 21. 27 @ 21. 27 @ 31. 24 @ 31.
@@ -163,9 +168,9 @@ PanelEscenario >> dibujarPersonajeEn: canvas [
 PanelEscenario >> dibujarSueloEn: canvas [
 
 	| borde desplazamiento |
-	borde := self position + (7 @ (juego alturaSuelo + 60)).
+	borde := self position + (7 @ (alturaSuelo + 60)).
 	canvas fillRectangle: (borde extent: (self width - 14) @ 4) color: (estilo at: #tinta).
-	desplazamiento := (juego tiempoTranscurrido * 80) floor.
+	desplazamiento := (tiempoTranscurrido * 80) floor.
 	0 to: 15 do: [ :i |
 		| x |
 		x := (i * 43 - desplazamiento) \\ 620.
@@ -175,7 +180,7 @@ PanelEscenario >> dibujarSueloEn: canvas [
 { #category : 'dibujo' }
 PanelEscenario >> drawOn: canvas [
 
-	(juego isNil or: [ estilo isNil ]) ifTrue: [ ^ super drawOn: canvas ].
+	(limitesPersonaje isNil or: [ estilo isNil ]) ifTrue: [ ^ super drawOn: canvas ].
 	canvas clipBy: self bounds during: [ :lienzo |
 		self dibujarMarco: self bounds fondo: (estilo at: #metal) hundido: false en: lienzo.
 		self dibujarCieloEn: lienzo.
@@ -249,16 +254,16 @@ PanelEscenario class >> cuadrosNombrados: unNombre tamanio: unTamanio [
 ]
 
 { #category : 'imagenes' }
-PanelEscenario class >> dinosaurioDe: unPersonaje tiempo: unosSegundos [
+PanelEscenario class >> dinosaurioAgachado: estaAgachado tamanio: unTamanio tiempo: unosSegundos [
 	"Cuadro que corresponde al estado del personaje (de pie o agachado) en ese momento del
 	 juego, o nil si no hay archivos (el panel lo dibuja por codigo)."
 
 	| cuadros |
 	cuadros := self
-		cuadrosNombrados: (unPersonaje estaAgachado
+		cuadrosNombrados: (estaAgachado
 			ifTrue: [ 'dino-agachado' ]
 			ifFalse: [ 'dino-pie' ])
-		tamanio: unPersonaje tamanio.
+		tamanio: unTamanio.
 	cuadros ifNil: [ ^ nil ].
 	^ cuadros at: ((unosSegundos * self framesPorSegundoSprites) floor \\ cuadros size) + 1
 ]
@@ -341,4 +346,16 @@ PanelEscenario >> dibujarMarco: unRectangulo fondo: unColor hundido: hundido en:
 PanelEscenario >> dibujarTexto: unTexto centradoEn: unRectangulo escala: escala color: unColor en: canvas [
 
 	(estilo at: #texto) valueWithArguments: { unTexto. unRectangulo. escala. unColor. canvas }
+]
+
+{ #category : 'interfaz' }
+PanelEscenario >> mostrarEstado: unEstado [
+
+	limitesPersonaje := unEstado at: #personaje.
+	agachado := unEstado at: #agachado.
+	obstaculos := unEstado at: #obstaculos.
+	alturaSuelo := unEstado at: #suelo.
+	puntos := unEstado at: #puntos.
+	tiempoTranscurrido := unEstado at: #tiempo.
+	self changed
 ]

@@ -156,5 +156,11 @@ PanelControles >> dibujarTexto: unTexto centradoEn: unRectangulo escala: escala 
 { #category : 'dibujo' }
 PanelControles >> limitesCuadroFinal [
 
-	^ (self position + (37 @ 30)) extent: 566 @ 282
+	^ self limitesCuadroFinalLocales translateBy: self position
+]
+
+{ #category : 'dibujo' }
+PanelControles >> limitesCuadroFinalLocales [
+
+	^ (37 @ 30) extent: 566 @ 282
 ]

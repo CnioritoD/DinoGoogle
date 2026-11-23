@@ -3,7 +3,7 @@ Class {
 	#superclass : 'Morph',
 	#instVars : [
 		'sistema',
-		'panel',
+		'limitesCuadroFinal',
 		'estilo',
 		'estado',
 		'botonInicio',
@@ -16,15 +16,13 @@ Class {
 }
 
 { #category : 'inicializacion' }
-EntradaControles >> configurarSistema: unSistema panel: unPanel [
+EntradaControles >> configurarSistema: unSistema extension: unaExtension limitesCuadroFinal: unRectangulo [
 
 	sistema := unSistema.
-	panel := unPanel.
+	limitesCuadroFinal := unRectangulo.
 	estado := #enEspera.
 	self color: Color transparent.
-	self extent: panel extent.
-	self addMorph: panel.
-	panel position: self position
+	self extent: unaExtension
 ]
 
 { #category : 'inicializacion' }
@@ -75,7 +73,7 @@ EntradaControles >> construirComponentes [
 
 	cuadroFinal := Morph new
 		color: Color transparent;
-		bounds: panel limitesCuadroFinal;
+		bounds: (limitesCuadroFinal translateBy: self position);
 		yourself.
 	self addMorph: cuadroFinal.
 

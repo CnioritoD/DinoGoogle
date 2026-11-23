@@ -23,9 +23,10 @@ SistemaEscenario >> configurarJuego: unJuego panel: unPanel [
 
 	juego := unJuego.
 	panel := unPanel.
-	panel configurarJuego: juego.
+	panel configurarTamanio: juego tamanioEscenario.
 	entrada := EntradaEscenario new.
-	entrada configurarSistema: self panel: panel
+	entrada configurarSistema: self extension: panel extent.
+	self refrescarPanel
 ]
 
 { #category : 'partida' }
@@ -71,6 +72,8 @@ SistemaEscenario >> iniciarJuego [
 { #category : 'interfaz' }
 SistemaEscenario >> montarEn: unContenedor posicion: unaPosicion [
 
+	unContenedor addMorph: panel.
+	panel position: unaPosicion.
 	entrada montarEn: unContenedor posicion: unaPosicion
 ]
 
@@ -96,7 +99,7 @@ SistemaEscenario >> puntaje [
 { #category : 'interfaz' }
 SistemaEscenario >> refrescarPanel [
 
-	panel changed
+	panel mostrarEstado: juego estadoEscenario
 ]
 
 { #category : 'partida' }

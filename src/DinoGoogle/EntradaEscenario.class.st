@@ -10,13 +10,11 @@ Class {
 }
 
 { #category : 'inicializacion' }
-EntradaEscenario >> configurarSistema: unSistema panel: unPanel [
+EntradaEscenario >> configurarSistema: unSistema extension: unaExtension [
 
 	sistema := unSistema.
 	self color: Color transparent.
-	self extent: unPanel extent.
-	self addMorph: unPanel.
-	unPanel position: self position
+	self extent: unaExtension
 ]
 
 { #category : 'eventos' }

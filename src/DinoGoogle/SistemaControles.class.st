@@ -17,12 +17,17 @@ SistemaControles >> configurarCoordinador: unCoordinador panel: unPanel [
 	coordinador := unCoordinador.
 	panel := unPanel.
 	entrada := EntradaControles new.
-	entrada configurarSistema: self panel: panel
+	entrada
+		configurarSistema: self
+		extension: panel extent
+		limitesCuadroFinal: panel limitesCuadroFinalLocales
 ]
 
 { #category : 'interfaz' }
 SistemaControles >> montarEn: unContenedor posicion: unaPosicion [
 
+	unContenedor addMorph: panel.
+	panel position: unaPosicion.
 	entrada montarEn: unContenedor posicion: unaPosicion
 ]
 
@@ -30,6 +35,7 @@ SistemaControles >> montarEn: unContenedor posicion: unaPosicion [
 SistemaControles >> mostrarPuntaje: unPuntaje estado: unEstado [
 
 	panel mostrarPuntaje: unPuntaje estado: unEstado.
+	panel visible: unEstado ~= #enCurso.
 	entrada mostrarEstado: unEstado
 ]
 

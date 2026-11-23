@@ -41,11 +41,11 @@ digraph DinoGoogle {
   </TABLE>>];
   PanelEscenario [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#fcfcfc">
     <TR><TD><B>PanelEscenario</B></TD></TR>
-    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">drawOn:<BR ALIGN="LEFT"/>dinosaurioDe:tiempo:<BR ALIGN="LEFT"/>configurarEstilo:</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">drawOn:<BR ALIGN="LEFT"/>mostrarEstado:<BR ALIGN="LEFT"/>configurarEstilo:</TD></TR>
   </TABLE>>];
   Juego [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#e9f0f5">
     <TR><TD><B>Juego</B></TD></TR>
-    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">iniciar<BR ALIGN="LEFT"/>avanzar:<BR ALIGN="LEFT"/>reiniciar</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">iniciar<BR ALIGN="LEFT"/>avanzar:<BR ALIGN="LEFT"/>reiniciar<BR ALIGN="LEFT"/>estadoEscenario</TD></TR>
   </TABLE>>];
   Personaje [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#e9f0f5">
     <TR><TD><B>Personaje</B></TD></TR>
@@ -75,10 +75,7 @@ digraph DinoGoogle {
   edge [dir=forward, arrowtail=none, arrowhead=vee];
   SistemaControles -> PanelControles;
   SistemaEscenario -> PanelEscenario;
-  EntradaControles -> PanelControles;
-  EntradaEscenario -> PanelEscenario;
   SistemaEscenario -> Juego;
-  PanelEscenario -> Juego [constraint=false];
 
   // La dependencia indica uso sin una referencia de instancia propia.
   edge [style=dashed, arrowhead=vee, color="#657487"];
