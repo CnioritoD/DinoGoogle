@@ -47,6 +47,10 @@ digraph DinoGoogle {
     <TR><TD><B>Juego</B></TD></TR>
     <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">iniciar<BR ALIGN="LEFT"/>avanzar:<BR ALIGN="LEFT"/>reiniciar<BR ALIGN="LEFT"/>estadoEscenario</TD></TR>
   </TABLE>>];
+  GeneradorObstaculos [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#e9f0f5">
+    <TR><TD><B>GeneradorObstaculos</B></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">generarAlTiempo:siPuedeSaltar:</TD></TR>
+  </TABLE>>];
   Personaje [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#e9f0f5">
     <TR><TD><B>Personaje</B></TD></TR>
     <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">saltar<BR ALIGN="LEFT"/>agacharse</TD></TR>
@@ -68,6 +72,7 @@ digraph DinoGoogle {
   CoordinadorPartida -> SistemaReloj;
   SistemaControles -> EntradaControles;
   SistemaEscenario -> EntradaEscenario;
+  Juego -> GeneradorObstaculos;
   Juego -> Personaje [headlabel="1", labeldistance=1.6, labelangle=-46];
   Juego -> Obstaculo [headlabel="0..*", labeldistance=1.7, labelangle=-30];
 
@@ -79,7 +84,8 @@ digraph DinoGoogle {
 
   // La dependencia indica uso sin una referencia de instancia propia.
   edge [style=dashed, arrowhead=vee, color="#657487"];
-  Juego:e -> Pajaro:e [constraint=false, label="crea"];
+  GeneradorObstaculos -> Obstaculo [constraint=false];
+  GeneradorObstaculos -> Pajaro [constraint=false];
   Obstaculo:w -> Personaje:e [constraint=false, label="consulta límites"];
 
   // El triángulo hueco señala la superclase.
@@ -89,10 +95,10 @@ digraph DinoGoogle {
   {rank=same; SistemaControles; SistemaEscenario; SistemaReloj}
   {rank=same; EntradaControles; EntradaEscenario}
   {rank=same; PanelControles; PanelEscenario; Juego}
-  {rank=same; Personaje; Obstaculo}
+  {rank=same; Personaje; Obstaculo; GeneradorObstaculos}
   edge [style=invis, constraint=true, weight=10];
   PanelControles -> PanelEscenario -> Juego;
-  Personaje -> Obstaculo;
+  Personaje -> Obstaculo -> GeneradorObstaculos;
   Obstaculo -> Pajaro;
 
   subgraph cluster_leyenda {
