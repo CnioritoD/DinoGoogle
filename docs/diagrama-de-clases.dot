@@ -1,0 +1,152 @@
+digraph DinoGoogle {
+  graph [rankdir=TB, bgcolor="#ffffff", pad=0.26, nodesep=0.42, ranksep=0.57,
+    fontname="Arial", fontsize=24, labelloc=t, labeljust=l,
+    label=<<B>DinoGoogle</B> <FONT POINT-SIZE="15">| Diagrama de clases</FONT>>];
+  node [shape=plain, fontname="Arial", fontsize=11,
+    color="#394452", fontcolor="#172431", penwidth=1.15, margin="0.16,0.09"];
+  edge [fontname="Arial", fontsize=10, color="#435365", fontcolor="#243246",
+    penwidth=1.2, arrowsize=0.83];
+
+  AplicacionJuego [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#fcfcfc">
+    <TR><TD><B>AplicacionJuego</B></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">abrir<BR ALIGN="LEFT"/>cerrar</TD></TR>
+  </TABLE>>];
+  VistaJuego [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#fcfcfc">
+    <TR><TD><B>VistaJuego</B></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">abrir<BR ALIGN="LEFT"/>construirInterfaz</TD></TR>
+  </TABLE>>];
+  CoordinadorPartida [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#fcfcfc">
+    <TR><TD><B>CoordinadorPartida</B></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">iniciarPartida<BR ALIGN="LEFT"/>actualizar:<BR ALIGN="LEFT"/>guardarResultado:</TD></TR>
+  </TABLE>>];
+  SistemaControles [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#fcfcfc">
+    <TR><TD><B>SistemaControles</B></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">solicitarInicio<BR ALIGN="LEFT"/>solicitarReinicio<BR ALIGN="LEFT"/>solicitarSalida</TD></TR>
+  </TABLE>>];
+  SistemaEscenario [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#fcfcfc">
+    <TR><TD><B>SistemaEscenario</B></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">avanzar:<BR ALIGN="LEFT"/>ejecutarSalto<BR ALIGN="LEFT"/>ejecutarAgacharse</TD></TR>
+  </TABLE>>];
+  SistemaReloj [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#fcfcfc">
+    <TR><TD><B>SistemaReloj</B></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">iniciar<BR ALIGN="LEFT"/>step<BR ALIGN="LEFT"/>detener</TD></TR>
+  </TABLE>>];
+  PanelControles [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#fcfcfc">
+    <TR><TD><B>PanelControles</B></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">mostrarPuntaje:estado:<BR ALIGN="LEFT"/>mostrarResultados:</TD></TR>
+  </TABLE>>];
+  PanelEscenario [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#fcfcfc">
+    <TR><TD><B>PanelEscenario</B></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">drawOn:<BR ALIGN="LEFT"/>tomarFoco</TD></TR>
+  </TABLE>>];
+  Juego [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#e9f0f5">
+    <TR><TD><B>Juego</B></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">iniciar<BR ALIGN="LEFT"/>avanzar:<BR ALIGN="LEFT"/>reiniciar</TD></TR>
+  </TABLE>>];
+  Personaje [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#e9f0f5">
+    <TR><TD><B>Personaje</B></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">saltar<BR ALIGN="LEFT"/>agacharse</TD></TR>
+  </TABLE>>];
+  Obstaculo [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#e9f0f5">
+    <TR><TD><B>Obstaculo</B></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">avanzar:velocidad:<BR ALIGN="LEFT"/>limites</TD></TR>
+  </TABLE>>];
+  Pajaro [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#e9f0f5">
+    <TR><TD><B>Pajaro</B></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">alaArriba<BR ALIGN="LEFT"/>esPajaro</TD></TR>
+  </TABLE>>];
+  BotonRetro [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#f0f0f1">
+    <TR><TD><B>BotonRetro</B></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">drawOn:</TD></TR>
+  </TABLE>>];
+  EstiloRetro [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#f0f0f1">
+    <TR><TD><B>EstiloRetro</B></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">marco:fondo:hundido:en:<BR ALIGN="LEFT"/>texto:centradoEn:escala:color:en:</TD></TR>
+  </TABLE>>];
+  Sprites [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#f0f0f1">
+    <TR><TD><B>Sprites</B></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">dinosaurioDe:tiempo:<BR ALIGN="LEFT"/>limpiarCache</TD></TR>
+  </TABLE>>];
+
+  // Superclases directas provistas por Pharo.
+  node [shape=box, style="dashed,filled", fillcolor="#fbfcfd", color="#6c7783"];
+  SystemWindow [label="SystemWindow\n(Pharo)"];
+  Morph [label="Morph\n(Pharo)"];
+  SimpleButtonMorph [label="SimpleButtonMorph\n(Pharo)"];
+
+  // El rombo relleno va del lado del objeto que contiene al componente.
+  edge [dir=back, arrowtail=diamond, arrowhead=none];
+  AplicacionJuego -> VistaJuego [headlabel="0..1"];
+  VistaJuego -> CoordinadorPartida;
+  CoordinadorPartida -> SistemaControles;
+  CoordinadorPartida -> SistemaEscenario;
+  CoordinadorPartida -> SistemaReloj;
+  Juego -> Personaje [headlabel="1", labeldistance=1.6, labelangle=-46];
+  Juego -> Obstaculo [headlabel="0..*", labeldistance=1.7, labelangle=45];
+  PanelControles -> BotonRetro [headlabel="3"];
+
+  // La asociación muestra una referencia conservada por la clase.
+  edge [dir=forward, arrowtail=none, arrowhead=vee];
+  SistemaControles -> PanelControles [dir=both, arrowtail=vee];
+  SistemaEscenario -> PanelEscenario [dir=both, arrowtail=vee];
+  SistemaEscenario -> Juego;
+  PanelEscenario -> Juego [constraint=false];
+
+  // La dependencia indica uso sin una referencia de instancia propia.
+  edge [style=dashed, arrowhead=vee, color="#657487"];
+  PanelEscenario -> Sprites;
+  VistaJuego:e -> EstiloRetro:nw [constraint=false];
+  PanelControles -> EstiloRetro;
+  PanelEscenario -> EstiloRetro [constraint=false];
+  BotonRetro -> EstiloRetro [constraint=false];
+
+  // El triángulo hueco señala la superclase.
+  edge [style=solid, color="#435365", arrowhead=onormal, constraint=false];
+  Pajaro -> Obstaculo;
+  VistaJuego -> SystemWindow;
+  PanelControles:ne -> Morph:nw;
+  PanelEscenario:ne -> Morph:w;
+  SistemaReloj -> Morph:n;
+  BotonRetro -> SimpleButtonMorph;
+
+  {rank=same; VistaJuego; SystemWindow}
+  {rank=same; SistemaControles; SistemaEscenario; SistemaReloj}
+  {rank=same; PanelControles; PanelEscenario; Juego; Morph}
+  {rank=same; BotonRetro; EstiloRetro; Sprites; Personaje; Obstaculo}
+  {rank=same; SimpleButtonMorph; Pajaro}
+  edge [style=invis, constraint=true, weight=10];
+  PanelControles -> PanelEscenario -> Juego -> Morph;
+  BotonRetro -> EstiloRetro -> Sprites -> Personaje -> Obstaculo;
+  BotonRetro -> SimpleButtonMorph;
+  Obstaculo -> Pajaro;
+
+  subgraph cluster_leyenda {
+    graph [label="Relaciones UML", fontname="Arial", fontsize=12, style=rounded, color="#b1bac5", margin=16];
+    node [shape=plain, style="", fontname="Arial", fontsize=10];
+    asociacion [label="Asociación"];
+    herencia [label="Herencia"];
+    composicion [label="Composición"];
+    dependencia [label="Dependencia"];
+    agregacion [label="Agregación"];
+    realizacion [label="Realización / implementación"];
+    node [shape=point, width=0.015, height=0.015, fixedsize=true, label="", style=invis];
+    edge [style=solid, constraint=true, weight=1, arrowtail=none, arrowhead=vee];
+    {rank=same; a; asociacion; h; herencia}
+    {rank=same; c; composicion; d; dependencia}
+    {rank=same; g; agregacion; r; realizacion}
+    a -> asociacion;
+    h -> herencia [arrowhead=onormal];
+    c -> composicion [dir=back, arrowtail=diamond, arrowhead=none];
+    d -> dependencia [style=dashed];
+    g -> agregacion [dir=back, arrowtail=odiamond, arrowhead=none];
+    r -> realizacion [style=dashed, arrowhead=onormal];
+    asociacion -> h [style=invis];
+    composicion -> d [style=invis];
+    agregacion -> r [style=invis];
+    a -> c -> g [style=invis, minlen=1];
+    h -> d -> r [style=invis, minlen=1];
+  }
+  // Mantiene la leyenda debajo del diagrama.
+  SimpleButtonMorph -> a [style=invis];
+
+}
