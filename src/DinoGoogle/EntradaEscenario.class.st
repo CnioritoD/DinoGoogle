@@ -37,12 +37,22 @@ EntradaEscenario >> esFlechaAbajo: unEvento [
 ]
 
 { #category : 'eventos' }
+EntradaEscenario >> esTeclaDeSalto: unEvento [
+
+	^ unEvento keyValue = 32
+		or: [ unEvento keyValue = Character arrowUp asciiValue
+		or: [ unEvento key = KeyboardKey up
+		or: [ unEvento keyCharacter = Character space
+		or: [ unEvento keyCharacter = Character arrowUp ] ] ] ]
+]
+
+{ #category : 'eventos' }
 EntradaEscenario >> keyDown: unEvento [
 
 	sistema estaEnCurso ifFalse: [ ^ self ].
-	unEvento keyCharacter = Character space ifTrue: [
+	(self esTeclaDeSalto: unEvento) ifTrue: [
 		sistema ejecutarSalto.
-		unEvento wasHandled: true ].
+		^ unEvento wasHandled: true ].
 	(self esFlechaAbajo: unEvento) ifTrue: [
 		sistema ejecutarAgacharse.
 		unEvento wasHandled: true ]
@@ -60,7 +70,7 @@ EntradaEscenario >> keyUp: unEvento [
 { #category : 'eventos' }
 EntradaEscenario >> mouseDown: unEvento [
 
-	unEvento redButtonPressed ifTrue: [
+	(unEvento redButtonPressed or: [ unEvento whichButton = MouseButtonEvent redButton ]) ifTrue: [
 		self tomarFoco.
 		sistema ejecutarSalto ]
 ]

@@ -46,10 +46,7 @@ PanelControles >> dibujarInicioEn: canvas [
 	self dibujarTexto: 'DINO GOOGLE' centradoEn: titulo escala: 5 color: (estilo at: #tinta) en: canvas.
 	self dibujarTexto: 'MEJORES PARTIDAS' centradoEn: ((origen + (52 @ 143)) extent: 536 @ 22)
 		escala: 2 color: (estilo at: #tinta) en: canvas.
-	self dibujarTablaEn: canvas.
-	self dibujarTexto: 'ESPACIO O CLIC PARA SALTAR   ABAJO PARA AGACHARSE'
-		centradoEn: ((origen + (20 @ 307)) extent: 600 @ 24) escala: 2
-		color: (estilo at: #tinta) en: canvas
+	self dibujarTablaEn: canvas
 ]
 
 { #category : 'dibujo' }
