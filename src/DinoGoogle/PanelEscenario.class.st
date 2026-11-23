@@ -64,24 +64,35 @@ PanelEscenario >> dibujarIndicadoresEn: canvas [
 { #category : 'dibujo' }
 PanelEscenario >> dibujarCactus: obstaculo en: canvas [
 
-	| silueta cuerpo luz borde origen escala vertices |
-	silueta := {
-		8 @ 1. 12 @ 1. 13 @ 2. 13 @ 16. 16 @ 16. 16 @ 9.
-		19 @ 9. 19 @ 18. 17 @ 20. 13 @ 20. 13 @ 27. 7 @ 27.
-		7 @ 17. 3 @ 17. 1 @ 15. 1 @ 7. 4 @ 7. 4 @ 13.
-		7 @ 13. 7 @ 2 }.
-	cuerpo := (estilo at: #pantalla).
-	luz := (estilo at: #metal).
-	borde := (estilo at: #tinta).
-	origen := self position + (0 @ 60) + (obstaculo at: #limites) origin rounded.
-	escala := (obstaculo at: #limites) extent / (20 @ 28).
-	vertices := silueta collect: [ :punto | origen + (punto * escala) rounded ].
-	canvas drawPolygon: vertices color: cuerpo borderWidth: 2 borderColor: borde.
-	canvas
-		line: origen + ((9 @ 4) * escala) rounded
-		to: origen + ((9 @ 24) * escala) rounded
-		width: 1
-		color: luz
+	| limites origen ancho alto izquierda derecha brazo unionIzquierda unionDerecha puntaDerecha vertices |
+	limites := obstaculo at: #limites.
+	origen := self position + (0 @ 60) + limites origin rounded.
+	ancho := limites width rounded - 2.
+	alto := limites height rounded - 1.
+	izquierda := ancho // 3.
+	derecha := ancho - izquierda.
+	brazo := (ancho // 5) max: 4.
+	unionIzquierda := alto * 5 // 8.
+	unionDerecha := alto // 2.
+	puntaDerecha := (alto // 4 + 1) min: (unionDerecha - brazo - 3).
+	"Cada brazo conserva su grosor en píxeles aunque cambie el tamaño del obstáculo."
+	vertices := {
+		(izquierda + 2) @ 1. (derecha - 2) @ 1. derecha @ 3.
+		derecha @ (unionDerecha - brazo). (ancho - brazo) @ (unionDerecha - brazo).
+		(ancho - brazo) @ puntaDerecha. (ancho - 1) @ puntaDerecha.
+		ancho @ (puntaDerecha + 1). ancho @ (unionDerecha - 2).
+		(ancho - 2) @ unionDerecha. derecha @ unionDerecha. derecha @ alto.
+		izquierda @ alto. izquierda @ unionIzquierda. 3 @ unionIzquierda.
+		1 @ (unionIzquierda - 2). 1 @ (alto // 3 + 1). 2 @ (alto // 3).
+		(1 + brazo) @ (alto // 3). (1 + brazo) @ (unionIzquierda - brazo).
+		izquierda @ (unionIzquierda - brazo). izquierda @ 3 }.
+	canvas drawPolygon: (vertices collect: [ :punto | origen + punto ])
+		color: (Color fromHexString: '4E7F59') borderWidth: 1
+		borderColor: (Color fromHexString: '233E35').
+	canvas fillRectangle: ((origen + ((izquierda + 2) @ 4)) extent: 2 @ (alto - 6))
+		color: (Color fromHexString: '91B67E').
+	canvas fillRectangle: ((origen + ((derecha - 2) @ 4)) extent: 1 @ (alto - 5))
+		color: (Color fromHexString: '37634B')
 ]
 
 { #category : 'dibujo' }
@@ -115,53 +126,13 @@ PanelEscenario >> dibujarPajaro: pajaro en: canvas [
 ]
 
 { #category : 'dibujo' }
-PanelEscenario >> dibujarPersonajeAgachadoEn: canvas [
-
-	| origen silueta sombra |
-	origen := self position + (0 @ 60) + limitesPersonaje origin rounded.
-	silueta := {
-		0 @ 8. 6 @ 6. 27 @ 6. 28 @ 2. 41 @ 2. 41 @ 8. 35 @ 8. 35 @ 11.
-		40 @ 11. 40 @ 13. 30 @ 13. 30 @ 19. 27 @ 19. 27 @ 23. 22 @ 23.
-		22 @ 18. 20 @ 18. 20 @ 22. 17 @ 22. 17 @ 23. 12 @ 23. 12 @ 16.
-		5 @ 15. 2 @ 12 }.
-	canvas drawPolygon: (silueta collect: [ :punto | origen + punto ])
-		color: (estilo at: #pantalla)
-		borderWidth: 2 borderColor: (estilo at: #tinta).
-	sombra := (estilo at: #sombra).
-	canvas fillRectangle: ((origen + (10 @ 10)) extent: 12 @ 3) color: sombra.
-	canvas fillRectangle: ((origen + (29 @ 3)) extent: 8 @ 2)
-		color: (estilo at: #metal).
-	canvas fillRectangle: ((origen + (33 @ 4)) extent: 3 @ 3) color: Color black
-]
-
-{ #category : 'dibujo' }
 PanelEscenario >> dibujarPersonajeEn: canvas [
 
-	| origen silueta sombra imagen |
+	| origen imagen |
 	origen := self position + (0 @ 60) + limitesPersonaje origin rounded.
-	"Si hay un PNG en la carpeta de sprites se usa; si no, se dibuja por codigo."
 	imagen := self class dinosaurioAgachado: agachado
 		tamanio: limitesPersonaje extent tiempo: tiempoTranscurrido.
-	imagen ifNotNil: [ ^ canvas paintImage: imagen at: origen ].
-	agachado ifTrue: [ ^ self dibujarPersonajeAgachadoEn: canvas ].
-	silueta := {
-		21 @ 1. 33 @ 1. 33 @ 3. 35 @ 3. 35 @ 13. 28 @ 13.
-		28 @ 17. 34 @ 17. 34 @ 21. 27 @ 21. 27 @ 31. 24 @ 31.
-		24 @ 37. 28 @ 37. 28 @ 41. 20 @ 41. 20 @ 34. 16 @ 34.
-		16 @ 38. 19 @ 38. 19 @ 41. 12 @ 41. 12 @ 32. 8 @ 30.
-		8 @ 27. 4 @ 27. 4 @ 23. 1 @ 23. 1 @ 15. 4 @ 15.
-		4 @ 20. 9 @ 20. 9 @ 22. 13 @ 22. 13 @ 18. 17 @ 18.
-		17 @ 13. 19 @ 13. 19 @ 3. 21 @ 3 }.
-	canvas drawPolygon: (silueta collect: [ :punto | origen + punto ])
-		color: (estilo at: #pantalla)
-		borderWidth: 2 borderColor: (estilo at: #tinta).
-
-	sombra := (estilo at: #sombra).
-	canvas fillRectangle: ((origen + (12 @ 26)) extent: 11 @ 4) color: sombra.
-	canvas fillRectangle: ((origen + (23 @ 3)) extent: 8 @ 2)
-		color: (estilo at: #metal).
-	canvas fillRectangle: ((origen + (25 @ 6)) extent: 3 @ 3) color: Color black.
-	canvas fillRectangle: ((origen + (31 @ 11)) extent: 3 @ 1) color: sombra
+	canvas paintImage: imagen at: origen
 ]
 
 { #category : 'dibujo' }
@@ -256,15 +227,15 @@ PanelEscenario class >> cuadrosNombrados: unNombre tamanio: unTamanio [
 { #category : 'imagenes' }
 PanelEscenario class >> dinosaurioAgachado: estaAgachado tamanio: unTamanio tiempo: unosSegundos [
 	"Cuadro que corresponde al estado del personaje (de pie o agachado) en ese momento del
-	 juego, o nil si no hay archivos (el panel lo dibuja por codigo)."
+	 juego. Los PNG opcionales reemplazan el dibujo de serie."
 
 	| cuadros |
 	cuadros := self
 		cuadrosNombrados: (estaAgachado
-			ifTrue: [ 'dino-agachado' ]
-			ifFalse: [ 'dino-pie' ])
+			ifTrue: [ 'criatura-agachada' ]
+			ifFalse: [ 'criatura-pie' ])
 		tamanio: unTamanio.
-	cuadros ifNil: [ ^ nil ].
+	cuadros ifNil: [ ^ self criaturaDeSerieAgachada: estaAgachado ].
 	^ cuadros at: ((unosSegundos * self framesPorSegundoSprites) floor \\ cuadros size) + 1
 ]
 
@@ -358,4 +329,79 @@ PanelEscenario >> mostrarEstado: unEstado [
 	puntos := unEstado at: #puntos.
 	tiempoTranscurrido := unEstado at: #tiempo.
 	self changed
+]
+
+{ #category : 'imagenes' }
+PanelEscenario class >> criaturaDeSerieAgachada: estaAgachada [
+
+	| clave |
+	clave := estaAgachada ifTrue: [ #criaturaAgachada ] ifFalse: [ #criaturaDePie ].
+	^ self cacheSprites at: clave ifAbsentPut: [
+		self dibujarCriaturaCon: (estaAgachada
+			ifTrue: [ self pixelesCriaturaAgachada ]
+			ifFalse: [ self pixelesCriaturaDePie ]) ]
+]
+
+{ #category : 'imagenes' }
+PanelEscenario class >> dibujarCriaturaCon: filas [
+
+	| lienzo colores |
+	lienzo := FormCanvas extent: (filas first size @ filas size) * 2.
+	colores := Dictionary newFrom: {
+		$D -> (Color fromHexString: '20342B').
+		$S -> (Color fromHexString: '365947').
+		$G -> (Color fromHexString: '5D9461').
+		$L -> (Color fromHexString: 'A0C878').
+		$E -> (Color fromHexString: 'F3EACB').
+		$O -> (Color fromHexString: 'D7A65F') }.
+	filas doWithIndex: [ :fila :y |
+		fila doWithIndex: [ :pixel :x |
+			colores at: pixel ifPresent: [ :color |
+				lienzo fillRectangle: (((x - 1) @ (y - 1) * 2) extent: 2 @ 2) color: color ] ] ].
+	^ lienzo form
+]
+
+{ #category : 'imagenes' }
+PanelEscenario class >> pixelesCriaturaDePie [
+
+	^ #(
+		'......DDD...DDD...'
+		'......DOD...DOD...'
+		'.....DDDDDDDDDDD..'
+		'.....DLLLLLLLLGD..'
+		'.....DLLLLLLLLGD..'
+		'.....DGGGGEEEEGD..'
+		'.....DGGGGEEEDGD..'
+		'.....DSSGGEEEDGDD.'
+		'.....DSSGGEEEEGGD.'
+		'.....DSSGLLLLLLGD.'
+		'.....DSSGGGGOOODD.'
+		'...DDDDDDDDDDDDD..'
+		'.DDDGGGLLLLLGD....'
+		'.GGGGGGLLLLLGD....'
+		'.DDDSSSSGGGGSD....'
+		'.DDDSSSSSSSSSD....'
+		'...DSSSSSSSSSD....'
+		'...DGGDDDDGGDD....'
+		'...DGGD..DGGD.....'
+		'...DOOD..DOOD.....'
+		'...DDDD..DDDD.....' )
+]
+
+{ #category : 'imagenes' }
+PanelEscenario class >> pixelesCriaturaAgachada [
+
+	^ #(
+		'................DDD...DDD....'
+		'................DOD...DOD....'
+		'...............DDDDDDDDDDD...'
+		'......DDDDDDDDDDLLLLLLLLGD...'
+		'......DGLLLLLLLGLLLLLLLLGD...'
+		'...DDDDGGGGGGGGGGGGGEEEEGD...'
+		'DDDDGGGGGLLLLLGGGGGGEEEDGD...'
+		'DGGGGGGSSSSSSSSSSSGGEEEDGDD..'
+		'DDDDDDDSSSSSSSSSSSGGEEEEGGD..'
+		'......DDDDDDDDDDSSGGGGGGOGD..'
+		'.......DOOD.DOODDDDGDDDDDDD..'
+		'.......DDDD.DDDD..DDD........' )
 ]
