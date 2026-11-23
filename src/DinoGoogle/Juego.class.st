@@ -11,7 +11,6 @@ Class {
 		'intervaloObstaculos',
 		'tiempoHastaObstaculo',
 		'aleatorio',
-		'generadorObstaculos',
 		'tamanioEscenario',
 		'alturaSuelo'
 	],
@@ -64,6 +63,18 @@ Juego >> avanzarPaso: segundos [
 ]
 
 { #category : 'privado' }
+Juego >> cantidadDeCactusEnGrupo [
+	"Los primeros segundos solo salen cactus sueltos; despues aparecen grupos de 2 y de 3."
+
+	| azar |
+	tiempoTranscurrido < 10 ifTrue: [ ^ 1 ].
+	azar := aleatorio next.
+	azar < 0.45 ifTrue: [ ^ 1 ].
+	azar < 0.8 ifTrue: [ ^ 2 ].
+	^ 3
+]
+
+{ #category : 'privado' }
 Juego >> contabilizarObstaculosSuperados [
 
 	obstaculos do: [ :obstaculo |
@@ -74,15 +85,60 @@ Juego >> contabilizarObstaculosSuperados [
 ]
 
 { #category : 'privado' }
-Juego >> crearObstaculo [
+Juego >> crearGrupoDeCactus [
+	"Crea 1, 2 o 3 cactus pegados, todos de la misma altura o de alturas distintas.
+	 Si a la velocidad actual el salto no alcanzaria para pasar por encima del grupo
+	 entero, se le van quitando cactus hasta que se pueda saltar."
 
-	| grupo |
-	grupo := generadorObstaculos
-		generarAlTiempo: tiempoTranscurrido
-		siPuedeSaltar: [ :ancho :altura | self sePuedeSaltarGrupoDeAncho: ancho altura: altura ].
-	"Un grupo vale un punto. Solo se suma al pasar su último obstáculo."
-	grupo allButLast do: [ :obstaculo | obstaculo marcarContabilizado ].
-	obstaculos addAll: grupo
+	| cantidad mismaAltura altoComun anchos altos separaciones x obstaculo |
+	cantidad := self cantidadDeCactusEnGrupo.
+	mismaAltura := aleatorio next < 0.5.
+	altoComun := 25 + (aleatorio nextInteger: 20).
+	anchos := (1 to: cantidad) collect: [ :i | 20 + (aleatorio nextInteger: 10) ].
+	altos := (1 to: cantidad) collect: [ :i |
+		mismaAltura
+			ifTrue: [ altoComun ]
+			ifFalse: [ 25 + (aleatorio nextInteger: 20) ] ].
+	separaciones := (1 to: cantidad) collect: [ :i | 3 + (aleatorio nextInteger: 5) ].
+	[ cantidad > 1 and: [
+		(self
+			sePuedeSaltarGrupoDeAncho: ((anchos first: cantidad) inject: 0 into: [ :a :b | a + b ])
+				+ ((separaciones first: cantidad - 1) inject: 0 into: [ :a :b | a + b ])
+			altura: ((altos first: cantidad) inject: 0 into: [ :a :b | a max: b ])) not ] ]
+		whileTrue: [ cantidad := cantidad - 1 ].
+	x := tamanioEscenario x.
+	1 to: cantidad do: [ :i |
+		obstaculo := Obstaculo new.
+		obstaculo
+			inicializarEn: x @ (alturaSuelo - (altos at: i))
+			tamanio: (anchos at: i) @ (altos at: i).
+		"Un grupo vale un solo punto: solo el ultimo cactus se contabiliza."
+		i < cantidad ifTrue: [ obstaculo marcarContabilizado ].
+		obstaculos add: obstaculo.
+		x := x + (anchos at: i) + (separaciones at: i) ]
+]
+
+{ #category : 'privado' }
+Juego >> crearObstaculo [
+	"Pasados los primeros segundos, a veces aparece un pajaro en lugar de un cactus."
+
+	(tiempoTranscurrido > 15 and: [ aleatorio next < 0.3 ])
+		ifTrue: [ self crearPajaro ]
+		ifFalse: [ self crearGrupoDeCactus ]
+]
+
+{ #category : 'privado' }
+Juego >> crearPajaro [
+	"Vuela a una de tres alturas (medida desde el suelo hasta la base del pajaro):
+	 8  -> a la altura de las piernas: hay que saltarlo.
+	 30 -> a la altura de la cabeza: se esquiva agachado o saltando.
+	 70 -> alto: pasa por encima del dinosaurio parado; hay que NO saltar."
+
+	| alturaVuelo pajaro |
+	alturaVuelo := #(8 30 70) at: (aleatorio nextInteger: 3).
+	pajaro := Pajaro new.
+	pajaro inicializarEn: tamanioEscenario x @ (alturaSuelo - alturaVuelo - 22) tamanio: 46 @ 22.
+	obstaculos add: pajaro
 ]
 
 { #category : 'privado' }
@@ -134,8 +190,6 @@ Juego >> initialize [
 	personaje := Personaje new.
 	obstaculos := OrderedCollection new.
 	aleatorio := Random new.
-	generadorObstaculos := GeneradorObstaculos new.
-	generadorObstaculos configurarAleatorio: aleatorio ancho: tamanioEscenario x suelo: alturaSuelo.
 	self reiniciar
 ]
 
