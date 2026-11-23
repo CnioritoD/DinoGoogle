@@ -112,8 +112,8 @@ Sprites class >> leerArchivo: unArchivo tamanio: unTamanio [
 			nil ].
 	form ifNil: [ ^ nil ].
 	^ form extent = unTamanio
-		ifTrue: [ form ]
-		ifFalse: [ form scaledToSize: unTamanio ]
+		ifTrue: [ self enGrises: form ]
+		ifFalse: [ self enGrises: (form scaledToSize: unTamanio) ]
 ]
 
 { #category : 'configuracion' }
@@ -133,4 +133,19 @@ Sprites class >> numeroDe: unArchivo [
 
 	^ (unArchivo basenameWithoutExtension select: [ :each | each isDigit ]) asInteger
 		ifNil: [ 0 ]
+]
+
+{ #category : 'imagenes' }
+Sprites class >> enGrises: unaImagen [
+	"Convierte los colores de cada cuadro una sola vez al cargarlo, conservando su transparencia."
+
+	| resultado |
+	resultado := Form extent: unaImagen extent depth: 32.
+	0 to: unaImagen height - 1 do: [ :y |
+		0 to: unaImagen width - 1 do: [ :x |
+			| pixel nivel |
+			pixel := unaImagen colorAt: x @ y.
+			nivel := (pixel red * 0.299) + (pixel green * 0.587) + (pixel blue * 0.114).
+			resultado colorAt: x @ y put: ((Color gray: nivel) alpha: pixel alpha) ] ].
+	^ resultado
 ]

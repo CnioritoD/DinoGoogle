@@ -3,8 +3,7 @@ Class {
 	#superclass : 'Morph',
 	#instVars : [
 		'sistema',
-		'juego',
-		'fuenteIndicadores'
+		'juego'
 	],
 	#category : 'DinoGoogle-Interfaz',
 	#package : 'DinoGoogle',
@@ -16,7 +15,6 @@ PanelEscenario >> configurarSistema: unSistema juego: unJuego [
 
 	sistema := unSistema.
 	juego := unJuego.
-	fuenteIndicadores := LogicalFont familyName: 'Source Sans Pro' pointSize: 14.
 	self extent: juego tamanioEscenario + (0 @ 78).
 	self clipSubmorphs: true
 ]
@@ -26,46 +24,51 @@ PanelEscenario >> dibujarCieloEn: canvas [
 
 	| origen |
 	origen := self position.
-	canvas fillOval: ((origen + (499 @ 26)) extent: 65 @ 65)
-		color: Color white borderWidth: 3 borderColor: Color black.
-	canvas fillOval: ((origen + (420 @ 120)) extent: 35 @ 12)
-		color: Color white borderWidth: 1 borderColor: Color black.
-	canvas line: origen + (434 @ 110) to: origen + (441 @ 120) width: 1 color: Color black.
-	canvas line: origen + (434 @ 110) to: origen + (430 @ 120) width: 1 color: Color black.
-	canvas line: origen + (452 @ 124) to: origen + (465 @ 119) width: 1 color: Color black.
-	canvas line: origen + (465 @ 119) to: origen + (454 @ 130) width: 1 color: Color black.
-	canvas line: origen + (439 @ 142) to: origen + (430 @ 131) width: 1 color: Color black.
-	canvas line: origen + (439 @ 142) to: origen + (445 @ 131) width: 1 color: Color black
+	canvas fillRectangle: ((origen + (7 @ 7)) extent: 626 @ 279) color: (Color gray: 0.87).
+	"Sol, nubes y colinas en bloques de píxeles."
+	canvas fillRectangle: ((origen + (521 @ 32)) extent: 38 @ 60) color: EstiloRetro luz.
+	canvas fillRectangle: ((origen + (510 @ 43)) extent: 60 @ 38) color: EstiloRetro luz.
+	#(54 261 415) do: [ :x |
+		canvas fillRectangle: ((origen + (x @ 92)) extent: 68 @ 5) color: EstiloRetro relieve.
+		canvas fillRectangle: ((origen + ((x + 12) @ 86)) extent: 34 @ 6) color: EstiloRetro relieve ].
+	#(27 202 390 531) do: [ :x |
+		1 to: 4 do: [ :nivel |
+			| escalon |
+			escalon := nivel * 12.
+			canvas fillRectangle: ((origen + ((x + escalon) @ (286 - (nivel * 9))))
+				extent: (116 - (escalon * 2)) @ 9) color: EstiloRetro relieve ] ]
 ]
 
 { #category : 'dibujo' }
 PanelEscenario >> dibujarIndicadoresEn: canvas [
 
-	| tiempo puntaje |
-	tiempo := 'Time: ', juego tiempoTranscurrido floor printString, ' s'.
-	puntaje := 'Score: ', juego puntaje printString.
-	canvas drawString: puntaje from: 1 to: puntaje size
-		at: self position + (22 @ 302) font: fuenteIndicadores color: Color black.
-	canvas drawString: tiempo from: 1 to: tiempo size
-		at: self position + (512 @ 302) font: fuenteIndicadores color: Color black
+	| puntaje tiempo |
+	puntaje := (self position + (16 @ 300)) extent: 218 @ 34.
+	tiempo := (self position + (406 @ 300)) extent: 218 @ 34.
+	EstiloRetro marco: puntaje fondo: EstiloRetro pantalla hundido: true en: canvas.
+	EstiloRetro marco: tiempo fondo: EstiloRetro pantalla hundido: true en: canvas.
+	EstiloRetro texto: 'PUNTOS ', juego puntaje printString
+		centradoEn: puntaje escala: 2 color: EstiloRetro luz en: canvas.
+	EstiloRetro texto: 'TIEMPO ', juego tiempoTranscurrido floor printString, ' S'
+		centradoEn: tiempo escala: 2 color: EstiloRetro luz en: canvas
 ]
 
 { #category : 'dibujo' }
 PanelEscenario >> dibujarCactus: obstaculo en: canvas [
 
-	| silueta verde luz borde origen escala vertices |
+	| silueta cuerpo luz borde origen escala vertices |
 	silueta := {
 		8 @ 1. 12 @ 1. 13 @ 2. 13 @ 16. 16 @ 16. 16 @ 9.
 		19 @ 9. 19 @ 18. 17 @ 20. 13 @ 20. 13 @ 27. 7 @ 27.
 		7 @ 17. 3 @ 17. 1 @ 15. 1 @ 7. 4 @ 7. 4 @ 13.
 		7 @ 13. 7 @ 2 }.
-	verde := Color r: 0.24 g: 0.62 b: 0.34.
-	luz := Color r: 0.43 g: 0.77 b: 0.46.
-	borde := Color r: 0.1 g: 0.25 b: 0.17.
+	cuerpo := EstiloRetro pantalla.
+	luz := EstiloRetro metal.
+	borde := EstiloRetro tinta.
 	origen := self position + (0 @ 60) + obstaculo posicion rounded.
 	escala := obstaculo tamanio / (20 @ 28).
 	vertices := silueta collect: [ :punto | origen + (punto * escala) rounded ].
-	canvas drawPolygon: vertices color: verde borderWidth: 2 borderColor: borde.
+	canvas drawPolygon: vertices color: cuerpo borderWidth: 2 borderColor: borde.
 	canvas
 		line: origen + ((9 @ 4) * escala) rounded
 		to: origen + ((9 @ 24) * escala) rounded
@@ -93,9 +96,9 @@ PanelEscenario >> dibujarPajaro: pajaro en: canvas [
 	ala := pajaro alaArriba
 		ifTrue: [ { 19 @ 9. 25 @ 0. 34 @ 2. 30 @ 9 } ]
 		ifFalse: [ { 19 @ 14. 25 @ 21. 34 @ 19. 30 @ 14 } ].
-	colorCuerpo := Color r: 0.45 g: 0.45 b: 0.5.
-	colorAla := Color r: 0.68 g: 0.68 b: 0.74.
-	borde := Color r: 0.12 g: 0.12 b: 0.16.
+	colorCuerpo := EstiloRetro pantalla.
+	colorAla := EstiloRetro metal.
+	borde := EstiloRetro tinta.
 	canvas drawPolygon: (cuerpo collect: [ :punto | origen + punto ])
 		color: colorCuerpo borderWidth: 2 borderColor: borde.
 	canvas drawPolygon: (ala collect: [ :punto | origen + punto ])
@@ -114,12 +117,12 @@ PanelEscenario >> dibujarPersonajeAgachadoEn: canvas [
 		22 @ 18. 20 @ 18. 20 @ 22. 17 @ 22. 17 @ 23. 12 @ 23. 12 @ 16.
 		5 @ 15. 2 @ 12 }.
 	canvas drawPolygon: (silueta collect: [ :punto | origen + punto ])
-		color: (Color r: 0.55 g: 0.81 b: 0.26)
-		borderWidth: 2 borderColor: (Color r: 0.12 g: 0.23 b: 0.15).
-	sombra := Color r: 0.3 g: 0.55 b: 0.21.
+		color: EstiloRetro pantalla
+		borderWidth: 2 borderColor: EstiloRetro tinta.
+	sombra := EstiloRetro sombra.
 	canvas fillRectangle: ((origen + (10 @ 10)) extent: 12 @ 3) color: sombra.
 	canvas fillRectangle: ((origen + (29 @ 3)) extent: 8 @ 2)
-		color: (Color r: 0.74 g: 0.92 b: 0.43).
+		color: EstiloRetro metal.
 	canvas fillRectangle: ((origen + (33 @ 4)) extent: 3 @ 3) color: Color black
 ]
 
@@ -141,13 +144,13 @@ PanelEscenario >> dibujarPersonajeEn: canvas [
 		4 @ 20. 9 @ 20. 9 @ 22. 13 @ 22. 13 @ 18. 17 @ 18.
 		17 @ 13. 19 @ 13. 19 @ 3. 21 @ 3 }.
 	canvas drawPolygon: (silueta collect: [ :punto | origen + punto ])
-		color: (Color r: 0.55 g: 0.81 b: 0.26)
-		borderWidth: 2 borderColor: (Color r: 0.12 g: 0.23 b: 0.15).
+		color: EstiloRetro pantalla
+		borderWidth: 2 borderColor: EstiloRetro tinta.
 
-	sombra := Color r: 0.3 g: 0.55 b: 0.21.
+	sombra := EstiloRetro sombra.
 	canvas fillRectangle: ((origen + (12 @ 26)) extent: 11 @ 4) color: sombra.
 	canvas fillRectangle: ((origen + (23 @ 3)) extent: 8 @ 2)
-		color: (Color r: 0.74 g: 0.92 b: 0.43).
+		color: EstiloRetro metal.
 	canvas fillRectangle: ((origen + (25 @ 6)) extent: 3 @ 3) color: Color black.
 	canvas fillRectangle: ((origen + (31 @ 11)) extent: 3 @ 1) color: sombra
 ]
@@ -155,9 +158,14 @@ PanelEscenario >> dibujarPersonajeEn: canvas [
 { #category : 'dibujo' }
 PanelEscenario >> dibujarSueloEn: canvas [
 
-	| borde |
-	borde := self position + (4 @ (juego alturaSuelo + 60)).
-	canvas fillRectangle: (borde extent: (self width - 8) @ 4) color: Color black
+	| borde desplazamiento |
+	borde := self position + (7 @ (juego alturaSuelo + 60)).
+	canvas fillRectangle: (borde extent: (self width - 14) @ 4) color: EstiloRetro tinta.
+	desplazamiento := (juego tiempoTranscurrido * 80) floor.
+	0 to: 15 do: [ :i |
+		| x |
+		x := (i * 43 - desplazamiento) \\ 620.
+		canvas fillRectangle: ((borde + (x @ 7)) extent: 6 @ 2) color: EstiloRetro sombra ]
 ]
 
 { #category : 'dibujo' }
@@ -165,11 +173,12 @@ PanelEscenario >> drawOn: canvas [
 
 	juego ifNil: [ ^ super drawOn: canvas ].
 	canvas clipBy: self bounds during: [ :lienzo |
-		lienzo drawRectangle: self bounds color: Color white borderWidth: 4 borderColor: Color black.
+		EstiloRetro marco: self bounds fondo: EstiloRetro metal hundido: false en: lienzo.
 		self dibujarCieloEn: lienzo.
 		self dibujarSueloEn: lienzo.
-		self dibujarPersonajeEn: lienzo.
-		self dibujarObstaculosEn: lienzo.
+		lienzo clipBy: (self bounds insetBy: 7) during: [ :escena |
+			self dibujarPersonajeEn: escena.
+			self dibujarObstaculosEn: escena ].
 		self dibujarIndicadoresEn: lienzo ]
 ]
 

@@ -20,7 +20,7 @@ VistaJuego >> abrir [
 VistaJuego >> construirInterfaz [
 
 	| contenedor |
-	contenedor := Morph new color: self color; yourself.
+	contenedor := Morph new color: EstiloRetro pantalla; yourself.
 	coordinador montarInterfazEn: contenedor.
 	self addMorph: contenedor frame: (0 @ 0 corner: 1 @ 1).
 	self minimumExtent: 680 @ 401.
@@ -38,7 +38,7 @@ VistaJuego >> delete [
 VistaJuego >> initialize [
 
 	super initialize.
-	self setLabel: 'DinoGoogle'.
+	self setLabel: 'DINO GOOGLE'.
 	coordinador := CoordinadorPartida new.
 	coordinador alSalir: [ self delete ].
 	self construirInterfaz
