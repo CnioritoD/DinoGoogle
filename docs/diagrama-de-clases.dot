@@ -13,7 +13,7 @@ digraph DinoGoogle {
   </TABLE>>];
   VistaJuego [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#fcfcfc">
     <TR><TD><B>VistaJuego</B></TD></TR>
-    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">abrir<BR ALIGN="LEFT"/>construirInterfaz</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">abrir<BR ALIGN="LEFT"/>construirInterfaz<BR ALIGN="LEFT"/>marco:fondo:hundido:en:</TD></TR>
   </TABLE>>];
   CoordinadorPartida [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#fcfcfc">
     <TR><TD><B>CoordinadorPartida</B></TD></TR>
@@ -37,7 +37,7 @@ digraph DinoGoogle {
   </TABLE>>];
   PanelEscenario [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#fcfcfc">
     <TR><TD><B>PanelEscenario</B></TD></TR>
-    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">drawOn:<BR ALIGN="LEFT"/>tomarFoco</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">drawOn:<BR ALIGN="LEFT"/>tomarFoco<BR ALIGN="LEFT"/>dinosaurioDe:tiempo:</TD></TR>
   </TABLE>>];
   Juego [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#e9f0f5">
     <TR><TD><B>Juego</B></TD></TR>
@@ -54,14 +54,6 @@ digraph DinoGoogle {
   Pajaro [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#e9f0f5">
     <TR><TD><B>Pajaro</B></TD></TR>
     <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">alaArriba<BR ALIGN="LEFT"/>esPajaro</TD></TR>
-  </TABLE>>];
-  EstiloRetro [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#f0f0f1">
-    <TR><TD><B>EstiloRetro</B></TD></TR>
-    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">marco:fondo:hundido:en:<BR ALIGN="LEFT"/>texto:centradoEn:escala:color:en:</TD></TR>
-  </TABLE>>];
-  Sprites [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#f0f0f1">
-    <TR><TD><B>Sprites</B></TD></TR>
-    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">dinosaurioDe:tiempo:<BR ALIGN="LEFT"/>limpiarCache</TD></TR>
   </TABLE>>];
 
   // El rombo relleno va del lado del objeto que contiene al componente.
@@ -83,10 +75,9 @@ digraph DinoGoogle {
 
   // La dependencia indica uso sin una referencia de instancia propia.
   edge [style=dashed, arrowhead=vee, color="#657487"];
-  PanelEscenario -> Sprites;
-  VistaJuego:e -> EstiloRetro:nw [constraint=false];
-  PanelControles -> EstiloRetro;
-  PanelEscenario -> EstiloRetro [constraint=false];
+
+  PanelControles:w -> VistaJuego:w [constraint=false];
+  PanelEscenario:e -> VistaJuego:e [constraint=false];
 
   // El triángulo hueco señala la superclase.
   edge [style=solid, color="#435365", arrowhead=onormal, constraint=false];
@@ -94,10 +85,10 @@ digraph DinoGoogle {
 
   {rank=same; SistemaControles; SistemaEscenario; SistemaReloj}
   {rank=same; PanelControles; PanelEscenario; Juego}
-  {rank=same; EstiloRetro; Sprites; Personaje; Obstaculo}
+  {rank=same; Personaje; Obstaculo}
   edge [style=invis, constraint=true, weight=10];
   PanelControles -> PanelEscenario -> Juego;
-  EstiloRetro -> Sprites -> Personaje -> Obstaculo;
+  Personaje -> Obstaculo;
   Obstaculo -> Pajaro;
 
   subgraph cluster_leyenda {
