@@ -79,7 +79,8 @@ digraph DinoGoogle {
 
   // La dependencia indica uso sin una referencia de instancia propia.
   edge [style=dashed, arrowhead=vee, color="#657487"];
-
+  Juego:e -> Pajaro:e [constraint=false, label="crea"];
+  Obstaculo:w -> Personaje:e [constraint=false, label="consulta límites"];
 
   // El triángulo hueco señala la superclase.
   edge [style=solid, color="#435365", arrowhead=onormal, constraint=false];
