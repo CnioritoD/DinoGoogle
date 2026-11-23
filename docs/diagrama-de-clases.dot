@@ -21,11 +21,19 @@ digraph DinoGoogle {
   </TABLE>>];
   SistemaEscenario [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#fcfcfc">
     <TR><TD><B>SistemaEscenario</B></TD></TR>
-    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">avanzar:<BR ALIGN="LEFT"/>ejecutarSalto<BR ALIGN="LEFT"/>ejecutarAgacharse<BR ALIGN="LEFT"/>keyDown:<BR ALIGN="LEFT"/>mouseDown:</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">avanzar:<BR ALIGN="LEFT"/>ejecutarSalto<BR ALIGN="LEFT"/>ejecutarAgacharse<BR ALIGN="LEFT"/>configurarJuego:panel:</TD></TR>
   </TABLE>>];
   SistemaReloj [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#fcfcfc">
     <TR><TD><B>SistemaReloj</B></TD></TR>
     <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">iniciar<BR ALIGN="LEFT"/>step<BR ALIGN="LEFT"/>detener</TD></TR>
+  </TABLE>>];
+  EntradaControles [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#fcfcfc">
+    <TR><TD><B>EntradaControles</B></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">mostrarEstado:<BR ALIGN="LEFT"/>nick</TD></TR>
+  </TABLE>>];
+  EntradaEscenario [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#fcfcfc">
+    <TR><TD><B>EntradaEscenario</B></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">keyDown:<BR ALIGN="LEFT"/>keyUp:<BR ALIGN="LEFT"/>mouseDown:</TD></TR>
   </TABLE>>];
   PanelControles [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#fcfcfc">
     <TR><TD><B>PanelControles</B></TD></TR>
@@ -58,6 +66,8 @@ digraph DinoGoogle {
   CoordinadorPartida -> SistemaControles;
   CoordinadorPartida -> SistemaEscenario;
   CoordinadorPartida -> SistemaReloj;
+  SistemaControles -> EntradaControles;
+  SistemaEscenario -> EntradaEscenario;
   Juego -> Personaje [headlabel="1", labeldistance=1.6, labelangle=-46];
   Juego -> Obstaculo [headlabel="0..*", labeldistance=1.7, labelangle=-30];
 
@@ -65,6 +75,8 @@ digraph DinoGoogle {
   edge [dir=forward, arrowtail=none, arrowhead=vee];
   SistemaControles -> PanelControles;
   SistemaEscenario -> PanelEscenario;
+  EntradaControles -> PanelControles;
+  EntradaEscenario -> PanelEscenario;
   SistemaEscenario -> Juego;
   PanelEscenario -> Juego [constraint=false];
 
@@ -77,6 +89,7 @@ digraph DinoGoogle {
   Pajaro -> Obstaculo;
 
   {rank=same; SistemaControles; SistemaEscenario; SistemaReloj}
+  {rank=same; EntradaControles; EntradaEscenario}
   {rank=same; PanelControles; PanelEscenario; Juego}
   {rank=same; Personaje; Obstaculo}
   edge [style=invis, constraint=true, weight=10];

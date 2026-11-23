@@ -1,10 +1,10 @@
 Class {
 	#name : 'SistemaEscenario',
-	#superclass : 'Morph',
+	#superclass : 'Object',
 	#instVars : [
-		'coordinador',
 		'juego',
-		'panel'
+		'panel',
+		'entrada'
 	],
 	#category : 'DinoGoogle-Interfaz',
 	#package : 'DinoGoogle',
@@ -19,16 +19,13 @@ SistemaEscenario >> avanzar: segundos [
 ]
 
 { #category : 'inicializacion' }
-SistemaEscenario >> configurarCoordinador: unCoordinador juego: unJuego panel: unPanel [
+SistemaEscenario >> configurarJuego: unJuego panel: unPanel [
 
-	coordinador := unCoordinador.
 	juego := unJuego.
 	panel := unPanel.
 	panel configurarJuego: juego.
-	self color: Color transparent.
-	self extent: panel extent.
-	self addMorph: panel.
-	panel position: self position
+	entrada := EntradaEscenario new.
+	entrada configurarSistema: self panel: panel
 ]
 
 { #category : 'partida' }
@@ -74,8 +71,7 @@ SistemaEscenario >> iniciarJuego [
 { #category : 'interfaz' }
 SistemaEscenario >> montarEn: unContenedor posicion: unaPosicion [
 
-	unContenedor addMorph: self.
-	self position: unaPosicion
+	entrada montarEn: unContenedor posicion: unaPosicion
 ]
 
 { #category : 'acceso' }
@@ -110,24 +106,6 @@ SistemaEscenario >> reiniciarJuego [
 	self iniciarJuego
 ]
 
-{ #category : 'partida' }
-SistemaEscenario >> solicitarAgacharse [
-
-	coordinador solicitarAgacharse
-]
-
-{ #category : 'partida' }
-SistemaEscenario >> solicitarPararse [
-
-	coordinador solicitarPararse
-]
-
-{ #category : 'partida' }
-SistemaEscenario >> solicitarSalto [
-
-	coordinador solicitarSalto
-]
-
 { #category : 'acceso' }
 SistemaEscenario >> tiempoTranscurrido [
 
@@ -140,56 +118,8 @@ SistemaEscenario >> configurarEstilo: unEstilo [
 	panel configurarEstilo: unEstilo
 ]
 
-{ #category : 'eventos' }
-SistemaEscenario >> handlesKeyboard: unEvento [
-
-	^ juego notNil and: [ juego estaEnCurso ]
-]
-
-{ #category : 'eventos' }
-SistemaEscenario >> handlesMouseDown: unEvento [
-
-	^ juego notNil and: [ juego estaEnCurso ]
-]
-
-{ #category : 'eventos' }
-SistemaEscenario >> esFlechaAbajo: unEvento [
-
-	^ unEvento keyCharacter = Character arrowDown
-		or: [ unEvento keyValue = 31 or: [ unEvento key = KeyboardKey down ] ]
-]
-
-{ #category : 'eventos' }
-SistemaEscenario >> keyDown: unEvento [
-
-	self estaEnCurso ifFalse: [ ^ self ].
-	unEvento keyCharacter = Character space ifTrue: [
-		self solicitarSalto.
-		unEvento wasHandled: true ].
-	(self esFlechaAbajo: unEvento) ifTrue: [
-		self solicitarAgacharse.
-		unEvento wasHandled: true ]
-]
-
-{ #category : 'eventos' }
-SistemaEscenario >> keyUp: unEvento [
-
-	self estaEnCurso ifFalse: [ ^ self ].
-	(self esFlechaAbajo: unEvento) ifTrue: [
-		self solicitarPararse.
-		unEvento wasHandled: true ]
-]
-
-{ #category : 'eventos' }
-SistemaEscenario >> mouseDown: unEvento [
-
-	unEvento redButtonPressed ifTrue: [
-		self tomarFoco.
-		self solicitarSalto ]
-]
-
-{ #category : 'eventos' }
+{ #category : 'interfaz' }
 SistemaEscenario >> tomarFoco [
 
-	self world ifNotNil: [ :mundo | mundo activeHand newKeyboardFocus: self ]
+	entrada tomarFoco
 ]

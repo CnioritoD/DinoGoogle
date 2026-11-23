@@ -117,7 +117,7 @@ CoordinadorPartida >> initialize [
 
 	super initialize.
 	self configurarEscenario: SistemaEscenario new controles: SistemaControles new reloj: SistemaReloj new.
-	escenario configurarCoordinador: self juego: Juego new panel: PanelEscenario new.
+	escenario configurarJuego: Juego new panel: PanelEscenario new.
 	controles configurarCoordinador: self panel: PanelControles new.
 	reloj configurarCoordinador: self.
 	controles mostrarResultados: self class resultados.
