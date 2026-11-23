@@ -1,6 +1,6 @@
 Class {
 	#name : 'SistemaEscenario',
-	#superclass : 'Object',
+	#superclass : 'Morph',
 	#instVars : [
 		'coordinador',
 		'juego',
@@ -24,7 +24,11 @@ SistemaEscenario >> configurarCoordinador: unCoordinador juego: unJuego panel: u
 	coordinador := unCoordinador.
 	juego := unJuego.
 	panel := unPanel.
-	panel configurarSistema: self juego: juego
+	panel configurarJuego: juego.
+	self color: Color transparent.
+	self extent: panel extent.
+	self addMorph: panel.
+	panel position: self position
 ]
 
 { #category : 'partida' }
@@ -70,8 +74,8 @@ SistemaEscenario >> iniciarJuego [
 { #category : 'interfaz' }
 SistemaEscenario >> montarEn: unContenedor posicion: unaPosicion [
 
-	unContenedor addMorph: panel.
-	panel position: unaPosicion
+	unContenedor addMorph: self.
+	self position: unaPosicion
 ]
 
 { #category : 'acceso' }
@@ -130,14 +134,62 @@ SistemaEscenario >> tiempoTranscurrido [
 	^ juego tiempoTranscurrido
 ]
 
-{ #category : 'interfaz' }
-SistemaEscenario >> tomarFoco [
-
-	panel tomarFoco
-]
-
 { #category : 'inicializacion' }
 SistemaEscenario >> configurarEstilo: unEstilo [
 
 	panel configurarEstilo: unEstilo
+]
+
+{ #category : 'eventos' }
+SistemaEscenario >> handlesKeyboard: unEvento [
+
+	^ juego notNil and: [ juego estaEnCurso ]
+]
+
+{ #category : 'eventos' }
+SistemaEscenario >> handlesMouseDown: unEvento [
+
+	^ juego notNil and: [ juego estaEnCurso ]
+]
+
+{ #category : 'eventos' }
+SistemaEscenario >> esFlechaAbajo: unEvento [
+
+	^ unEvento keyCharacter = Character arrowDown
+		or: [ unEvento keyValue = 31 or: [ unEvento key = KeyboardKey down ] ]
+]
+
+{ #category : 'eventos' }
+SistemaEscenario >> keyDown: unEvento [
+
+	self estaEnCurso ifFalse: [ ^ self ].
+	unEvento keyCharacter = Character space ifTrue: [
+		self solicitarSalto.
+		unEvento wasHandled: true ].
+	(self esFlechaAbajo: unEvento) ifTrue: [
+		self solicitarAgacharse.
+		unEvento wasHandled: true ]
+]
+
+{ #category : 'eventos' }
+SistemaEscenario >> keyUp: unEvento [
+
+	self estaEnCurso ifFalse: [ ^ self ].
+	(self esFlechaAbajo: unEvento) ifTrue: [
+		self solicitarPararse.
+		unEvento wasHandled: true ]
+]
+
+{ #category : 'eventos' }
+SistemaEscenario >> mouseDown: unEvento [
+
+	unEvento redButtonPressed ifTrue: [
+		self tomarFoco.
+		self solicitarSalto ]
+]
+
+{ #category : 'eventos' }
+SistemaEscenario >> tomarFoco [
+
+	self world ifNotNil: [ :mundo | mundo activeHand newKeyboardFocus: self ]
 ]

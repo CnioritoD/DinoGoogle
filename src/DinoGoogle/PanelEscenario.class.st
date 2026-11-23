@@ -3,7 +3,6 @@ Class {
 	#superclass : 'Morph',
 	#instVars : [
 		'estilo',
-		'sistema',
 		'juego'
 	],
 	#classVars : [
@@ -17,9 +16,8 @@ Class {
 }
 
 { #category : 'inicializacion' }
-PanelEscenario >> configurarSistema: unSistema juego: unJuego [
+PanelEscenario >> configurarJuego: unJuego [
 
-	sistema := unSistema.
 	juego := unJuego.
 	self extent: juego tamanioEscenario + (0 @ 78).
 	self clipSubmorphs: true
@@ -186,58 +184,6 @@ PanelEscenario >> drawOn: canvas [
 			self dibujarPersonajeEn: escena.
 			self dibujarObstaculosEn: escena ].
 		self dibujarIndicadoresEn: lienzo ]
-]
-
-{ #category : 'eventos' }
-PanelEscenario >> handlesKeyboard: unEvento [
-
-	^ juego notNil and: [ juego estaEnCurso ]
-]
-
-{ #category : 'eventos' }
-PanelEscenario >> handlesMouseDown: unEvento [
-
-	^ juego notNil and: [ juego estaEnCurso ]
-]
-
-{ #category : 'eventos' }
-PanelEscenario >> esFlechaAbajo: unEvento [
-
-	^ unEvento keyCharacter = Character arrowDown
-		or: [ unEvento keyValue = 31 or: [ unEvento key = KeyboardKey down ] ]
-]
-
-{ #category : 'eventos' }
-PanelEscenario >> keyDown: unEvento [
-
-	unEvento keyCharacter = Character space ifTrue: [
-		sistema solicitarSalto.
-		unEvento wasHandled: true ].
-	(self esFlechaAbajo: unEvento) ifTrue: [
-		sistema solicitarAgacharse.
-		unEvento wasHandled: true ]
-]
-
-{ #category : 'eventos' }
-PanelEscenario >> keyUp: unEvento [
-
-	(self esFlechaAbajo: unEvento) ifTrue: [
-		sistema solicitarPararse.
-		unEvento wasHandled: true ]
-]
-
-{ #category : 'eventos' }
-PanelEscenario >> mouseDown: unEvento [
-
-	unEvento redButtonPressed ifTrue: [
-		self tomarFoco.
-		sistema solicitarSalto ]
-]
-
-{ #category : 'eventos' }
-PanelEscenario >> tomarFoco [
-
-	self world ifNotNil: [ :mundo | mundo activeHand newKeyboardFocus: self ]
 ]
 
 { #category : 'configuracion' }

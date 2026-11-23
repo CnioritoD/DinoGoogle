@@ -50,116 +50,114 @@
 <!-- SistemaControles -->
 <g id="node3" class="node">
 <title>SistemaControles</title>
-<polygon fill="#fcfcfc" stroke="none" points="18.1,-546.6 18.1,-642.6 127.63,-642.6 127.63,-546.6 18.1,-546.6"/>
-<text xml:space="preserve" text-anchor="start" x="26.1" y="-625.7" font-family="Arial" font-weight="bold" font-size="11.00" fill="#172431">SistemaControles</text>
-<text xml:space="preserve" text-anchor="start" x="26.1" y="-596.4" font-family="Arial" font-size="11.00" fill="#172431">solicitarInicio</text>
-<text xml:space="preserve" text-anchor="start" x="26.1" y="-583.2" font-family="Arial" font-size="11.00" fill="#172431">solicitarReinicio</text>
-<text xml:space="preserve" text-anchor="start" x="26.1" y="-570" font-family="Arial" font-size="11.00" fill="#172431">solicitarSalida</text>
-<text xml:space="preserve" text-anchor="start" x="26.1" y="-556.8" font-family="Arial" font-size="11.00" fill="#172431">configurarEstilo:</text>
-<polygon fill="#394452" stroke="#394452" points="18.1,-614.4 18.1,-614.4 127.63,-614.4 127.63,-614.4 18.1,-614.4"/>
-<polygon fill="none" stroke="#394452" points="18.1,-546.6 18.1,-642.6 127.63,-642.6 127.63,-546.6 18.1,-546.6"/>
+<polygon fill="#fcfcfc" stroke="none" points="18.1,-540 18.1,-636 127.63,-636 127.63,-540 18.1,-540"/>
+<text xml:space="preserve" text-anchor="start" x="26.1" y="-619.1" font-family="Arial" font-weight="bold" font-size="11.00" fill="#172431">SistemaControles</text>
+<text xml:space="preserve" text-anchor="start" x="26.1" y="-589.8" font-family="Arial" font-size="11.00" fill="#172431">solicitarInicio</text>
+<text xml:space="preserve" text-anchor="start" x="26.1" y="-576.6" font-family="Arial" font-size="11.00" fill="#172431">solicitarReinicio</text>
+<text xml:space="preserve" text-anchor="start" x="26.1" y="-563.4" font-family="Arial" font-size="11.00" fill="#172431">solicitarSalida</text>
+<text xml:space="preserve" text-anchor="start" x="26.1" y="-550.2" font-family="Arial" font-size="11.00" fill="#172431">configurarEstilo:</text>
+<polygon fill="#394452" stroke="#394452" points="18.1,-607.8 18.1,-607.8 127.63,-607.8 127.63,-607.8 18.1,-607.8"/>
+<polygon fill="none" stroke="#394452" points="18.1,-540 18.1,-636 127.63,-636 127.63,-540 18.1,-540"/>
 </g>
 <!-- CoordinadorPartida&#45;&gt;SistemaControles -->
 <g id="edge2" class="edge">
 <title>CoordinadorPartida&#45;&gt;SistemaControles</title>
-<path fill="none" stroke="#435365" stroke-width="1.2" d="M160.88,-676.43C148.6,-665.15 135.74,-653.35 123.77,-642.35"/>
-<polygon fill="#435365" stroke="#435365" stroke-width="1.2" points="160.73,-676.29 166.64,-677.22 168.07,-683.03 162.15,-682.11 160.73,-676.29"/>
+<path fill="none" stroke="#435365" stroke-width="1.2" d="M163.33,-676.15C149.57,-662.89 134.97,-648.82 121.6,-635.95"/>
+<polygon fill="#435365" stroke="#435365" stroke-width="1.2" points="163.37,-676.18 169.26,-677.25 170.54,-683.09 164.65,-682.03 163.37,-676.18"/>
 </g>
 <!-- SistemaEscenario -->
 <g id="node4" class="node">
 <title>SistemaEscenario</title>
-<polygon fill="#fcfcfc" stroke="none" points="164.48,-546.6 164.48,-642.6 275.25,-642.6 275.25,-546.6 164.48,-546.6"/>
+<polygon fill="#fcfcfc" stroke="none" points="164.48,-533.4 164.48,-642.6 275.25,-642.6 275.25,-533.4 164.48,-533.4"/>
 <text xml:space="preserve" text-anchor="start" x="172.48" y="-625.7" font-family="Arial" font-weight="bold" font-size="11.00" fill="#172431">SistemaEscenario</text>
 <text xml:space="preserve" text-anchor="start" x="172.48" y="-596.4" font-family="Arial" font-size="11.00" fill="#172431">avanzar:</text>
 <text xml:space="preserve" text-anchor="start" x="172.48" y="-583.2" font-family="Arial" font-size="11.00" fill="#172431">ejecutarSalto</text>
 <text xml:space="preserve" text-anchor="start" x="172.48" y="-570" font-family="Arial" font-size="11.00" fill="#172431">ejecutarAgacharse</text>
-<text xml:space="preserve" text-anchor="start" x="172.48" y="-556.8" font-family="Arial" font-size="11.00" fill="#172431">configurarEstilo:</text>
+<text xml:space="preserve" text-anchor="start" x="172.48" y="-556.8" font-family="Arial" font-size="11.00" fill="#172431">keyDown:</text>
+<text xml:space="preserve" text-anchor="start" x="172.48" y="-543.6" font-family="Arial" font-size="11.00" fill="#172431">mouseDown:</text>
 <polygon fill="#394452" stroke="#394452" points="164.48,-614.4 164.48,-614.4 275.25,-614.4 275.25,-614.4 164.48,-614.4"/>
-<polygon fill="none" stroke="#394452" points="164.48,-546.6 164.48,-642.6 275.25,-642.6 275.25,-546.6 164.48,-546.6"/>
+<polygon fill="none" stroke="#394452" points="164.48,-533.4 164.48,-642.6 275.25,-642.6 275.25,-533.4 164.48,-533.4"/>
 </g>
 <!-- CoordinadorPartida&#45;&gt;SistemaEscenario -->
 <g id="edge3" class="edge">
 <title>CoordinadorPartida&#45;&gt;SistemaEscenario</title>
-<path fill="none" stroke="#435365" stroke-width="1.2" d="M219.86,-672.55C219.86,-662.46 219.86,-652.09 219.86,-642.35"/>
-<polygon fill="#435365" stroke="#435365" stroke-width="1.2" points="219.86,-672.72 223.18,-677.7 219.86,-682.68 216.54,-677.7 219.86,-672.72"/>
+<path fill="none" stroke="#435365" stroke-width="1.2" d="M219.86,-672.77C219.86,-662.78 219.86,-652.44 219.86,-642.57"/>
+<polygon fill="#435365" stroke="#435365" stroke-width="1.2" points="219.86,-672.8 223.18,-677.78 219.86,-682.76 216.54,-677.78 219.86,-672.8"/>
 </g>
 <!-- SistemaReloj -->
 <g id="node5" class="node">
 <title>SistemaReloj</title>
-<polygon fill="#fcfcfc" stroke="none" points="305.32,-553.2 305.32,-636 390.41,-636 390.41,-553.2 305.32,-553.2"/>
-<text xml:space="preserve" text-anchor="start" x="313.32" y="-619.1" font-family="Arial" font-weight="bold" font-size="11.00" fill="#172431">SistemaReloj</text>
-<text xml:space="preserve" text-anchor="start" x="313.32" y="-589.8" font-family="Arial" font-size="11.00" fill="#172431">iniciar</text>
-<text xml:space="preserve" text-anchor="start" x="313.32" y="-576.6" font-family="Arial" font-size="11.00" fill="#172431">step</text>
-<text xml:space="preserve" text-anchor="start" x="313.32" y="-563.4" font-family="Arial" font-size="11.00" fill="#172431">detener</text>
-<polygon fill="#394452" stroke="#394452" points="305.32,-607.8 305.32,-607.8 390.41,-607.8 390.41,-607.8 305.32,-607.8"/>
-<polygon fill="none" stroke="#394452" points="305.32,-553.2 305.32,-636 390.41,-636 390.41,-553.2 305.32,-553.2"/>
+<polygon fill="#fcfcfc" stroke="none" points="305.32,-546.6 305.32,-629.4 390.41,-629.4 390.41,-546.6 305.32,-546.6"/>
+<text xml:space="preserve" text-anchor="start" x="313.32" y="-612.5" font-family="Arial" font-weight="bold" font-size="11.00" fill="#172431">SistemaReloj</text>
+<text xml:space="preserve" text-anchor="start" x="313.32" y="-583.2" font-family="Arial" font-size="11.00" fill="#172431">iniciar</text>
+<text xml:space="preserve" text-anchor="start" x="313.32" y="-570" font-family="Arial" font-size="11.00" fill="#172431">step</text>
+<text xml:space="preserve" text-anchor="start" x="313.32" y="-556.8" font-family="Arial" font-size="11.00" fill="#172431">detener</text>
+<polygon fill="#394452" stroke="#394452" points="305.32,-601.2 305.32,-601.2 390.41,-601.2 390.41,-601.2 305.32,-601.2"/>
+<polygon fill="none" stroke="#394452" points="305.32,-546.6 305.32,-629.4 390.41,-629.4 390.41,-546.6 305.32,-546.6"/>
 </g>
 <!-- CoordinadorPartida&#45;&gt;SistemaReloj -->
 <g id="edge4" class="edge">
 <title>CoordinadorPartida&#45;&gt;SistemaReloj</title>
-<path fill="none" stroke="#435365" stroke-width="1.2" d="M271.7,-675.93C284.48,-662.45 297.94,-648.26 309.92,-635.62"/>
-<polygon fill="#435365" stroke="#435365" stroke-width="1.2" points="271.87,-675.75 270.85,-681.65 265.02,-682.98 266.03,-677.08 271.87,-675.75"/>
+<path fill="none" stroke="#435365" stroke-width="1.2" d="M269.39,-675.82C283.46,-660.25 298.52,-643.59 311.65,-629.07"/>
+<polygon fill="#435365" stroke="#435365" stroke-width="1.2" points="269.53,-675.65 268.66,-681.57 262.86,-683.04 263.73,-677.12 269.53,-675.65"/>
 </g>
 <!-- PanelControles -->
 <g id="node6" class="node">
 <title>PanelControles</title>
-<polygon fill="#fcfcfc" stroke="none" points="0,-416.2 0,-499 129.73,-499 129.73,-416.2 0,-416.2"/>
-<text xml:space="preserve" text-anchor="start" x="24.52" y="-482.1" font-family="Arial" font-weight="bold" font-size="11.00" fill="#172431">PanelControles</text>
-<text xml:space="preserve" text-anchor="start" x="8" y="-452.8" font-family="Arial" font-size="11.00" fill="#172431">mostrarPuntaje:estado:</text>
-<text xml:space="preserve" text-anchor="start" x="8" y="-439.6" font-family="Arial" font-size="11.00" fill="#172431">mostrarResultados:</text>
-<text xml:space="preserve" text-anchor="start" x="8" y="-426.4" font-family="Arial" font-size="11.00" fill="#172431">configurarEstilo:</text>
-<polygon fill="#394452" stroke="#394452" points="0,-470.8 0,-470.8 129.73,-470.8 129.73,-470.8 0,-470.8"/>
-<polygon fill="none" stroke="#394452" points="0,-416.2 0,-499 129.73,-499 129.73,-416.2 0,-416.2"/>
+<polygon fill="#fcfcfc" stroke="none" points="0,-409.6 0,-492.4 129.73,-492.4 129.73,-409.6 0,-409.6"/>
+<text xml:space="preserve" text-anchor="start" x="24.52" y="-475.5" font-family="Arial" font-weight="bold" font-size="11.00" fill="#172431">PanelControles</text>
+<text xml:space="preserve" text-anchor="start" x="8" y="-446.2" font-family="Arial" font-size="11.00" fill="#172431">mostrarPuntaje:estado:</text>
+<text xml:space="preserve" text-anchor="start" x="8" y="-433" font-family="Arial" font-size="11.00" fill="#172431">mostrarResultados:</text>
+<text xml:space="preserve" text-anchor="start" x="8" y="-419.8" font-family="Arial" font-size="11.00" fill="#172431">configurarEstilo:</text>
+<polygon fill="#394452" stroke="#394452" points="0,-464.2 0,-464.2 129.73,-464.2 129.73,-464.2 0,-464.2"/>
+<polygon fill="none" stroke="#394452" points="0,-409.6 0,-492.4 129.73,-492.4 129.73,-409.6 0,-409.6"/>
 </g>
 <!-- SistemaControles&#45;&gt;PanelControles -->
 <g id="edge7" class="edge">
 <title>SistemaControles&#45;&gt;PanelControles</title>
-<path fill="none" stroke="#435365" stroke-width="1.2" d="M69.51,-537.03C68.94,-527.45 68.36,-517.57 67.8,-508.19"/>
-<polygon fill="#435365" stroke="#435365" stroke-width="1.2" points="70,-545.3 65.78,-537.24 69.74,-542.63 69.41,-537.02 69.51,-537.02 69.61,-537.01 69.94,-542.61 73.24,-536.8 70,-545.3"/>
-<polygon fill="#435365" stroke="#435365" stroke-width="1.2" points="67.32,-500.08 71.54,-508.14 67.58,-502.76 67.91,-508.36 67.81,-508.37 67.71,-508.37 67.38,-502.77 64.08,-508.59 67.32,-500.08"/>
+<path fill="none" stroke="#435365" stroke-width="1.2" d="M70.09,-540.16C69.35,-527.66 68.54,-514.11 67.8,-501.48"/>
+<polygon fill="#435365" stroke="#435365" stroke-width="1.2" points="67.32,-493.48 71.54,-501.54 67.58,-496.16 67.91,-501.76 67.81,-501.77 67.71,-501.77 67.38,-496.17 64.08,-501.99 67.32,-493.48"/>
 </g>
 <!-- PanelEscenario -->
 <g id="node7" class="node">
 <title>PanelEscenario</title>
-<polygon fill="#fcfcfc" stroke="none" points="159.89,-409.6 159.89,-505.6 279.84,-505.6 279.84,-409.6 159.89,-409.6"/>
-<text xml:space="preserve" text-anchor="start" x="178.9" y="-488.7" font-family="Arial" font-weight="bold" font-size="11.00" fill="#172431">PanelEscenario</text>
-<text xml:space="preserve" text-anchor="start" x="167.89" y="-459.4" font-family="Arial" font-size="11.00" fill="#172431">drawOn:</text>
-<text xml:space="preserve" text-anchor="start" x="167.89" y="-446.2" font-family="Arial" font-size="11.00" fill="#172431">tomarFoco</text>
+<polygon fill="#fcfcfc" stroke="none" points="159.89,-409.6 159.89,-492.4 279.84,-492.4 279.84,-409.6 159.89,-409.6"/>
+<text xml:space="preserve" text-anchor="start" x="178.9" y="-475.5" font-family="Arial" font-weight="bold" font-size="11.00" fill="#172431">PanelEscenario</text>
+<text xml:space="preserve" text-anchor="start" x="167.89" y="-446.2" font-family="Arial" font-size="11.00" fill="#172431">drawOn:</text>
 <text xml:space="preserve" text-anchor="start" x="167.89" y="-433" font-family="Arial" font-size="11.00" fill="#172431">dinosaurioDe:tiempo:</text>
 <text xml:space="preserve" text-anchor="start" x="167.89" y="-419.8" font-family="Arial" font-size="11.00" fill="#172431">configurarEstilo:</text>
-<polygon fill="#394452" stroke="#394452" points="159.89,-477.4 159.89,-477.4 279.84,-477.4 279.84,-477.4 159.89,-477.4"/>
-<polygon fill="none" stroke="#394452" points="159.89,-409.6 159.89,-505.6 279.84,-505.6 279.84,-409.6 159.89,-409.6"/>
+<polygon fill="#394452" stroke="#394452" points="159.89,-464.2 159.89,-464.2 279.84,-464.2 279.84,-464.2 159.89,-464.2"/>
+<polygon fill="none" stroke="#394452" points="159.89,-409.6 159.89,-492.4 279.84,-492.4 279.84,-409.6 159.89,-409.6"/>
 </g>
 <!-- SistemaEscenario&#45;&gt;PanelEscenario -->
 <g id="edge8" class="edge">
 <title>SistemaEscenario&#45;&gt;PanelEscenario</title>
-<path fill="none" stroke="#435365" stroke-width="1.2" d="M219.86,-537.17C219.86,-529.72 219.86,-522.09 219.86,-514.65"/>
-<polygon fill="#435365" stroke="#435365" stroke-width="1.2" points="219.86,-545.3 216.13,-537 219.76,-542.61 219.76,-537 219.86,-537 219.96,-537 219.96,-542.61 223.6,-537 219.86,-545.3"/>
-<polygon fill="#435365" stroke="#435365" stroke-width="1.2" points="219.86,-506.82 223.6,-515.12 219.96,-509.5 219.96,-515.12 219.86,-515.12 219.76,-515.12 219.76,-509.5 216.13,-515.12 219.86,-506.82"/>
+<path fill="none" stroke="#435365" stroke-width="1.2" d="M219.86,-533.64C219.86,-523.14 219.86,-512.17 219.86,-501.79"/>
+<polygon fill="#435365" stroke="#435365" stroke-width="1.2" points="219.86,-493.52 223.6,-501.82 219.96,-496.21 219.96,-501.82 219.86,-501.82 219.76,-501.82 219.76,-496.21 216.13,-501.82 219.86,-493.52"/>
 </g>
 <!-- Juego -->
 <g id="node8" class="node">
 <title>Juego</title>
-<polygon fill="#e9f0f5" stroke="none" points="309.77,-416.2 309.77,-499 367.96,-499 367.96,-416.2 309.77,-416.2"/>
-<text xml:space="preserve" text-anchor="start" x="322.67" y="-482.1" font-family="Arial" font-weight="bold" font-size="11.00" fill="#172431">Juego</text>
-<text xml:space="preserve" text-anchor="start" x="317.77" y="-452.8" font-family="Arial" font-size="11.00" fill="#172431">iniciar</text>
-<text xml:space="preserve" text-anchor="start" x="317.77" y="-439.6" font-family="Arial" font-size="11.00" fill="#172431">avanzar:</text>
-<text xml:space="preserve" text-anchor="start" x="317.77" y="-426.4" font-family="Arial" font-size="11.00" fill="#172431">reiniciar</text>
-<polygon fill="#394452" stroke="#394452" points="309.77,-470.8 309.77,-470.8 367.96,-470.8 367.96,-470.8 309.77,-470.8"/>
-<polygon fill="none" stroke="#394452" points="309.77,-416.2 309.77,-499 367.96,-499 367.96,-416.2 309.77,-416.2"/>
+<polygon fill="#e9f0f5" stroke="none" points="309.77,-409.6 309.77,-492.4 367.96,-492.4 367.96,-409.6 309.77,-409.6"/>
+<text xml:space="preserve" text-anchor="start" x="322.67" y="-475.5" font-family="Arial" font-weight="bold" font-size="11.00" fill="#172431">Juego</text>
+<text xml:space="preserve" text-anchor="start" x="317.77" y="-446.2" font-family="Arial" font-size="11.00" fill="#172431">iniciar</text>
+<text xml:space="preserve" text-anchor="start" x="317.77" y="-433" font-family="Arial" font-size="11.00" fill="#172431">avanzar:</text>
+<text xml:space="preserve" text-anchor="start" x="317.77" y="-419.8" font-family="Arial" font-size="11.00" fill="#172431">reiniciar</text>
+<polygon fill="#394452" stroke="#394452" points="309.77,-464.2 309.77,-464.2 367.96,-464.2 367.96,-464.2 309.77,-464.2"/>
+<polygon fill="none" stroke="#394452" points="309.77,-409.6 309.77,-492.4 367.96,-492.4 367.96,-409.6 309.77,-409.6"/>
 </g>
 <!-- SistemaEscenario&#45;&gt;Juego -->
 <g id="edge9" class="edge">
 <title>SistemaEscenario&#45;&gt;Juego</title>
-<path fill="none" stroke="#435365" stroke-width="1.2" d="M261.15,-546.76C275,-531.06 290.3,-513.7 303.63,-498.57"/>
-<polygon fill="#435365" stroke="#435365" stroke-width="1.2" points="309.04,-492.43 306.36,-501.13 307.34,-494.51 303.63,-498.72 303.55,-498.66 303.48,-498.59 307.19,-494.38 300.75,-496.19 309.04,-492.43"/>
+<path fill="none" stroke="#435365" stroke-width="1.2" d="M266.9,-533.64C279.17,-519.71 292.19,-504.94 303.74,-491.85"/>
+<polygon fill="#435365" stroke="#435365" stroke-width="1.2" points="309.01,-485.86 306.33,-494.56 307.31,-487.95 303.6,-492.16 303.53,-492.09 303.45,-492.02 307.16,-487.81 300.72,-489.62 309.01,-485.86"/>
 </g>
 <!-- PanelControles&#45;&gt;PanelEscenario -->
 <!-- PanelEscenario&#45;&gt;Juego -->
 <g id="edge10" class="edge">
 <title>PanelEscenario&#45;&gt;Juego</title>
-<path fill="none" stroke="#435365" stroke-width="1.2" d="M279.83,-421.6C287.01,-421.67 294.19,-423.31 301.38,-426.53"/>
-<polygon fill="#435365" stroke="#435365" stroke-width="1.2" points="308.52,-430.34 299.44,-429.73 306.1,-429.16 301.15,-426.52 301.19,-426.43 301.24,-426.34 306.19,-428.98 302.95,-423.13 308.52,-430.34"/>
+<path fill="none" stroke="#435365" stroke-width="1.2" d="M279.83,-419.95C287.01,-420.01 294.19,-421.43 301.38,-424.2"/>
+<polygon fill="#435365" stroke="#435365" stroke-width="1.2" points="308.48,-427.47 299.38,-427.39 306,-426.43 300.9,-424.09 300.94,-424 300.98,-423.91 306.08,-426.25 302.5,-420.61 308.48,-427.47"/>
 </g>
 <!-- PanelEscenario&#45;&gt;Juego -->
 <!-- Personaje -->
@@ -175,9 +173,9 @@
 <!-- Juego&#45;&gt;Personaje -->
 <g id="edge5" class="edge">
 <title>Juego&#45;&gt;Personaje</title>
-<path fill="none" stroke="#435365" stroke-width="1.2" d="M314.51,-406.33C308.33,-393.57 301.84,-380.17 296.17,-368.47"/>
-<polygon fill="#435365" stroke="#435365" stroke-width="1.2" points="314.57,-406.44 319.73,-409.48 318.91,-415.41 313.75,-412.37 314.57,-406.44"/>
-<text xml:space="preserve" text-anchor="middle" x="311.37" y="-370.45" font-family="Arial" font-size="10.00" fill="#243246">1</text>
+<path fill="none" stroke="#435365" stroke-width="1.2" d="M313.27,-400.03C307.8,-389.34 302.14,-378.29 297.07,-368.39"/>
+<polygon fill="#435365" stroke="#435365" stroke-width="1.2" points="313.2,-399.88 318.42,-402.8 317.74,-408.75 312.51,-405.83 313.2,-399.88"/>
+<text xml:space="preserve" text-anchor="middle" x="312.38" y="-370.04" font-family="Arial" font-size="10.00" fill="#243246">1</text>
 </g>
 <!-- Obstaculo -->
 <g id="node10" class="node">
@@ -192,9 +190,9 @@
 <!-- Juego&#45;&gt;Obstaculo -->
 <g id="edge6" class="edge">
 <title>Juego&#45;&gt;Obstaculo</title>
-<path fill="none" stroke="#435365" stroke-width="1.2" d="M363.21,-406.33C369.39,-393.57 375.88,-380.17 381.56,-368.47"/>
-<polygon fill="#435365" stroke="#435365" stroke-width="1.2" points="363.16,-406.44 363.98,-412.37 358.82,-415.41 358,-409.48 363.16,-406.44"/>
-<text xml:space="preserve" text-anchor="middle" x="382.79" y="-382.42" font-family="Arial" font-size="10.00" fill="#243246">0..*</text>
+<path fill="none" stroke="#435365" stroke-width="1.2" d="M364.45,-400.03C369.93,-389.34 375.59,-378.29 380.66,-368.39"/>
+<polygon fill="#435365" stroke="#435365" stroke-width="1.2" points="364.53,-399.88 365.22,-405.83 359.99,-408.75 359.31,-402.8 364.53,-399.88"/>
+<text xml:space="preserve" text-anchor="middle" x="381.51" y="-382.37" font-family="Arial" font-size="10.00" fill="#243246">0..*</text>
 </g>
 <!-- Personaje&#45;&gt;Obstaculo -->
 <!-- Pajaro -->

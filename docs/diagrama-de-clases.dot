@@ -21,7 +21,7 @@ digraph DinoGoogle {
   </TABLE>>];
   SistemaEscenario [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#fcfcfc">
     <TR><TD><B>SistemaEscenario</B></TD></TR>
-    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">avanzar:<BR ALIGN="LEFT"/>ejecutarSalto<BR ALIGN="LEFT"/>ejecutarAgacharse<BR ALIGN="LEFT"/>configurarEstilo:</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">avanzar:<BR ALIGN="LEFT"/>ejecutarSalto<BR ALIGN="LEFT"/>ejecutarAgacharse<BR ALIGN="LEFT"/>keyDown:<BR ALIGN="LEFT"/>mouseDown:</TD></TR>
   </TABLE>>];
   SistemaReloj [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#fcfcfc">
     <TR><TD><B>SistemaReloj</B></TD></TR>
@@ -33,7 +33,7 @@ digraph DinoGoogle {
   </TABLE>>];
   PanelEscenario [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#fcfcfc">
     <TR><TD><B>PanelEscenario</B></TD></TR>
-    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">drawOn:<BR ALIGN="LEFT"/>tomarFoco<BR ALIGN="LEFT"/>dinosaurioDe:tiempo:<BR ALIGN="LEFT"/>configurarEstilo:</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT">drawOn:<BR ALIGN="LEFT"/>dinosaurioDe:tiempo:<BR ALIGN="LEFT"/>configurarEstilo:</TD></TR>
   </TABLE>>];
   Juego [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#e9f0f5">
     <TR><TD><B>Juego</B></TD></TR>
@@ -63,8 +63,8 @@ digraph DinoGoogle {
 
   // La asociación muestra una referencia conservada por la clase.
   edge [dir=forward, arrowtail=none, arrowhead=vee];
-  SistemaControles -> PanelControles [dir=both, arrowtail=vee];
-  SistemaEscenario -> PanelEscenario [dir=both, arrowtail=vee];
+  SistemaControles -> PanelControles;
+  SistemaEscenario -> PanelEscenario;
   SistemaEscenario -> Juego;
   PanelEscenario -> Juego [constraint=false];
 

@@ -3,10 +3,6 @@ Class {
 	#superclass : 'Morph',
 	#instVars : [
 		'estilo',
-		'sistema',
-		'botonInicio',
-		'cuadroFinal',
-		'campoNick',
 		'estado',
 		'resultados',
 		'fuenteTabla',
@@ -18,76 +14,13 @@ Class {
 }
 
 
-{ #category : 'inicializacion' }
-PanelControles >> boton: texto selector: selector en: posicionLocal tamanio: medida [
-
-	| boton lienzo rotulo |
-	boton := SimpleButtonMorph new
-		label: texto;
-		extent: medida;
-		position: self position + posicionLocal;
-		color: (estilo at: #relieve);
-		borderStyle: (BorderStyle raised width: 4; color: (estilo at: #metal); yourself);
-		target: sistema;
-		actionSelector: selector;
-		yourself.
-	boton submorphs first hide.
-	lienzo := FormCanvas extent: (((texto size * 6) - 1) * 2) @ 14.
-	self dibujarTexto: texto centradoEn: lienzo form boundingBox escala: 2
-		color: (estilo at: #tinta) en: lienzo.
-	rotulo := ImageMorph withForm: lienzo form.
-	rotulo position: boton center - (rotulo extent // 2).
-	boton addMorph: rotulo.
-	rotulo lock.
-	^ boton
-]
-
-{ #category : 'inicializacion' }
-PanelControles >> configurarSistema: unSistema [
-
-	sistema := unSistema
-]
-
-{ #category : 'inicializacion' }
-PanelControles >> construirComponentes [
-
-	botonInicio := self boton: 'JUGAR' selector: #solicitarInicio
-		en: 219 @ 91 tamanio: 202 @ 42.
-	self addMorph: botonInicio.
-
-	cuadroFinal := Morph new
-		color: Color transparent;
-		extent: 566 @ 282;
-		yourself.
-	self addMorph: cuadroFinal.
-	cuadroFinal position: self position + (37 @ 30).
-
-	campoNick := RubTextFieldMorph new
-		font: fuenteTabla;
-		color: (estilo at: #pantalla);
-		borderWidth: 0;
-		maxLength: 20;
-		extent: 246 @ 24;
-		yourself.
-	campoNick textArea textColor: (estilo at: #luz).
-	cuadroFinal addMorph: campoNick.
-	campoNick position: cuadroFinal position + (160 @ 166).
-
-	cuadroFinal addMorph: (self boton: 'REINICIAR' selector: #solicitarReinicio
-		en: 57 @ 254 tamanio: 170 @ 43).
-	cuadroFinal addMorph: (self boton: 'SALIR' selector: #solicitarSalida
-		en: 413 @ 254 tamanio: 170 @ 43).
-	botonInicio visible: estado = #enEspera.
-	cuadroFinal visible: estado = #finalizada
-]
-
 { #category : 'dibujo' }
 PanelControles >> dibujarFinalEn: canvas [
 
 	| origen titulo marcador entrada |
-	origen := cuadroFinal position.
+	origen := self limitesCuadroFinal origin.
 	canvas fillRectangle: self bounds color: (estilo at: #pantalla).
-	self dibujarMarco: cuadroFinal bounds fondo: (estilo at: #metal) hundido: false en: canvas.
+	self dibujarMarco: self limitesCuadroFinal fondo: (estilo at: #metal) hundido: false en: canvas.
 	titulo := (origen + (30 @ 22)) extent: 506 @ 54.
 	self dibujarMarco: titulo fondo: (estilo at: #relieve) hundido: false en: canvas.
 	self dibujarTexto: 'PARTIDA TERMINADA' centradoEn: titulo escala: 4 color: (estilo at: #tinta) en: canvas.
@@ -188,15 +121,9 @@ PanelControles >> initialize [
 { #category : 'interfaz' }
 PanelControles >> mostrarPuntaje: unPuntaje estado: unEstado [
 
-	estado = unEstado ifTrue: [ ^ self ].
+	(estado = unEstado and: [ puntaje = unPuntaje ]) ifTrue: [ ^ self ].
 	estado := unEstado.
 	puntaje := unPuntaje.
-	botonInicio ifNil: [ ^ self ].
-	botonInicio visible: estado = #enEspera.
-	cuadroFinal visible: estado = #finalizada.
-	estado = #finalizada ifTrue: [
-		campoNick setText: ''.
-		self world ifNotNil: [ campoNick textArea takeKeyboardFocus ] ].
 	self changed
 ]
 
@@ -207,17 +134,11 @@ PanelControles >> mostrarResultados: unaColeccion [
 	estado = #enEspera ifTrue: [ self changed ]
 ]
 
-{ #category : 'interfaz' }
-PanelControles >> nick [
-
-	^ campoNick ifNil: [ '' ] ifNotNil: [ campoNick text asString trimBoth ]
-]
-
 { #category : 'inicializacion' }
 PanelControles >> configurarEstilo: unEstilo [
 
 	estilo := unEstilo.
-	self construirComponentes
+	self changed
 ]
 
 { #category : 'dibujo' }
@@ -230,4 +151,10 @@ PanelControles >> dibujarMarco: unRectangulo fondo: unColor hundido: hundido en:
 PanelControles >> dibujarTexto: unTexto centradoEn: unRectangulo escala: escala color: unColor en: canvas [
 
 	(estilo at: #texto) valueWithArguments: { unTexto. unRectangulo. escala. unColor. canvas }
+]
+
+{ #category : 'dibujo' }
+PanelControles >> limitesCuadroFinal [
+
+	^ (self position + (37 @ 30)) extent: 566 @ 282
 ]
