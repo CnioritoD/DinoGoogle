@@ -1,3 +1,4 @@
+"Representa un obstáculo del escenario. Gestiona su posición, su desplazamiento y si ya se contabilizó al superarlo."
 Class {
 	#name : 'Obstaculo',
 	#superclass : 'Object',
@@ -41,7 +42,7 @@ Obstaculo >> fueSuperadoPor: unPersonaje [
 	^ self limites right <= unPersonaje limites left
 ]
 
-{ #category : 'inicializacion' }
+{ #category : 'initialization' }
 Obstaculo >> inicializarEn: unaPosicion tamanio: unTamanio [
 
 	posicion := unaPosicion.

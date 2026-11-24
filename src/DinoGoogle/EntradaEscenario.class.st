@@ -1,3 +1,4 @@
+"Recibe los eventos de teclado y mouse del escenario y traduce los controles a acciones de SistemaEscenario."
 Class {
 	#name : 'EntradaEscenario',
 	#superclass : 'Morph',
@@ -9,7 +10,7 @@ Class {
 	#tag : 'Interfaz'
 }
 
-{ #category : 'inicializacion' }
+{ #category : 'initialization' }
 EntradaEscenario >> configurarSistema: unSistema extension: unaExtension [
 
 	sistema := unSistema.
@@ -17,14 +18,14 @@ EntradaEscenario >> configurarSistema: unSistema extension: unaExtension [
 	self extent: unaExtension
 ]
 
-{ #category : 'eventos' }
+{ #category : 'event handling' }
 EntradaEscenario >> esFlechaAbajo: unEvento [
 
 	^ unEvento keyCharacter = Character arrowDown
 		or: [ unEvento keyValue = 31 or: [ unEvento key = KeyboardKey down ] ]
 ]
 
-{ #category : 'eventos' }
+{ #category : 'event handling' }
 EntradaEscenario >> esTeclaDeSalto: unEvento [
 
 	^ unEvento keyValue = 32
@@ -34,37 +35,37 @@ EntradaEscenario >> esTeclaDeSalto: unEvento [
 		or: [ unEvento keyCharacter = Character arrowUp ] ] ] ]
 ]
 
-{ #category : 'eventos' }
+{ #category : 'event handling' }
 EntradaEscenario >> handlesKeyboard: unEvento [
 
 	^ sistema notNil and: [ sistema estaEnCurso ]
 ]
 
-{ #category : 'eventos' }
+{ #category : 'event handling' }
 EntradaEscenario >> handlesMouseDown: unEvento [
 
 	^ sistema notNil and: [ sistema estaEnCurso ]
 ]
 
-{ #category : 'eventos' }
+{ #category : 'event handling' }
 EntradaEscenario >> keyDown: unEvento [
 
 	sistema estaEnCurso ifFalse: [ ^ self ].
 	(self esTeclaDeSalto: unEvento) ifTrue: [
 		sistema ejecutarSalto.
 		^ unEvento wasHandled: true ].
-	(self esFlechaAbajo: unEvento) ifTrue: [
-		sistema ejecutarAgacharse.
-		unEvento wasHandled: true ]
+	(self esFlechaAbajo: unEvento) ifFalse: [ ^ self ].
+	sistema ejecutarAgacharse.
+	unEvento wasHandled: true
 ]
 
-{ #category : 'eventos' }
+{ #category : 'event handling' }
 EntradaEscenario >> keyUp: unEvento [
 
 	sistema estaEnCurso ifFalse: [ ^ self ].
-	(self esFlechaAbajo: unEvento) ifTrue: [
-		sistema ejecutarPararse.
-		unEvento wasHandled: true ]
+	(self esFlechaAbajo: unEvento) ifFalse: [ ^ self ].
+	sistema ejecutarPararse.
+	unEvento wasHandled: true
 ]
 
 { #category : 'interfaz' }
@@ -74,15 +75,16 @@ EntradaEscenario >> montarEn: unContenedor posicion: unaPosicion [
 	self position: unaPosicion
 ]
 
-{ #category : 'eventos' }
+{ #category : 'event handling' }
 EntradaEscenario >> mouseDown: unEvento [
 
-	(unEvento redButtonPressed or: [ unEvento whichButton = MouseButtonEvent redButton ]) ifTrue: [
-		self tomarFoco.
-		sistema ejecutarSalto ]
+	(unEvento redButtonPressed or: [ unEvento whichButton = MouseButtonEvent redButton ])
+		ifFalse: [ ^ self ].
+	self tomarFoco.
+	sistema ejecutarSalto
 ]
 
-{ #category : 'eventos' }
+{ #category : 'event handling' }
 EntradaEscenario >> tomarFoco [
 
 	self world ifNotNil: [ :mundo | mundo activeHand newKeyboardFocus: self ]

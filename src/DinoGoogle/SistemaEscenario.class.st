@@ -1,3 +1,4 @@
+"Conecta el modelo Juego con el panel del escenario y convierte las acciones del jugador en mensajes al modelo."
 Class {
 	#name : 'SistemaEscenario',
 	#superclass : 'Object',
@@ -18,13 +19,13 @@ SistemaEscenario >> avanzar: segundos [
 	self refrescarPanel
 ]
 
-{ #category : 'inicializacion' }
+{ #category : 'initialization' }
 SistemaEscenario >> configurarEstilo: unEstilo [
 
 	panel configurarEstilo: unEstilo
 ]
 
-{ #category : 'inicializacion' }
+{ #category : 'initialization' }
 SistemaEscenario >> configurarJuego: unJuego panel: unPanel [
 
 	juego := unJuego.

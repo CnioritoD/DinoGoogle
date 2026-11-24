@@ -1,3 +1,4 @@
+"Dibuja el personaje, los obstáculos, las monedas y los indicadores. Carga y guarda en caché los cuadros de los sprites."
 Class {
 	#name : 'PanelEscenario',
 	#superclass : 'Morph',
@@ -84,8 +85,8 @@ PanelEscenario class >> cuadrosNombrados: unNombre tamanio: unTamanio [
 	"Array con los cuadros de la animacion (uno solo si es una imagen fija), o nil si no hay
 	 archivos. Se lee una sola vez; si cambiás un PNG, ejecutá PanelEscenario limpiarCacheSprites."
 
-	^ self cacheSprites at: unNombre ifAbsent: [
-		self cacheSprites at: unNombre put: (self leerCuadros: unNombre tamanio: unTamanio) ]
+	^ self cacheSprites at: unNombre ifAbsentPut: [
+		self leerCuadros: unNombre tamanio: unTamanio ]
 ]
 
 { #category : 'imagenes' }
@@ -157,7 +158,7 @@ PanelEscenario class >> leerArchivo: unArchivo tamanio: unTamanio [
 	form := [ unArchivo binaryReadStreamDo: [ :stream | PNGReadWriter formFromStream: stream ] ]
 		on: Error
 		do: [ :error |
-			Transcript show: 'PanelEscenario: no pude leer ', unArchivo basename; cr.
+			Transcript nextPutAll: 'PanelEscenario: no pude leer '; nextPutAll: unArchivo basename; cr.
 			nil ].
 	form ifNil: [ ^ nil ].
 	^ form extent = unTamanio
@@ -235,20 +236,20 @@ PanelEscenario class >> pixelesCriaturaDePie [
 		'...DDDD..DDDD.....' )
 ]
 
-{ #category : 'inicializacion' }
+{ #category : 'initialization' }
 PanelEscenario >> configurarEstilo: unEstilo [
 
 	estilo := unEstilo
 ]
 
-{ #category : 'inicializacion' }
+{ #category : 'initialization' }
 PanelEscenario >> configurarTamanio: unTamanio [
 
 	self extent: unTamanio + (0 @ 78).
 	self clipSubmorphs: true
 ]
 
-{ #category : 'dibujo' }
+{ #category : 'drawing' }
 PanelEscenario >> dibujarCactus: obstaculo en: canvas [
 
 	| limites origen ancho alto izquierda derecha brazo unionIzquierda unionDerecha puntaDerecha vertices |
@@ -282,7 +283,7 @@ PanelEscenario >> dibujarCactus: obstaculo en: canvas [
 		color: (Color fromHexString: '37634B')
 ]
 
-{ #category : 'dibujo' }
+{ #category : 'drawing' }
 PanelEscenario >> dibujarCieloEn: canvas [
 
 	| origen |
@@ -302,7 +303,7 @@ PanelEscenario >> dibujarCieloEn: canvas [
 				extent: (116 - (escalon * 2)) @ 9) color: (estilo at: #relieve) ] ]
 ]
 
-{ #category : 'dibujo' }
+{ #category : 'drawing' }
 PanelEscenario >> dibujarIndicadoresEn: canvas [
 
 	| puntaje tiempo |
@@ -310,19 +311,19 @@ PanelEscenario >> dibujarIndicadoresEn: canvas [
 	tiempo := (self position + (406 @ 300)) extent: 218 @ 34.
 	self dibujarMarco: puntaje fondo: (estilo at: #pantalla) hundido: true en: canvas.
 	self dibujarMarco: tiempo fondo: (estilo at: #pantalla) hundido: true en: canvas.
-	self dibujarTexto: 'PUNTOS ', puntos printString
-		centradoEn: puntaje escala: 2 color: (estilo at: #luz) en: canvas.
-	self dibujarTexto: 'TIEMPO ', tiempoTranscurrido floor printString, ' S'
-		centradoEn: tiempo escala: 2 color: (estilo at: #luz) en: canvas
+	self dibujarIndicador: 'PUNTOS ', puntos printString
+		centradoEn: puntaje en: canvas.
+	self dibujarIndicador: 'TIEMPO ', tiempoTranscurrido floor printString, ' S'
+		centradoEn: tiempo en: canvas
 ]
 
-{ #category : 'dibujo' }
+{ #category : 'drawing' }
 PanelEscenario >> dibujarMarco: unRectangulo fondo: unColor hundido: hundido en: canvas [
 
 	(estilo at: #marco) value: unRectangulo value: unColor value: hundido value: canvas
 ]
 
-{ #category : 'dibujo' }
+{ #category : 'drawing' }
 PanelEscenario >> dibujarMonedasEn: canvas [
     monedas do: [ :limites |
         | origen |
@@ -337,7 +338,7 @@ PanelEscenario >> dibujarMonedasEn: canvas [
     ]
 ]
 
-{ #category : 'dibujo' }
+{ #category : 'drawing' }
 PanelEscenario >> dibujarObstaculosEn: canvas [
 
 	obstaculos do: [ :obstaculo |
@@ -346,7 +347,7 @@ PanelEscenario >> dibujarObstaculosEn: canvas [
 			ifFalse: [ self dibujarCactus: obstaculo en: canvas ] ]
 ]
 
-{ #category : 'dibujo' }
+{ #category : 'drawing' }
 PanelEscenario >> dibujarPajaro: pajaro en: canvas [
 	"El dibujo ocupa la caja de 46 x 22 del pajaro; el ala sube y baja (aletea)."
 
@@ -367,7 +368,7 @@ PanelEscenario >> dibujarPajaro: pajaro en: canvas [
 	canvas fillRectangle: ((origen + (8 @ 8)) extent: 2 @ 2) color: Color white
 ]
 
-{ #category : 'dibujo' }
+{ #category : 'drawing' }
 PanelEscenario >> dibujarPersonajeEn: canvas [
 
 	| origen imagen |
@@ -377,7 +378,7 @@ PanelEscenario >> dibujarPersonajeEn: canvas [
 	canvas paintImage: imagen at: origen
 ]
 
-{ #category : 'dibujo' }
+{ #category : 'drawing' }
 PanelEscenario >> dibujarSueloEn: canvas [
 
 	| borde desplazamiento |
@@ -390,13 +391,13 @@ PanelEscenario >> dibujarSueloEn: canvas [
 		canvas fillRectangle: ((borde + (x @ 7)) extent: 6 @ 2) color: (estilo at: #sombra) ]
 ]
 
-{ #category : 'dibujo' }
-PanelEscenario >> dibujarTexto: unTexto centradoEn: unRectangulo escala: escala color: unColor en: canvas [
+{ #category : 'drawing' }
+PanelEscenario >> dibujarIndicador: unTexto centradoEn: unRectangulo en: canvas [
 
-	(estilo at: #texto) valueWithArguments: { unTexto. unRectangulo. escala. unColor. canvas }
+	(estilo at: #texto) valueWithArguments: { unTexto. unRectangulo. 2. (estilo at: #luz). canvas }
 ]
 
-{ #category : 'dibujo' }
+{ #category : 'drawing' }
 PanelEscenario >> drawOn: canvas [
 
 	(limitesPersonaje isNil or: [ estilo isNil ]) ifTrue: [ ^ super drawOn: canvas ].

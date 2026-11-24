@@ -1,3 +1,4 @@
+"Coordina el escenario, los controles y el reloj. Inicia, reinicia y cierra partidas, y registra sus resultados."
 Class {
 	#name : 'CoordinadorPartida',
 	#superclass : 'Object',

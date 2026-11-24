@@ -1,3 +1,4 @@
+"Ventana principal de DinoGoogle. Crea el coordinador y prepara los recursos gráficos que comparten los paneles. Para abrir el juego, evaluá AplicacionJuego new abrir."
 Class {
 	#name : 'AplicacionJuego',
 	#superclass : 'SystemWindow',
@@ -30,7 +31,7 @@ AplicacionJuego class >> estilo [
 	^ recursos
 ]
 
-{ #category : 'dibujo' }
+{ #category : 'drawing' }
 AplicacionJuego class >> glifos [
 	"Cada entero codifica los cinco píxeles de una fila, del bit 5 al bit 1."
 
@@ -78,7 +79,7 @@ AplicacionJuego class >> pantalla [
 	^ Color r: 0.23 g: 0.24 b: 0.25
 ]
 
-{ #category : 'dibujo' }
+{ #category : 'drawing' }
 AplicacionJuego class >> pintorDeMarcosCon: unaPaleta [
 
 	| sombra luz relieve tinta |
@@ -98,7 +99,7 @@ AplicacionJuego class >> pintorDeMarcosCon: unaPaleta [
 		canvas fillRectangle: (interior insetBy: 4) color: unColor ]
 ]
 
-{ #category : 'dibujo' }
+{ #category : 'drawing' }
 AplicacionJuego class >> pintorDeTexto [
 
 	| glifos |
@@ -186,7 +187,7 @@ AplicacionJuego >> delete [
 	^ super delete
 ]
 
-{ #category : 'dibujo' }
+{ #category : 'drawing' }
 AplicacionJuego >> drawOn: canvas [
 
 	| titulo |

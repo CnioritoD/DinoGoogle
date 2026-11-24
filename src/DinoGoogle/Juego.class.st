@@ -1,3 +1,4 @@
+"Mantiene el estado de la partida y aplica sus reglas de movimiento, generación de obstáculos y monedas, colisiones y puntaje."
 Class {
 	#name : 'Juego',
 	#superclass : 'Object',
@@ -7,12 +8,8 @@ Class {
 		'estado',
 		'puntaje',
 		'tiempoTranscurrido',
-		'velocidadDesplazamiento',
-		'intervaloObstaculos',
 		'tiempoHastaObstaculo',
 		'aleatorio',
-		'tamanioEscenario',
-		'alturaSuelo',
 		'monedas',
 		'tiempoHastaMoneda'
 	],
@@ -20,13 +17,6 @@ Class {
 	#package : 'DinoGoogle',
 	#tag : 'Modelo'
 }
-
-{ #category : 'privado' }
-Juego >> actualizarDificultad [
-
-	velocidadDesplazamiento := (255 + (tiempoTranscurrido * 6)) min: 600.
-	intervaloObstaculos := (1.55 - (tiempoTranscurrido * 0.02)) max: 0.8
-]
 
 { #category : 'partida' }
 Juego >> agacharse [
@@ -37,7 +27,7 @@ Juego >> agacharse [
 { #category : 'acceso' }
 Juego >> alturaSuelo [
 
-	^ alturaSuelo
+	^ 226
 ]
 
 { #category : 'partida' }
@@ -55,7 +45,6 @@ Juego >> avanzar: segundos [
 Juego >> avanzarPaso: segundos [
 
 	tiempoTranscurrido := tiempoTranscurrido + segundos.
-	self actualizarDificultad.
 	self generarObstaculoSiCorresponde: segundos.
 	personaje avanzar: segundos.
 	self moverObstaculos: segundos.
@@ -96,7 +85,7 @@ Juego >> crearGrupoDeCactus [
 	 Si a la velocidad actual el salto no alcanzaria para pasar por encima del grupo
 	 entero, se le van quitando cactus hasta que se pueda saltar."
 
-	| cantidad mismaAltura altoComun anchos altos separaciones x obstaculo |
+	| cantidad mismaAltura altoComun anchos altos separaciones |
 	cantidad := self cantidadDeCactusEnGrupo.
 	mismaAltura := aleatorio next < 0.5.
 	altoComun := 25 + (aleatorio nextInteger: 20).
@@ -112,11 +101,18 @@ Juego >> crearGrupoDeCactus [
 				+ ((separaciones first: cantidad - 1) inject: 0 into: [ :a :b | a + b ])
 			altura: ((altos first: cantidad) inject: 0 into: [ :a :b | a max: b ])) not ] ]
 		whileTrue: [ cantidad := cantidad - 1 ].
-	x := tamanioEscenario x.
+	self agregarCactus: cantidad anchos: anchos alturas: altos separaciones: separaciones
+]
+
+{ #category : 'privado' }
+Juego >> agregarCactus: cantidad anchos: anchos alturas: altos separaciones: separaciones [
+
+	| x obstaculo |
+	x := self tamanioEscenario x.
 	1 to: cantidad do: [ :i |
 		obstaculo := Obstaculo new.
 		obstaculo
-			inicializarEn: x @ (alturaSuelo - (altos at: i))
+			inicializarEn: x @ (self alturaSuelo - (altos at: i))
 			tamanio: (anchos at: i) @ (altos at: i).
 		"Un grupo vale un solo punto: solo el ultimo cactus se contabiliza."
 		i < cantidad ifTrue: [ obstaculo marcarContabilizado ].
@@ -143,7 +139,7 @@ Juego >> crearPajaro [
 	| alturaVuelo pajaro |
 	alturaVuelo := #(8 30 70) at: (aleatorio nextInteger: 3).
 	pajaro := Pajaro new.
-	pajaro inicializarEn: tamanioEscenario x @ (alturaSuelo - alturaVuelo - 22) tamanio: 46 @ 22.
+	pajaro inicializarEn: self tamanioEscenario x @ (self alturaSuelo - alturaVuelo - 22) tamanio: 46 @ 22.
 	obstaculos add: pajaro
 ]
 
@@ -174,7 +170,7 @@ Juego >> estadoEscenario [
 				#alaArriba -> (vuela and: [ obstaculo alaArriba ])
 			} asDictionary ]).
 		#monedas -> (monedas collect: [ :moneda | moneda limites ]).
-		#suelo -> alturaSuelo.
+		#suelo -> self alturaSuelo.
 		#puntos -> puntaje.
 		#tiempo -> tiempoTranscurrido
 	} asDictionary
@@ -192,8 +188,8 @@ Juego >> generarMonedaSiCorresponde: segundos [
     tiempoHastaMoneda := tiempoHastaMoneda - segundos.
     tiempoHastaMoneda > 0 ifTrue: [ ^ self ].
 
-    posicionMoneda := tamanioEscenario x @
-        (alturaSuelo - (40 + ((aleatorio nextInteger: 3) * 30))).
+    posicionMoneda := self tamanioEscenario x @
+        (self alturaSuelo - (40 + ((aleatorio nextInteger: 3) * 30))).
 
     moneda := Moneda new.
     moneda inicializarEn: posicionMoneda tamanio: 14 @ 14.
@@ -212,7 +208,7 @@ Juego >> generarObstaculoSiCorresponde: segundos [
 	tiempoHastaObstaculo > 0 ifTrue: [ ^ self ].
 
 	self crearObstaculo.
-	tiempoHastaObstaculo := tiempoHastaObstaculo + intervaloObstaculos + (aleatorio next * 0.32)
+	tiempoHastaObstaculo := tiempoHastaObstaculo + self intervaloObstaculos + (aleatorio next * 0.32)
 ]
 
 { #category : 'privado' }
@@ -228,12 +224,10 @@ Juego >> iniciar [
 	estado = #enEspera ifTrue: [ estado := #enCurso ]
 ]
 
-{ #category : 'inicializacion' }
+{ #category : 'initialization' }
 Juego >> initialize [
 
 	super initialize.
-	tamanioEscenario := 640 @ 266.
-	alturaSuelo := 226.
 	personaje := Personaje new.
 	obstaculos := OrderedCollection new.
 	monedas := OrderedCollection new.
@@ -244,14 +238,14 @@ Juego >> initialize [
 { #category : 'privado' }
 Juego >> moverMonedas: segundos [
     monedas do: [ :moneda |
-        moneda avanzar: segundos velocidad: velocidadDesplazamiento ]
+        moneda avanzar: segundos velocidad: self velocidadDesplazamiento ]
 ]
 
 { #category : 'privado' }
 Juego >> moverObstaculos: segundos [
 
 	obstaculos do: [ :obstaculo |
-		obstaculo avanzar: segundos velocidad: velocidadDesplazamiento ]
+		obstaculo avanzar: segundos velocidad: self velocidadDesplazamiento ]
 ]
 
 { #category : 'acceso' }
@@ -294,11 +288,9 @@ Juego >> reiniciar [
 	estado := #enEspera.
 	puntaje := 0.
 	tiempoTranscurrido := 0.
-	velocidadDesplazamiento := 255.
-	intervaloObstaculos := 1.55.
 	tiempoHastaObstaculo := 0.65.
 	tiempoHastaMoneda := 3.
-	personaje reiniciarEn: 86 @ 0 suelo: alturaSuelo
+	personaje reiniciarEn: 86 @ 0 suelo: self alturaSuelo
 ]
 
 { #category : 'privado' }
@@ -325,18 +317,30 @@ Juego >> sePuedeSaltarGrupoDeAncho: unAncho altura: unaAltura [
 	 tarda en cruzarlo (ancho del grupo + ancho del personaje, a la velocidad actual).
 	 Se deja un margen del 25% para que el salto no tenga que ser perfecto."
 
-	^ (unAncho + personaje tamanio x) / velocidadDesplazamiento
+	^ (unAncho + personaje tamanio x) / self velocidadDesplazamiento
 		<= ((personaje tiempoSobreAltura: unaAltura) * 0.75)
 ]
 
 { #category : 'acceso' }
 Juego >> tamanioEscenario [
 
-	^ tamanioEscenario
+	^ 640 @ 266
 ]
 
 { #category : 'acceso' }
 Juego >> tiempoTranscurrido [
 
 	^ tiempoTranscurrido
+]
+
+{ #category : 'privado' }
+Juego >> intervaloObstaculos [
+
+	^ (1.55 - (tiempoTranscurrido * 0.02)) max: 0.8
+]
+
+{ #category : 'privado' }
+Juego >> velocidadDesplazamiento [
+
+	^ (255 + (tiempoTranscurrido * 6)) min: 600
 ]

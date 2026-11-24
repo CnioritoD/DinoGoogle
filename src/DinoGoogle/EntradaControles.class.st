@@ -1,3 +1,4 @@
+"Crea los botones y el campo de apodo. Actualiza su visibilidad según el estado de la partida y envía las acciones a SistemaControles."
 Class {
 	#name : 'EntradaControles',
 	#superclass : 'Morph',
@@ -22,12 +23,12 @@ EntradaControles >> actualizarComponentes [
 	self visible: estado ~= #enCurso.
 	botonInicio visible: estado = #enEspera.
 	cuadroFinal visible: estado = #finalizada.
-	estado = #finalizada ifTrue: [
-		campoNick setText: ''.
-		self world ifNotNil: [ campoNick textArea takeKeyboardFocus ] ]
+	estado = #finalizada ifFalse: [ ^ self ].
+	campoNick setText: ''.
+	self world ifNotNil: [ campoNick textArea takeKeyboardFocus ]
 ]
 
-{ #category : 'inicializacion' }
+{ #category : 'initialization' }
 EntradaControles >> boton: texto selector: selector en: posicionLocal tamanio: medida [
 
 	| boton lienzo rotulo |
@@ -50,7 +51,7 @@ EntradaControles >> boton: texto selector: selector en: posicionLocal tamanio: m
 	^ boton
 ]
 
-{ #category : 'inicializacion' }
+{ #category : 'initialization' }
 EntradaControles >> configurarEstilo: unEstilo [
 
 	estilo := unEstilo.
@@ -58,7 +59,7 @@ EntradaControles >> configurarEstilo: unEstilo [
 	self construirComponentes
 ]
 
-{ #category : 'inicializacion' }
+{ #category : 'initialization' }
 EntradaControles >> configurarSistema: unSistema extension: unaExtension limitesCuadroFinal: unRectangulo [
 
 	sistema := unSistema.
@@ -68,7 +69,7 @@ EntradaControles >> configurarSistema: unSistema extension: unaExtension limites
 	self extent: unaExtension
 ]
 
-{ #category : 'inicializacion' }
+{ #category : 'initialization' }
 EntradaControles >> construirComponentes [
 
 	botonInicio := self boton: 'JUGAR' selector: #solicitarInicio
@@ -114,7 +115,7 @@ EntradaControles >> mostrarEstado: unEstado [
 	self actualizarComponentes
 ]
 
-{ #category : 'acciones' }
+{ #category : 'acceso' }
 EntradaControles >> nick [
 
 	^ campoNick text asString trimBoth

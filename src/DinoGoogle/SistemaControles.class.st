@@ -1,3 +1,4 @@
+"Conecta la entrada de los controles con el coordinador y actualiza el panel con el estado y los resultados de la partida."
 Class {
 	#name : 'SistemaControles',
 	#superclass : 'Object',
@@ -11,7 +12,7 @@ Class {
 	#tag : 'Interfaz'
 }
 
-{ #category : 'inicializacion' }
+{ #category : 'initialization' }
 SistemaControles >> configurarCoordinador: unCoordinador panel: unPanel [
 
 	coordinador := unCoordinador.
@@ -23,7 +24,7 @@ SistemaControles >> configurarCoordinador: unCoordinador panel: unPanel [
 		limitesCuadroFinal: panel limitesCuadroFinalLocales
 ]
 
-{ #category : 'inicializacion' }
+{ #category : 'initialization' }
 SistemaControles >> configurarEstilo: unEstilo [
 
 	panel configurarEstilo: unEstilo.

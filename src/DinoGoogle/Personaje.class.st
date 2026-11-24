@@ -1,3 +1,4 @@
+"Representa al personaje controlado por el jugador. Calcula el salto y ajusta su posición y sus límites al agacharse y pararse."
 Class {
 	#name : 'Personaje',
 	#superclass : 'Object',
@@ -30,9 +31,9 @@ Personaje >> agacharse [
 { #category : 'privado' }
 Personaje >> aterrizarSiCorresponde [
 
-	self estaEnSuelo ifTrue: [
-		posicion := posicion x @ (alturaSuelo - tamanio y).
-		velocidadVertical := 0 ]
+	self estaEnSuelo ifFalse: [ ^ self ].
+	posicion := posicion x @ (alturaSuelo - tamanio y).
+	velocidadVertical := 0
 ]
 
 { #category : 'movimiento' }
@@ -56,7 +57,7 @@ Personaje >> estaEnSuelo [
 	^ posicion y + tamanio y >= alturaSuelo and: [ velocidadVertical >= 0 ]
 ]
 
-{ #category : 'inicializacion' }
+{ #category : 'initialization' }
 Personaje >> initialize [
 
 	super initialize.
@@ -90,7 +91,7 @@ Personaje >> posicion [
 	^ posicion
 ]
 
-{ #category : 'inicializacion' }
+{ #category : 'initialization' }
 Personaje >> reiniciarEn: unaPosicion suelo: unNumero [
 
 	alturaSuelo := unNumero.
@@ -103,9 +104,9 @@ Personaje >> reiniciarEn: unaPosicion suelo: unNumero [
 { #category : 'movimiento' }
 Personaje >> saltar [
 
-	self estaEnSuelo ifTrue: [
-		self pararse.
-		velocidadVertical := impulsoSalto negated ]
+	self estaEnSuelo ifFalse: [ ^ self ].
+	self pararse.
+	velocidadVertical := impulsoSalto negated
 ]
 
 { #category : 'acceso' }
