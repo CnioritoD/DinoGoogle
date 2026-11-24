@@ -12,7 +12,7 @@ Class {
 		'tiempoHastaObstaculo',
 		'aleatorio',
 		'tamanioEscenario',
-		'alturaSuelo'
+		'alturaSuelo',
 		'monedas',
 		'tiempoHastaMoneda'
 	],
@@ -235,7 +235,7 @@ Juego >> initialize [
 	alturaSuelo := 226.
 	personaje := Personaje new.
 	obstaculos := OrderedCollection new.
-	Monedas := OrderedCollection new.
+	monedas := OrderedCollection new.
 	aleatorio := Random new.
 	self reiniciar
 ]

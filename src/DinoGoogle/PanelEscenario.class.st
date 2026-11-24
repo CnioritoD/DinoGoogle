@@ -8,7 +8,7 @@ Class {
 		'obstaculos',
 		'alturaSuelo',
 		'puntos',
-		'tiempoTranscurrido'
+		'tiempoTranscurrido',
 		'monedas'
 	],
 	#classVars : [
@@ -174,8 +174,8 @@ PanelEscenario >> drawOn: canvas [
 		self dibujarSueloEn: lienzo.
 		lienzo clipBy: (self bounds insetBy: 7) during: [ :escena |
 			self dibujarPersonajeEn: escena.
-			self dibujarObstaculosEn: escena
-			self dibujarMonedasEn: escena. ].
+			self dibujarObstaculosEn: escena.
+			self dibujarMonedasEn: escena ].
 		self dibujarIndicadoresEn: lienzo ]
 ]
 
