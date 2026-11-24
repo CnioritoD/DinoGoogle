@@ -60,15 +60,3 @@ Obstaculo >> marcarContabilizado [
 
 	contabilizado := true
 ]
-
-{ #category : 'acceso' }
-Obstaculo >> posicion [
-
-	^ posicion
-]
-
-{ #category : 'acceso' }
-Obstaculo >> tamanio [
-
-	^ tamanio
-]

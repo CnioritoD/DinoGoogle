@@ -45,12 +45,6 @@ SistemaControles >> mostrarResultados: unaColeccion [
 	panel mostrarResultados: unaColeccion
 ]
 
-{ #category : 'interfaz' }
-SistemaControles >> panel [
-
-	^ panel
-]
-
 { #category : 'acciones' }
 SistemaControles >> solicitarInicio [
 

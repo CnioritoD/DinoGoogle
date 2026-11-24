@@ -77,12 +77,6 @@ SistemaEscenario >> montarEn: unContenedor posicion: unaPosicion [
 	entrada montarEn: unContenedor posicion: unaPosicion
 ]
 
-{ #category : 'acceso' }
-SistemaEscenario >> panel [
-
-	^ panel
-]
-
 { #category : 'partida' }
 SistemaEscenario >> prepararJuego [
 

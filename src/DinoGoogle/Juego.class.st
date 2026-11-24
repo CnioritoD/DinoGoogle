@@ -28,12 +28,6 @@ Juego >> actualizarDificultad [
 	intervaloObstaculos := (1.55 - (tiempoTranscurrido * 0.02)) max: 0.8
 ]
 
-{ #category : 'acceso' }
-Juego >> alturaSuelo [
-
-	^ alturaSuelo
-]
-
 { #category : 'partida' }
 Juego >> agacharse [
 
@@ -245,18 +239,6 @@ Juego >> moverObstaculos: segundos [
 
 	obstaculos do: [ :obstaculo |
 		obstaculo avanzar: segundos velocidad: velocidadDesplazamiento ]
-]
-
-{ #category : 'acceso' }
-Juego >> obstaculos [
-
-	^ obstaculos
-]
-
-{ #category : 'acceso' }
-Juego >> personaje [
-
-	^ personaje
 ]
 
 { #category : 'acceso' }

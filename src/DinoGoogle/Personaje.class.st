@@ -83,12 +83,6 @@ Personaje >> limites [
 	^ posicion extent: tamanio
 ]
 
-{ #category : 'acceso' }
-Personaje >> posicion [
-
-	^ posicion
-]
-
 { #category : 'movimiento' }
 Personaje >> pararse [
 

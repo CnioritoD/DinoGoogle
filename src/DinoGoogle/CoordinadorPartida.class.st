@@ -153,24 +153,6 @@ CoordinadorPartida >> salir [
 	self prepararSiguientePartida
 ]
 
-{ #category : 'partida' }
-CoordinadorPartida >> solicitarAgacharse [
-
-	escenario ejecutarAgacharse
-]
-
-{ #category : 'partida' }
-CoordinadorPartida >> solicitarPararse [
-
-	escenario ejecutarPararse
-]
-
-{ #category : 'partida' }
-CoordinadorPartida >> solicitarSalto [
-
-	escenario ejecutarSalto
-]
-
 { #category : 'inicializacion' }
 CoordinadorPartida >> configurarEstilo: unEstilo [
 
