@@ -15,9 +15,7 @@ Class {
 		'monedas'
 	],
 	#classVars : [
-		'CacheSprites',
-		'CarpetaSprites',
-		'FpsSprites'
+		'CacheSprites'
 	],
 	#category : 'DinoGoogle-Interfaz',
 	#package : 'DinoGoogle',
@@ -29,12 +27,13 @@ PanelEscenario class >> archivosDe: unNombre [
 	"Si existe una carpeta con ese nombre, devuelve sus PNG ordenados por el numero que
 	 tienen en el nombre (0, 1, 2...). Si no, devuelve el archivo <nombre>.png (o nada)."
 
-	| carpetaDeCuadros unico |
-	carpetaDeCuadros := (self carpetaSprites / unNombre) asFileReference.
+	| carpetaSprites carpetaDeCuadros unico |
+	carpetaSprites := self carpetaSpritesPorDefecto.
+	carpetaDeCuadros := (carpetaSprites / unNombre) asFileReference.
 	carpetaDeCuadros isDirectory ifTrue: [
 		^ ((carpetaDeCuadros children select: [ :each | each extension asLowercase = 'png' ])
 			asSortedCollection: [ :a :b | (self numeroDe: a) <= (self numeroDe: b) ]) asArray ].
-	unico := (self carpetaSprites / (unNombre , '.png')) asFileReference.
+	unico := (carpetaSprites / (unNombre , '.png')) asFileReference.
 	^ unico exists
 		ifTrue: [ { unico } ]
 		ifFalse: [ #() ]
@@ -44,22 +43,6 @@ PanelEscenario class >> archivosDe: unNombre [
 PanelEscenario class >> cacheSprites [
 
 	^ CacheSprites ifNil: [ CacheSprites := Dictionary new ]
-]
-
-{ #category : 'configuracion' }
-PanelEscenario class >> carpetaSprites [
-	"Carpeta donde estan los PNG. Si no se configuro ninguna, se usa la carpeta 'assets' del
-	 repositorio de Iceberg (la que esta junto a 'src')."
-
-	^ CarpetaSprites ifNil: [ self carpetaSpritesPorDefecto ]
-]
-
-{ #category : 'configuracion' }
-PanelEscenario class >> carpetaSprites: unaRuta [
-	"Para usar otra carpeta. Ejemplo: PanelEscenario carpetaSprites: 'C:\Users\yo\Desktop\DinoGoogle\assets'"
-
-	CarpetaSprites := unaRuta asFileReference.
-	self limpiarCacheSprites
 ]
 
 { #category : 'configuracion' }
@@ -144,13 +127,7 @@ PanelEscenario class >> enGrises: unaImagen [
 PanelEscenario class >> framesPorSegundoSprites [
 	"Velocidad de las animaciones (los PNG no guardan cuanto dura cada cuadro)."
 
-	^ FpsSprites ifNil: [ 8 ]
-]
-
-{ #category : 'configuracion' }
-PanelEscenario class >> framesPorSegundoSprites: unNumero [
-
-	FpsSprites := unNumero
+	^ 8
 ]
 
 { #category : 'configuracion' }

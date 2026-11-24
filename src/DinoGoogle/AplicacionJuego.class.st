@@ -153,12 +153,6 @@ AplicacionJuego >> activeTitleFillStyle [
 	^ Color transparent
 ]
 
-{ #category : 'open/close' }
-AplicacionJuego >> cerrar [
-
-	^ self delete
-]
-
 { #category : 'initialization' }
 AplicacionJuego >> construirInterfaz [
 
