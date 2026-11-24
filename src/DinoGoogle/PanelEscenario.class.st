@@ -21,45 +21,231 @@ Class {
 	#tag : 'Interfaz'
 }
 
+{ #category : 'configuracion' }
+PanelEscenario class >> archivosDe: unNombre [
+	"Si existe una carpeta con ese nombre, devuelve sus PNG ordenados por el numero que
+	 tienen en el nombre (0, 1, 2...). Si no, devuelve el archivo <nombre>.png (o nada)."
+
+	| carpetaDeCuadros unico |
+	carpetaDeCuadros := (self carpetaSprites / unNombre) asFileReference.
+	carpetaDeCuadros isDirectory ifTrue: [
+		^ ((carpetaDeCuadros children select: [ :each | each extension asLowercase = 'png' ])
+			asSortedCollection: [ :a :b | (self numeroDe: a) <= (self numeroDe: b) ]) asArray ].
+	unico := (self carpetaSprites / (unNombre , '.png')) asFileReference.
+	^ unico exists
+		ifTrue: [ { unico } ]
+		ifFalse: [ #() ]
+]
+
+{ #category : 'configuracion' }
+PanelEscenario class >> cacheSprites [
+
+	^ CacheSprites ifNil: [ CacheSprites := Dictionary new ]
+]
+
+{ #category : 'configuracion' }
+PanelEscenario class >> carpetaSprites [
+	"Carpeta donde estan los PNG. Si no se configuro ninguna, se usa la carpeta 'assets' del
+	 repositorio de Iceberg (la que esta junto a 'src')."
+
+	^ CarpetaSprites ifNil: [ self carpetaSpritesPorDefecto ]
+]
+
+{ #category : 'configuracion' }
+PanelEscenario class >> carpetaSprites: unaRuta [
+	"Para usar otra carpeta. Ejemplo: PanelEscenario carpetaSprites: 'C:\Users\yo\Desktop\DinoGoogle\assets'"
+
+	CarpetaSprites := unaRuta asFileReference.
+	self limpiarCacheSprites
+]
+
+{ #category : 'configuracion' }
+PanelEscenario class >> carpetaSpritesPorDefecto [
+
+	^ [ (IceRepository registry detect: [ :each | each name beginsWith: 'DinoGoogle' ])
+		location / 'assets' ]
+		on: Error
+		do: [ :error | FileLocator imageDirectory / 'assets' ]
+]
+
+{ #category : 'imagenes' }
+PanelEscenario class >> criaturaDeSerieAgachada: estaAgachada [
+
+	| clave |
+	clave := estaAgachada ifTrue: [ #criaturaAgachada ] ifFalse: [ #criaturaDePie ].
+	^ self cacheSprites at: clave ifAbsentPut: [
+		self dibujarCriaturaCon: (estaAgachada
+			ifTrue: [ self pixelesCriaturaAgachada ]
+			ifFalse: [ self pixelesCriaturaDePie ]) ]
+]
+
+{ #category : 'imagenes' }
+PanelEscenario class >> cuadrosNombrados: unNombre tamanio: unTamanio [
+	"Array con los cuadros de la animacion (uno solo si es una imagen fija), o nil si no hay
+	 archivos. Se lee una sola vez; si cambiás un PNG, ejecutá PanelEscenario limpiarCacheSprites."
+
+	^ self cacheSprites at: unNombre ifAbsent: [
+		self cacheSprites at: unNombre put: (self leerCuadros: unNombre tamanio: unTamanio) ]
+]
+
+{ #category : 'imagenes' }
+PanelEscenario class >> dibujarCriaturaCon: filas [
+
+	| lienzo colores |
+	lienzo := FormCanvas extent: (filas first size @ filas size) * 2.
+	colores := Dictionary newFrom: {
+		$D -> (Color fromHexString: '20342B').
+		$S -> (Color fromHexString: '365947').
+		$G -> (Color fromHexString: '5D9461').
+		$L -> (Color fromHexString: 'A0C878').
+		$E -> (Color fromHexString: 'F3EACB').
+		$O -> (Color fromHexString: 'D7A65F') }.
+	filas doWithIndex: [ :fila :y |
+		fila doWithIndex: [ :pixel :x |
+			colores at: pixel ifPresent: [ :color |
+				lienzo fillRectangle: (((x - 1) @ (y - 1) * 2) extent: 2 @ 2) color: color ] ] ].
+	^ lienzo form
+]
+
+{ #category : 'imagenes' }
+PanelEscenario class >> dinosaurioAgachado: estaAgachado tamanio: unTamanio tiempo: unosSegundos [
+	"Cuadro que corresponde al estado del personaje (de pie o agachado) en ese momento del
+	 juego. Los PNG opcionales reemplazan el dibujo de serie."
+
+	| cuadros |
+	cuadros := self
+		cuadrosNombrados: (estaAgachado
+			ifTrue: [ 'criatura-agachada' ]
+			ifFalse: [ 'criatura-pie' ])
+		tamanio: unTamanio.
+	cuadros ifNil: [ ^ self criaturaDeSerieAgachada: estaAgachado ].
+	^ cuadros at: ((unosSegundos * self framesPorSegundoSprites) floor \\ cuadros size) + 1
+]
+
+{ #category : 'imagenes' }
+PanelEscenario class >> enGrises: unaImagen [
+	"Convierte los colores de cada cuadro una sola vez al cargarlo, conservando su transparencia."
+
+	| resultado |
+	resultado := Form extent: unaImagen extent depth: 32.
+	0 to: unaImagen height - 1 do: [ :y |
+		0 to: unaImagen width - 1 do: [ :x |
+			| pixel nivel |
+			pixel := unaImagen colorAt: x @ y.
+			nivel := (pixel red * 0.299) + (pixel green * 0.587) + (pixel blue * 0.114).
+			resultado colorAt: x @ y put: ((Color gray: nivel) alpha: pixel alpha) ] ].
+	^ resultado
+]
+
+{ #category : 'configuracion' }
+PanelEscenario class >> framesPorSegundoSprites [
+	"Velocidad de las animaciones (los PNG no guardan cuanto dura cada cuadro)."
+
+	^ FpsSprites ifNil: [ 8 ]
+]
+
+{ #category : 'configuracion' }
+PanelEscenario class >> framesPorSegundoSprites: unNumero [
+
+	FpsSprites := unNumero
+]
+
+{ #category : 'configuracion' }
+PanelEscenario class >> leerArchivo: unArchivo tamanio: unTamanio [
+
+	| form |
+	form := [ unArchivo binaryReadStreamDo: [ :stream | PNGReadWriter formFromStream: stream ] ]
+		on: Error
+		do: [ :error |
+			Transcript show: 'PanelEscenario: no pude leer ', unArchivo basename; cr.
+			nil ].
+	form ifNil: [ ^ nil ].
+	^ form extent = unTamanio
+		ifTrue: [ self enGrises: form ]
+		ifFalse: [ self enGrises: (form scaledToSize: unTamanio) ]
+]
+
+{ #category : 'configuracion' }
+PanelEscenario class >> leerCuadros: unNombre tamanio: unTamanio [
+
+	| cuadros |
+	cuadros := (self archivosDe: unNombre)
+		collect: [ :each | self leerArchivo: each tamanio: unTamanio ].
+	cuadros := cuadros reject: [ :each | each isNil ].
+	cuadros isEmpty ifTrue: [ ^ nil ].
+	^ cuadros asArray
+]
+
+{ #category : 'configuracion' }
+PanelEscenario class >> limpiarCacheSprites [
+
+	CacheSprites := nil
+]
+
+{ #category : 'configuracion' }
+PanelEscenario class >> numeroDe: unArchivo [
+	"Numero que aparece en el nombre del archivo (frame3.png -> 3)."
+
+	^ (unArchivo basenameWithoutExtension select: [ :each | each isDigit ]) asInteger
+		ifNil: [ 0 ]
+]
+
+{ #category : 'imagenes' }
+PanelEscenario class >> pixelesCriaturaAgachada [
+
+	^ #(
+		'................DDD...DDD....'
+		'................DOD...DOD....'
+		'...............DDDDDDDDDDD...'
+		'......DDDDDDDDDDLLLLLLLLGD...'
+		'......DGLLLLLLLGLLLLLLLLGD...'
+		'...DDDDGGGGGGGGGGGGGEEEEGD...'
+		'DDDDGGGGGLLLLLGGGGGGEEEDGD...'
+		'DGGGGGGSSSSSSSSSSSGGEEEDGDD..'
+		'DDDDDDDSSSSSSSSSSSGGEEEEGGD..'
+		'......DDDDDDDDDDSSGGGGGGOGD..'
+		'.......DOOD.DOODDDDGDDDDDDD..'
+		'.......DDDD.DDDD..DDD........' )
+]
+
+{ #category : 'imagenes' }
+PanelEscenario class >> pixelesCriaturaDePie [
+
+	^ #(
+		'......DDD...DDD...'
+		'......DOD...DOD...'
+		'.....DDDDDDDDDDD..'
+		'.....DLLLLLLLLGD..'
+		'.....DLLLLLLLLGD..'
+		'.....DGGGGEEEEGD..'
+		'.....DGGGGEEEDGD..'
+		'.....DSSGGEEEDGDD.'
+		'.....DSSGGEEEEGGD.'
+		'.....DSSGLLLLLLGD.'
+		'.....DSSGGGGOOODD.'
+		'...DDDDDDDDDDDDD..'
+		'.DDDGGGLLLLLGD....'
+		'.GGGGGGLLLLLGD....'
+		'.DDDSSSSGGGGSD....'
+		'.DDDSSSSSSSSSD....'
+		'...DSSSSSSSSSD....'
+		'...DGGDDDDGGDD....'
+		'...DGGD..DGGD.....'
+		'...DOOD..DOOD.....'
+		'...DDDD..DDDD.....' )
+]
+
+{ #category : 'inicializacion' }
+PanelEscenario >> configurarEstilo: unEstilo [
+
+	estilo := unEstilo
+]
+
 { #category : 'inicializacion' }
 PanelEscenario >> configurarTamanio: unTamanio [
 
 	self extent: unTamanio + (0 @ 78).
 	self clipSubmorphs: true
-]
-
-{ #category : 'dibujo' }
-PanelEscenario >> dibujarCieloEn: canvas [
-
-	| origen |
-	origen := self position.
-	canvas fillRectangle: ((origen + (7 @ 7)) extent: 626 @ 279) color: (Color gray: 0.87).
-	"Sol, nubes y colinas en bloques de píxeles."
-	canvas fillRectangle: ((origen + (521 @ 32)) extent: 38 @ 60) color: (estilo at: #luz).
-	canvas fillRectangle: ((origen + (510 @ 43)) extent: 60 @ 38) color: (estilo at: #luz).
-	#(54 261 415) do: [ :x |
-		canvas fillRectangle: ((origen + (x @ 92)) extent: 68 @ 5) color: (estilo at: #relieve).
-		canvas fillRectangle: ((origen + ((x + 12) @ 86)) extent: 34 @ 6) color: (estilo at: #relieve) ].
-	#(27 202 390 531) do: [ :x |
-		1 to: 4 do: [ :nivel |
-			| escalon |
-			escalon := nivel * 12.
-			canvas fillRectangle: ((origen + ((x + escalon) @ (286 - (nivel * 9))))
-				extent: (116 - (escalon * 2)) @ 9) color: (estilo at: #relieve) ] ]
-]
-
-{ #category : 'dibujo' }
-PanelEscenario >> dibujarIndicadoresEn: canvas [
-
-	| puntaje tiempo |
-	puntaje := (self position + (16 @ 300)) extent: 218 @ 34.
-	tiempo := (self position + (406 @ 300)) extent: 218 @ 34.
-	self dibujarMarco: puntaje fondo: (estilo at: #pantalla) hundido: true en: canvas.
-	self dibujarMarco: tiempo fondo: (estilo at: #pantalla) hundido: true en: canvas.
-	self dibujarTexto: 'PUNTOS ', puntos printString
-		centradoEn: puntaje escala: 2 color: (estilo at: #luz) en: canvas.
-	self dibujarTexto: 'TIEMPO ', tiempoTranscurrido floor printString, ' S'
-		centradoEn: tiempo escala: 2 color: (estilo at: #luz) en: canvas
 ]
 
 { #category : 'dibujo' }
@@ -97,12 +283,43 @@ PanelEscenario >> dibujarCactus: obstaculo en: canvas [
 ]
 
 { #category : 'dibujo' }
-PanelEscenario >> dibujarObstaculosEn: canvas [
+PanelEscenario >> dibujarCieloEn: canvas [
 
-	obstaculos do: [ :obstaculo |
-		(obstaculo at: #vuela)
-			ifTrue: [ self dibujarPajaro: obstaculo en: canvas ]
-			ifFalse: [ self dibujarCactus: obstaculo en: canvas ] ]
+	| origen |
+	origen := self position.
+	canvas fillRectangle: ((origen + (7 @ 7)) extent: 626 @ 279) color: (Color gray: 0.87).
+	"Sol, nubes y colinas en bloques de píxeles."
+	canvas fillRectangle: ((origen + (521 @ 32)) extent: 38 @ 60) color: (estilo at: #luz).
+	canvas fillRectangle: ((origen + (510 @ 43)) extent: 60 @ 38) color: (estilo at: #luz).
+	#(54 261 415) do: [ :x |
+		canvas fillRectangle: ((origen + (x @ 92)) extent: 68 @ 5) color: (estilo at: #relieve).
+		canvas fillRectangle: ((origen + ((x + 12) @ 86)) extent: 34 @ 6) color: (estilo at: #relieve) ].
+	#(27 202 390 531) do: [ :x |
+		1 to: 4 do: [ :nivel |
+			| escalon |
+			escalon := nivel * 12.
+			canvas fillRectangle: ((origen + ((x + escalon) @ (286 - (nivel * 9))))
+				extent: (116 - (escalon * 2)) @ 9) color: (estilo at: #relieve) ] ]
+]
+
+{ #category : 'dibujo' }
+PanelEscenario >> dibujarIndicadoresEn: canvas [
+
+	| puntaje tiempo |
+	puntaje := (self position + (16 @ 300)) extent: 218 @ 34.
+	tiempo := (self position + (406 @ 300)) extent: 218 @ 34.
+	self dibujarMarco: puntaje fondo: (estilo at: #pantalla) hundido: true en: canvas.
+	self dibujarMarco: tiempo fondo: (estilo at: #pantalla) hundido: true en: canvas.
+	self dibujarTexto: 'PUNTOS ', puntos printString
+		centradoEn: puntaje escala: 2 color: (estilo at: #luz) en: canvas.
+	self dibujarTexto: 'TIEMPO ', tiempoTranscurrido floor printString, ' S'
+		centradoEn: tiempo escala: 2 color: (estilo at: #luz) en: canvas
+]
+
+{ #category : 'dibujo' }
+PanelEscenario >> dibujarMarco: unRectangulo fondo: unColor hundido: hundido en: canvas [
+
+	(estilo at: #marco) value: unRectangulo value: unColor value: hundido value: canvas
 ]
 
 { #category : 'dibujo' }
@@ -118,6 +335,15 @@ PanelEscenario >> dibujarMonedasEn: canvas [
         canvas fillRectangle: ((origen + (5 @ 3)) extent: 3 @ 8)
             color: Color white
     ]
+]
+
+{ #category : 'dibujo' }
+PanelEscenario >> dibujarObstaculosEn: canvas [
+
+	obstaculos do: [ :obstaculo |
+		(obstaculo at: #vuela)
+			ifTrue: [ self dibujarPajaro: obstaculo en: canvas ]
+			ifFalse: [ self dibujarCactus: obstaculo en: canvas ] ]
 ]
 
 { #category : 'dibujo' }
@@ -165,6 +391,12 @@ PanelEscenario >> dibujarSueloEn: canvas [
 ]
 
 { #category : 'dibujo' }
+PanelEscenario >> dibujarTexto: unTexto centradoEn: unRectangulo escala: escala color: unColor en: canvas [
+
+	(estilo at: #texto) valueWithArguments: { unTexto. unRectangulo. escala. unColor. canvas }
+]
+
+{ #category : 'dibujo' }
 PanelEscenario >> drawOn: canvas [
 
 	(limitesPersonaje isNil or: [ estilo isNil ]) ifTrue: [ ^ super drawOn: canvas ].
@@ -179,163 +411,6 @@ PanelEscenario >> drawOn: canvas [
 		self dibujarIndicadoresEn: lienzo ]
 ]
 
-{ #category : 'configuracion' }
-PanelEscenario class >> cacheSprites [
-
-	^ CacheSprites ifNil: [ CacheSprites := Dictionary new ]
-]
-
-{ #category : 'configuracion' }
-PanelEscenario class >> carpetaSprites [
-	"Carpeta donde estan los PNG. Si no se configuro ninguna, se usa la carpeta 'assets' del
-	 repositorio de Iceberg (la que esta junto a 'src')."
-
-	^ CarpetaSprites ifNil: [ self carpetaSpritesPorDefecto ]
-]
-
-{ #category : 'configuracion' }
-PanelEscenario class >> carpetaSprites: unaRuta [
-	"Para usar otra carpeta. Ejemplo: PanelEscenario carpetaSprites: 'C:\Users\yo\Desktop\DinoGoogle\assets'"
-
-	CarpetaSprites := unaRuta asFileReference.
-	self limpiarCacheSprites
-]
-
-{ #category : 'configuracion' }
-PanelEscenario class >> carpetaSpritesPorDefecto [
-
-	^ [ (IceRepository registry detect: [ :each | each name beginsWith: 'DinoGoogle' ])
-		location / 'assets' ]
-		on: Error
-		do: [ :error | FileLocator imageDirectory / 'assets' ]
-]
-
-{ #category : 'configuracion' }
-PanelEscenario class >> limpiarCacheSprites [
-
-	CacheSprites := nil
-]
-
-{ #category : 'configuracion' }
-PanelEscenario class >> archivosDe: unNombre [
-	"Si existe una carpeta con ese nombre, devuelve sus PNG ordenados por el numero que
-	 tienen en el nombre (0, 1, 2...). Si no, devuelve el archivo <nombre>.png (o nada)."
-
-	| carpetaDeCuadros unico |
-	carpetaDeCuadros := (self carpetaSprites / unNombre) asFileReference.
-	carpetaDeCuadros isDirectory ifTrue: [
-		^ ((carpetaDeCuadros children select: [ :each | each extension asLowercase = 'png' ])
-			asSortedCollection: [ :a :b | (self numeroDe: a) <= (self numeroDe: b) ]) asArray ].
-	unico := (self carpetaSprites / (unNombre , '.png')) asFileReference.
-	^ unico exists
-		ifTrue: [ { unico } ]
-		ifFalse: [ #() ]
-]
-
-{ #category : 'imagenes' }
-PanelEscenario class >> cuadrosNombrados: unNombre tamanio: unTamanio [
-	"Array con los cuadros de la animacion (uno solo si es una imagen fija), o nil si no hay
-	 archivos. Se lee una sola vez; si cambiás un PNG, ejecutá PanelEscenario limpiarCacheSprites."
-
-	^ self cacheSprites at: unNombre ifAbsent: [
-		self cacheSprites at: unNombre put: (self leerCuadros: unNombre tamanio: unTamanio) ]
-]
-
-{ #category : 'imagenes' }
-PanelEscenario class >> dinosaurioAgachado: estaAgachado tamanio: unTamanio tiempo: unosSegundos [
-	"Cuadro que corresponde al estado del personaje (de pie o agachado) en ese momento del
-	 juego. Los PNG opcionales reemplazan el dibujo de serie."
-
-	| cuadros |
-	cuadros := self
-		cuadrosNombrados: (estaAgachado
-			ifTrue: [ 'criatura-agachada' ]
-			ifFalse: [ 'criatura-pie' ])
-		tamanio: unTamanio.
-	cuadros ifNil: [ ^ self criaturaDeSerieAgachada: estaAgachado ].
-	^ cuadros at: ((unosSegundos * self framesPorSegundoSprites) floor \\ cuadros size) + 1
-]
-
-{ #category : 'configuracion' }
-PanelEscenario class >> framesPorSegundoSprites [
-	"Velocidad de las animaciones (los PNG no guardan cuanto dura cada cuadro)."
-
-	^ FpsSprites ifNil: [ 8 ]
-]
-
-{ #category : 'configuracion' }
-PanelEscenario class >> framesPorSegundoSprites: unNumero [
-
-	FpsSprites := unNumero
-]
-
-{ #category : 'configuracion' }
-PanelEscenario class >> leerArchivo: unArchivo tamanio: unTamanio [
-
-	| form |
-	form := [ unArchivo binaryReadStreamDo: [ :stream | PNGReadWriter formFromStream: stream ] ]
-		on: Error
-		do: [ :error |
-			Transcript show: 'PanelEscenario: no pude leer ', unArchivo basename; cr.
-			nil ].
-	form ifNil: [ ^ nil ].
-	^ form extent = unTamanio
-		ifTrue: [ self enGrises: form ]
-		ifFalse: [ self enGrises: (form scaledToSize: unTamanio) ]
-]
-
-{ #category : 'configuracion' }
-PanelEscenario class >> leerCuadros: unNombre tamanio: unTamanio [
-
-	| cuadros |
-	cuadros := (self archivosDe: unNombre)
-		collect: [ :each | self leerArchivo: each tamanio: unTamanio ].
-	cuadros := cuadros reject: [ :each | each isNil ].
-	cuadros isEmpty ifTrue: [ ^ nil ].
-	^ cuadros asArray
-]
-
-{ #category : 'configuracion' }
-PanelEscenario class >> numeroDe: unArchivo [
-	"Numero que aparece en el nombre del archivo (frame3.png -> 3)."
-
-	^ (unArchivo basenameWithoutExtension select: [ :each | each isDigit ]) asInteger
-		ifNil: [ 0 ]
-]
-
-{ #category : 'imagenes' }
-PanelEscenario class >> enGrises: unaImagen [
-	"Convierte los colores de cada cuadro una sola vez al cargarlo, conservando su transparencia."
-
-	| resultado |
-	resultado := Form extent: unaImagen extent depth: 32.
-	0 to: unaImagen height - 1 do: [ :y |
-		0 to: unaImagen width - 1 do: [ :x |
-			| pixel nivel |
-			pixel := unaImagen colorAt: x @ y.
-			nivel := (pixel red * 0.299) + (pixel green * 0.587) + (pixel blue * 0.114).
-			resultado colorAt: x @ y put: ((Color gray: nivel) alpha: pixel alpha) ] ].
-	^ resultado
-]
-
-{ #category : 'inicializacion' }
-PanelEscenario >> configurarEstilo: unEstilo [
-
-	estilo := unEstilo
-]
-
-{ #category : 'dibujo' }
-PanelEscenario >> dibujarMarco: unRectangulo fondo: unColor hundido: hundido en: canvas [
-
-	(estilo at: #marco) value: unRectangulo value: unColor value: hundido value: canvas
-]
-
-{ #category : 'dibujo' }
-PanelEscenario >> dibujarTexto: unTexto centradoEn: unRectangulo escala: escala color: unColor en: canvas [
-
-	(estilo at: #texto) valueWithArguments: { unTexto. unRectangulo. escala. unColor. canvas }
-]
-
 { #category : 'interfaz' }
 PanelEscenario >> mostrarEstado: unEstado [
 
@@ -347,79 +422,4 @@ PanelEscenario >> mostrarEstado: unEstado [
 	puntos := unEstado at: #puntos.
 	tiempoTranscurrido := unEstado at: #tiempo.
 	self changed
-]
-
-{ #category : 'imagenes' }
-PanelEscenario class >> criaturaDeSerieAgachada: estaAgachada [
-
-	| clave |
-	clave := estaAgachada ifTrue: [ #criaturaAgachada ] ifFalse: [ #criaturaDePie ].
-	^ self cacheSprites at: clave ifAbsentPut: [
-		self dibujarCriaturaCon: (estaAgachada
-			ifTrue: [ self pixelesCriaturaAgachada ]
-			ifFalse: [ self pixelesCriaturaDePie ]) ]
-]
-
-{ #category : 'imagenes' }
-PanelEscenario class >> dibujarCriaturaCon: filas [
-
-	| lienzo colores |
-	lienzo := FormCanvas extent: (filas first size @ filas size) * 2.
-	colores := Dictionary newFrom: {
-		$D -> (Color fromHexString: '20342B').
-		$S -> (Color fromHexString: '365947').
-		$G -> (Color fromHexString: '5D9461').
-		$L -> (Color fromHexString: 'A0C878').
-		$E -> (Color fromHexString: 'F3EACB').
-		$O -> (Color fromHexString: 'D7A65F') }.
-	filas doWithIndex: [ :fila :y |
-		fila doWithIndex: [ :pixel :x |
-			colores at: pixel ifPresent: [ :color |
-				lienzo fillRectangle: (((x - 1) @ (y - 1) * 2) extent: 2 @ 2) color: color ] ] ].
-	^ lienzo form
-]
-
-{ #category : 'imagenes' }
-PanelEscenario class >> pixelesCriaturaDePie [
-
-	^ #(
-		'......DDD...DDD...'
-		'......DOD...DOD...'
-		'.....DDDDDDDDDDD..'
-		'.....DLLLLLLLLGD..'
-		'.....DLLLLLLLLGD..'
-		'.....DGGGGEEEEGD..'
-		'.....DGGGGEEEDGD..'
-		'.....DSSGGEEEDGDD.'
-		'.....DSSGGEEEEGGD.'
-		'.....DSSGLLLLLLGD.'
-		'.....DSSGGGGOOODD.'
-		'...DDDDDDDDDDDDD..'
-		'.DDDGGGLLLLLGD....'
-		'.GGGGGGLLLLLGD....'
-		'.DDDSSSSGGGGSD....'
-		'.DDDSSSSSSSSSD....'
-		'...DSSSSSSSSSD....'
-		'...DGGDDDDGGDD....'
-		'...DGGD..DGGD.....'
-		'...DOOD..DOOD.....'
-		'...DDDD..DDDD.....' )
-]
-
-{ #category : 'imagenes' }
-PanelEscenario class >> pixelesCriaturaAgachada [
-
-	^ #(
-		'................DDD...DDD....'
-		'................DOD...DOD....'
-		'...............DDDDDDDDDDD...'
-		'......DDDDDDDDDDLLLLLLLLGD...'
-		'......DGLLLLLLLGLLLLLLLLGD...'
-		'...DDDDGGGGGGGGGGGGGEEEEGD...'
-		'DDDDGGGGGLLLLLGGGGGGEEEDGD...'
-		'DGGGGGGSSSSSSSSSSSGGEEEDGDD..'
-		'DDDDDDDSSSSSSSSSSSGGEEEEGGD..'
-		'......DDDDDDDDDDSSGGGGGGOGD..'
-		'.......DOOD.DOODDDDGDDDDDDD..'
-		'.......DDDD.DDDD..DDD........' )
 ]

@@ -13,6 +13,26 @@ Class {
 	#tag : 'Interfaz'
 }
 
+{ #category : 'inicializacion' }
+PanelControles >> configurarEstilo: unEstilo [
+
+	estilo := unEstilo.
+	self changed
+]
+
+{ #category : 'dibujo' }
+PanelControles >> dibujarFila: valores en: origen columnas: columnas sobre: canvas [
+
+	valores doWithIndex: [ :texto :indice |
+		| x ancho izquierda celda |
+		x := columnas at: indice.
+		ancho := (columnas at: indice + 1) - x.
+		celda := (origen + ((x + 4) @ 0)) extent: (ancho - 8) @ 20.
+		izquierda := ((ancho - (fuenteTabla widthOfString: texto)) // 2) max: 4.
+		canvas clipBy: celda during: [ :lienzo |
+			lienzo drawString: texto from: 1 to: texto size
+				at: origen + ((x + izquierda) @ 2) font: fuenteTabla color: (estilo at: #tinta) ] ]
+]
 
 { #category : 'dibujo' }
 PanelControles >> dibujarFinalEn: canvas [
@@ -50,17 +70,9 @@ PanelControles >> dibujarInicioEn: canvas [
 ]
 
 { #category : 'dibujo' }
-PanelControles >> dibujarFila: valores en: origen columnas: columnas sobre: canvas [
+PanelControles >> dibujarMarco: unRectangulo fondo: unColor hundido: hundido en: canvas [
 
-	valores doWithIndex: [ :texto :indice |
-		| x ancho izquierda celda |
-		x := columnas at: indice.
-		ancho := (columnas at: indice + 1) - x.
-		celda := (origen + ((x + 4) @ 0)) extent: (ancho - 8) @ 20.
-		izquierda := ((ancho - (fuenteTabla widthOfString: texto)) // 2) max: 4.
-		canvas clipBy: celda during: [ :lienzo |
-			lienzo drawString: texto from: 1 to: texto size
-				at: origen + ((x + izquierda) @ 2) font: fuenteTabla color: (estilo at: #tinta) ] ]
+	(estilo at: #marco) value: unRectangulo value: unColor value: hundido value: canvas
 ]
 
 { #category : 'dibujo' }
@@ -96,6 +108,12 @@ PanelControles >> dibujarTablaEn: canvas [
 ]
 
 { #category : 'dibujo' }
+PanelControles >> dibujarTexto: unTexto centradoEn: unRectangulo escala: escala color: unColor en: canvas [
+
+	(estilo at: #texto) valueWithArguments: { unTexto. unRectangulo. escala. unColor. canvas }
+]
+
+{ #category : 'dibujo' }
 PanelControles >> drawOn: canvas [
 
 	estilo ifNil: [ ^ self ].
@@ -115,6 +133,18 @@ PanelControles >> initialize [
 	fuenteTabla := LogicalFont familyName: 'Source Code Pro' pointSize: 13
 ]
 
+{ #category : 'dibujo' }
+PanelControles >> limitesCuadroFinal [
+
+	^ self limitesCuadroFinalLocales translateBy: self position
+]
+
+{ #category : 'dibujo' }
+PanelControles >> limitesCuadroFinalLocales [
+
+	^ (37 @ 30) extent: 566 @ 282
+]
+
 { #category : 'interfaz' }
 PanelControles >> mostrarPuntaje: unPuntaje estado: unEstado [
 
@@ -129,35 +159,4 @@ PanelControles >> mostrarResultados: unaColeccion [
 
 	resultados := unaColeccion.
 	estado = #enEspera ifTrue: [ self changed ]
-]
-
-{ #category : 'inicializacion' }
-PanelControles >> configurarEstilo: unEstilo [
-
-	estilo := unEstilo.
-	self changed
-]
-
-{ #category : 'dibujo' }
-PanelControles >> dibujarMarco: unRectangulo fondo: unColor hundido: hundido en: canvas [
-
-	(estilo at: #marco) value: unRectangulo value: unColor value: hundido value: canvas
-]
-
-{ #category : 'dibujo' }
-PanelControles >> dibujarTexto: unTexto centradoEn: unRectangulo escala: escala color: unColor en: canvas [
-
-	(estilo at: #texto) valueWithArguments: { unTexto. unRectangulo. escala. unColor. canvas }
-]
-
-{ #category : 'dibujo' }
-PanelControles >> limitesCuadroFinal [
-
-	^ self limitesCuadroFinalLocales translateBy: self position
-]
-
-{ #category : 'dibujo' }
-PanelControles >> limitesCuadroFinalLocales [
-
-	^ (37 @ 30) extent: 566 @ 282
 ]

@@ -18,18 +18,6 @@ EntradaEscenario >> configurarSistema: unSistema extension: unaExtension [
 ]
 
 { #category : 'eventos' }
-EntradaEscenario >> handlesKeyboard: unEvento [
-
-	^ sistema notNil and: [ sistema estaEnCurso ]
-]
-
-{ #category : 'eventos' }
-EntradaEscenario >> handlesMouseDown: unEvento [
-
-	^ sistema notNil and: [ sistema estaEnCurso ]
-]
-
-{ #category : 'eventos' }
 EntradaEscenario >> esFlechaAbajo: unEvento [
 
 	^ unEvento keyCharacter = Character arrowDown
@@ -44,6 +32,18 @@ EntradaEscenario >> esTeclaDeSalto: unEvento [
 		or: [ unEvento key = KeyboardKey up
 		or: [ unEvento keyCharacter = Character space
 		or: [ unEvento keyCharacter = Character arrowUp ] ] ] ]
+]
+
+{ #category : 'eventos' }
+EntradaEscenario >> handlesKeyboard: unEvento [
+
+	^ sistema notNil and: [ sistema estaEnCurso ]
+]
+
+{ #category : 'eventos' }
+EntradaEscenario >> handlesMouseDown: unEvento [
+
+	^ sistema notNil and: [ sistema estaEnCurso ]
 ]
 
 { #category : 'eventos' }
@@ -67,6 +67,13 @@ EntradaEscenario >> keyUp: unEvento [
 		unEvento wasHandled: true ]
 ]
 
+{ #category : 'interfaz' }
+EntradaEscenario >> montarEn: unContenedor posicion: unaPosicion [
+
+	unContenedor addMorph: self.
+	self position: unaPosicion
+]
+
 { #category : 'eventos' }
 EntradaEscenario >> mouseDown: unEvento [
 
@@ -79,11 +86,4 @@ EntradaEscenario >> mouseDown: unEvento [
 EntradaEscenario >> tomarFoco [
 
 	self world ifNotNil: [ :mundo | mundo activeHand newKeyboardFocus: self ]
-]
-
-{ #category : 'interfaz' }
-EntradaEscenario >> montarEn: unContenedor posicion: unaPosicion [
-
-	unContenedor addMorph: self.
-	self position: unaPosicion
 ]

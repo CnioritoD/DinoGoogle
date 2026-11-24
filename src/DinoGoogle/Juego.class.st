@@ -28,16 +28,16 @@ Juego >> actualizarDificultad [
 	intervaloObstaculos := (1.55 - (tiempoTranscurrido * 0.02)) max: 0.8
 ]
 
-{ #category : 'acceso' }
-Juego >> alturaSuelo [
-
-	^ alturaSuelo
-]
-
 { #category : 'partida' }
 Juego >> agacharse [
 
 	self estaEnCurso ifTrue: [ personaje agacharse ]
+]
+
+{ #category : 'acceso' }
+Juego >> alturaSuelo [
+
+	^ alturaSuelo
 ]
 
 { #category : 'partida' }
@@ -147,12 +147,6 @@ Juego >> crearPajaro [
 	obstaculos add: pajaro
 ]
 
-{ #category : 'privado' }
-Juego >> finalizar [
-
-	estado := #finalizada
-]
-
 { #category : 'acceso' }
 Juego >> estaEnCurso [
 
@@ -165,53 +159,60 @@ Juego >> estado [
 	^ estado
 ]
 
-{ #category : 'privado' }
-Juego >> generarObstaculoSiCorresponde: segundos [
+{ #category : 'acceso' }
+Juego >> estadoEscenario [
 
-	tiempoHastaObstaculo := tiempoHastaObstaculo - segundos.
-	tiempoHastaObstaculo <= 0 ifTrue: [
-		self crearObstaculo.
-		tiempoHastaObstaculo := tiempoHastaObstaculo + intervaloObstaculos + (aleatorio next * 0.32) ]
+	^ {
+		#personaje -> personaje limites.
+		#agachado -> personaje estaAgachado.
+		#obstaculos -> (obstaculos collect: [ :obstaculo |
+			| vuela |
+			vuela := obstaculo esPajaro.
+			{
+				#limites -> obstaculo limites.
+				#vuela -> vuela.
+				#alaArriba -> (vuela and: [ obstaculo alaArriba ])
+			} asDictionary ]).
+		#monedas -> (monedas collect: [ :moneda | moneda limites ]).
+		#suelo -> alturaSuelo.
+		#puntos -> puntaje.
+		#tiempo -> tiempoTranscurrido
+	} asDictionary
+]
+
+{ #category : 'privado' }
+Juego >> finalizar [
+
+	estado := #finalizada
 ]
 
 { #category : 'privado' }
 Juego >> generarMonedaSiCorresponde: segundos [
+    | moneda posicionMoneda |
     tiempoHastaMoneda := tiempoHastaMoneda - segundos.
+    tiempoHastaMoneda > 0 ifTrue: [ ^ self ].
 
-    tiempoHastaMoneda <= 0 ifTrue: [
-        | moneda posicionMoneda |
-        posicionMoneda := tamanioEscenario x @
-            (alturaSuelo - (40 + ((aleatorio nextInteger: 3) * 30))).
+    posicionMoneda := tamanioEscenario x @
+        (alturaSuelo - (40 + ((aleatorio nextInteger: 3) * 30))).
 
-        moneda := Moneda new.
-        moneda inicializarEn: posicionMoneda tamanio: 14 @ 14.
+    moneda := Moneda new.
+    moneda inicializarEn: posicionMoneda tamanio: 14 @ 14.
 
-        (obstaculos noneSatisfy: [ :each |
-            each limites intersects: moneda limites ])
-            ifTrue: [ monedas add: moneda ].
+    (obstaculos noneSatisfy: [ :each |
+        each limites intersects: moneda limites ])
+        ifTrue: [ monedas add: moneda ].
 
-        tiempoHastaMoneda := 3 + (aleatorio next * 3)
-    ]
+    tiempoHastaMoneda := 3 + (aleatorio next * 3)
 ]
 
 { #category : 'privado' }
-Juego >> moverMonedas: segundos [
-    monedas do: [ :moneda |
-        moneda avanzar: segundos velocidad: velocidadDesplazamiento ]
-]
+Juego >> generarObstaculoSiCorresponde: segundos [
 
-{ #category : 'privado' }
-Juego >> recogerMonedas [
-    monedas removeAllSuchThat: [ :moneda |
-        (personaje limites intersects: moneda limites)
-            ifTrue: [ puntaje := puntaje + 1. true ]
-            ifFalse: [ false ] ]
-]
+	tiempoHastaObstaculo := tiempoHastaObstaculo - segundos.
+	tiempoHastaObstaculo > 0 ifTrue: [ ^ self ].
 
-{ #category : 'privado' }
-Juego >> retirarMonedasFueraDeEscena [
-    monedas removeAllSuchThat: [ :moneda |
-        moneda estaFueraDelEscenario ]
+	self crearObstaculo.
+	tiempoHastaObstaculo := tiempoHastaObstaculo + intervaloObstaculos + (aleatorio next * 0.32)
 ]
 
 { #category : 'privado' }
@@ -241,6 +242,12 @@ Juego >> initialize [
 ]
 
 { #category : 'privado' }
+Juego >> moverMonedas: segundos [
+    monedas do: [ :moneda |
+        moneda avanzar: segundos velocidad: velocidadDesplazamiento ]
+]
+
+{ #category : 'privado' }
 Juego >> moverObstaculos: segundos [
 
 	obstaculos do: [ :obstaculo |
@@ -253,6 +260,12 @@ Juego >> obstaculos [
 	^ obstaculos
 ]
 
+{ #category : 'partida' }
+Juego >> pararse [
+
+	personaje pararse
+]
+
 { #category : 'acceso' }
 Juego >> personaje [
 
@@ -263,6 +276,14 @@ Juego >> personaje [
 Juego >> puntaje [
 
 	^ puntaje
+]
+
+{ #category : 'privado' }
+Juego >> recogerMonedas [
+    monedas removeAllSuchThat: [ :moneda |
+        (personaje limites intersects: moneda limites)
+            ifTrue: [ puntaje := puntaje + 1. true ]
+            ifFalse: [ false ] ]
 ]
 
 { #category : 'partida' }
@@ -281,15 +302,21 @@ Juego >> reiniciar [
 ]
 
 { #category : 'privado' }
+Juego >> retirarMonedasFueraDeEscena [
+    monedas removeAllSuchThat: [ :moneda |
+        moneda estaFueraDelEscenario ]
+]
+
+{ #category : 'privado' }
 Juego >> retirarObstaculosFueraDeEscena [
 
 	obstaculos removeAllSuchThat: [ :obstaculo | obstaculo estaFueraDelEscenario ]
 ]
 
 { #category : 'partida' }
-Juego >> pararse [
+Juego >> saltar [
 
-	personaje pararse
+	self estaEnCurso ifTrue: [ personaje saltar ]
 ]
 
 { #category : 'privado' }
@@ -302,12 +329,6 @@ Juego >> sePuedeSaltarGrupoDeAncho: unAncho altura: unaAltura [
 		<= ((personaje tiempoSobreAltura: unaAltura) * 0.75)
 ]
 
-{ #category : 'partida' }
-Juego >> saltar [
-
-	self estaEnCurso ifTrue: [ personaje saltar ]
-]
-
 { #category : 'acceso' }
 Juego >> tamanioEscenario [
 
@@ -318,25 +339,4 @@ Juego >> tamanioEscenario [
 Juego >> tiempoTranscurrido [
 
 	^ tiempoTranscurrido
-]
-
-{ #category : 'acceso' }
-Juego >> estadoEscenario [
-
-	^ {
-		#personaje -> personaje limites.
-		#agachado -> personaje estaAgachado.
-		#obstaculos -> (obstaculos collect: [ :obstaculo |
-			| vuela |
-			vuela := obstaculo esPajaro.
-			{
-				#limites -> obstaculo limites.
-				#vuela -> vuela.
-				#alaArriba -> (vuela and: [ obstaculo alaArriba ])
-			} asDictionary ]).
-		#monedas -> (monedas collect: [ :moneda | moneda limites ]).
-		#suelo -> alturaSuelo.
-		#puntos -> puntaje.
-		#tiempo -> tiempoTranscurrido
-	} asDictionary
 ]

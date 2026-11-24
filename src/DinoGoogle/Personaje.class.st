@@ -17,14 +17,6 @@ Class {
 	#tag : 'Modelo'
 }
 
-{ #category : 'privado' }
-Personaje >> aterrizarSiCorresponde [
-
-	self estaEnSuelo ifTrue: [
-		posicion := posicion x @ (alturaSuelo - tamanio y).
-		velocidadVertical := 0 ]
-]
-
 { #category : 'movimiento' }
 Personaje >> agacharse [
 	"Solo se puede agachar estando en el suelo."
@@ -33,6 +25,14 @@ Personaje >> agacharse [
 	agachado := true.
 	tamanio := tamanioAgachado.
 	posicion := posicion x @ (alturaSuelo - tamanio y)
+]
+
+{ #category : 'privado' }
+Personaje >> aterrizarSiCorresponde [
+
+	self estaEnSuelo ifTrue: [
+		posicion := posicion x @ (alturaSuelo - tamanio y).
+		velocidadVertical := 0 ]
 ]
 
 { #category : 'movimiento' }
@@ -70,23 +70,9 @@ Personaje >> initialize [
 ]
 
 { #category : 'acceso' }
-Personaje >> tiempoSobreAltura: unaAltura [
-	"Segundos que dura un salto por encima de esa altura (medida desde el suelo).
-	 Sale de resolver impulso * t - gravedad * t^2 / 2 = altura."
-
-	^ ((impulsoSalto squared - (2 * gravedad * unaAltura)) max: 0) sqrt / (gravedad / 2)
-]
-
-{ #category : 'acceso' }
 Personaje >> limites [
 
 	^ posicion extent: tamanio
-]
-
-{ #category : 'acceso' }
-Personaje >> posicion [
-
-	^ posicion
 ]
 
 { #category : 'movimiento' }
@@ -96,6 +82,12 @@ Personaje >> pararse [
 	agachado := false.
 	tamanio := tamanioDePie.
 	posicion := posicion x @ (alturaSuelo - tamanio y)
+]
+
+{ #category : 'acceso' }
+Personaje >> posicion [
+
+	^ posicion
 ]
 
 { #category : 'inicializacion' }
@@ -120,4 +112,12 @@ Personaje >> saltar [
 Personaje >> tamanio [
 
 	^ tamanio
+]
+
+{ #category : 'acceso' }
+Personaje >> tiempoSobreAltura: unaAltura [
+	"Segundos que dura un salto por encima de esa altura (medida desde el suelo).
+	 Sale de resolver impulso * t - gravedad * t^2 / 2 = altura."
+
+	^ ((impulsoSalto squared - (2 * gravedad * unaAltura)) max: 0) sqrt / (gravedad / 2)
 ]

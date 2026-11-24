@@ -15,30 +15,16 @@ Class {
 	#tag : 'Interfaz'
 }
 
-{ #category : 'inicializacion' }
-EntradaControles >> configurarSistema: unSistema extension: unaExtension limitesCuadroFinal: unRectangulo [
-
-	sistema := unSistema.
-	limitesCuadroFinal := unRectangulo.
-	estado := #enEspera.
-	self color: Color transparent.
-	self extent: unaExtension
-]
-
-{ #category : 'inicializacion' }
-EntradaControles >> configurarEstilo: unEstilo [
-
-	estilo := unEstilo.
-	botonInicio ifNotNil: [ botonInicio delete. cuadroFinal delete ].
-	self construirComponentes
-]
-
 { #category : 'interfaz' }
-EntradaControles >> mostrarEstado: unEstado [
+EntradaControles >> actualizarComponentes [
 
-	estado = unEstado ifTrue: [ ^ self ].
-	estado := unEstado.
-	self actualizarComponentes
+	botonInicio ifNil: [ ^ self ].
+	self visible: estado ~= #enCurso.
+	botonInicio visible: estado = #enEspera.
+	cuadroFinal visible: estado = #finalizada.
+	estado = #finalizada ifTrue: [
+		campoNick setText: ''.
+		self world ifNotNil: [ campoNick textArea takeKeyboardFocus ] ]
 ]
 
 { #category : 'inicializacion' }
@@ -62,6 +48,24 @@ EntradaControles >> boton: texto selector: selector en: posicionLocal tamanio: m
 	boton addMorph: rotulo.
 	rotulo lock.
 	^ boton
+]
+
+{ #category : 'inicializacion' }
+EntradaControles >> configurarEstilo: unEstilo [
+
+	estilo := unEstilo.
+	botonInicio ifNotNil: [ botonInicio delete. cuadroFinal delete ].
+	self construirComponentes
+]
+
+{ #category : 'inicializacion' }
+EntradaControles >> configurarSistema: unSistema extension: unaExtension limitesCuadroFinal: unRectangulo [
+
+	sistema := unSistema.
+	limitesCuadroFinal := unRectangulo.
+	estado := #enEspera.
+	self color: Color transparent.
+	self extent: unaExtension
 ]
 
 { #category : 'inicializacion' }
@@ -95,27 +99,23 @@ EntradaControles >> construirComponentes [
 	self actualizarComponentes
 ]
 
-{ #category : 'acciones' }
-EntradaControles >> nick [
-
-	^ campoNick text asString trimBoth
-]
-
-{ #category : 'interfaz' }
-EntradaControles >> actualizarComponentes [
-
-	botonInicio ifNil: [ ^ self ].
-	self visible: estado ~= #enCurso.
-	botonInicio visible: estado = #enEspera.
-	cuadroFinal visible: estado = #finalizada.
-	estado = #finalizada ifTrue: [
-		campoNick setText: ''.
-		self world ifNotNil: [ campoNick textArea takeKeyboardFocus ] ]
-]
-
 { #category : 'interfaz' }
 EntradaControles >> montarEn: unContenedor posicion: unaPosicion [
 
 	unContenedor addMorph: self.
 	self position: unaPosicion
+]
+
+{ #category : 'interfaz' }
+EntradaControles >> mostrarEstado: unEstado [
+
+	estado = unEstado ifTrue: [ ^ self ].
+	estado := unEstado.
+	self actualizarComponentes
+]
+
+{ #category : 'acciones' }
+EntradaControles >> nick [
+
+	^ campoNick text asString trimBoth
 ]

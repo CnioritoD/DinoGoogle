@@ -23,6 +23,13 @@ SistemaControles >> configurarCoordinador: unCoordinador panel: unPanel [
 		limitesCuadroFinal: panel limitesCuadroFinalLocales
 ]
 
+{ #category : 'inicializacion' }
+SistemaControles >> configurarEstilo: unEstilo [
+
+	panel configurarEstilo: unEstilo.
+	entrada configurarEstilo: unEstilo
+]
+
 { #category : 'interfaz' }
 SistemaControles >> montarEn: unContenedor posicion: unaPosicion [
 
@@ -69,11 +76,4 @@ SistemaControles >> solicitarSalida [
 
 	coordinador guardarResultado: entrada nick.
 	coordinador salir
-]
-
-{ #category : 'inicializacion' }
-SistemaControles >> configurarEstilo: unEstilo [
-
-	panel configurarEstilo: unEstilo.
-	entrada configurarEstilo: unEstilo
 ]

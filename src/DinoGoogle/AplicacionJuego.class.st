@@ -13,66 +13,57 @@ Class {
 	#tag : 'Interfaz'
 }
 
-{ #category : 'ventana' }
-AplicacionJuego >> abrir [
+{ #category : 'paleta' }
+AplicacionJuego class >> estilo [
 
-	self world ifNil: [
-		coordinador prepararSiguientePartida.
-		self openInWorld ].
-	^ self
+	| recursos |
+	recursos := Dictionary new.
+	recursos
+		at: #tinta put: self tinta;
+		at: #metal put: self metal;
+		at: #relieve put: self relieve;
+		at: #sombra put: self sombra;
+		at: #pantalla put: self pantalla;
+		at: #luz put: self luz;
+		at: #marco put: (self pintorDeMarcosCon: recursos);
+		at: #texto put: self pintorDeTexto.
+	^ recursos
 ]
 
-{ #category : 'ventana' }
-AplicacionJuego >> cerrar [
+{ #category : 'dibujo' }
+AplicacionJuego class >> glifos [
+	"Cada entero codifica los cinco píxeles de una fila, del bit 5 al bit 1."
 
-	^ self delete
-]
-
-{ #category : 'inicializacion' }
-AplicacionJuego >> construirInterfaz [
-
-	| contenedor tablero mitad marcoCentrado |
-	contenedor := Morph new
-		color: Color transparent;
-		layoutPolicy: ProportionalLayout new;
-		yourself.
-	tablero := Morph new color: Color transparent; extent: 656 @ 360; yourself.
-	coordinador montarInterfazEn: tablero.
-	mitad := tablero extent // 2.
-	marcoCentrado := LayoutFrame new
-		leftFraction: 0.5 offset: mitad x negated;
-		rightFraction: 0.5 offset: mitad x;
-		topFraction: 0.5 offset: mitad y negated;
-		bottomFraction: 0.5 offset: mitad y;
-		yourself.
-	contenedor addMorph: tablero fullFrame: marcoCentrado.
-	self addMorph: contenedor frame: (0 @ 0 corner: 1 @ 1).
-	self minimumExtent: 680 @ 401.
-	self extent: 680 @ 401
-]
-
-{ #category : 'ventana' }
-AplicacionJuego >> delete [
-
-	coordinador ifNotNil: [ coordinador cerrar ].
-	^ super delete
-]
-
-{ #category : 'inicializacion' }
-AplicacionJuego >> initialize [
-
-	super initialize.
-	self setLabel: 'DINO GOOGLE'.
-	coordinador := CoordinadorPartida new.
-	estilo := self class estilo.
-	coordinador configurarEstilo: estilo.
-	self construirInterfaz
+	^ Glifos ifNil: [
+		Glifos := Dictionary new.
+		'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+' with: #(
+			(14 17 17 31 17 17 17) (30 17 17 30 17 17 30)
+			(15 16 16 16 16 16 15) (30 17 17 17 17 17 30)
+			(31 16 16 30 16 16 31) (31 16 16 30 16 16 16)
+			(15 16 16 23 17 17 15) (17 17 17 31 17 17 17)
+			(31 4 4 4 4 4 31) (7 2 2 2 2 18 12)
+			(17 18 20 24 20 18 17) (16 16 16 16 16 16 31)
+			(17 27 21 21 17 17 17) (17 25 21 19 17 17 17)
+			(14 17 17 17 17 17 14) (30 17 17 30 16 16 16)
+			(14 17 17 17 21 18 13) (30 17 17 30 20 18 17)
+			(15 16 16 14 1 1 30) (31 4 4 4 4 4 4)
+			(17 17 17 17 17 17 14) (17 17 17 17 17 10 4)
+			(17 17 17 21 21 27 17) (17 17 10 4 10 17 17)
+			(17 17 10 4 4 4 4) (31 1 2 4 8 16 31)
+			(14 17 19 21 25 17 14) (4 12 4 4 4 4 14)
+			(14 17 1 2 4 8 31) (30 1 1 14 1 1 30)
+			(2 6 10 18 31 2 2) (31 16 16 30 1 1 30)
+			(14 16 16 30 17 17 14) (31 1 2 4 8 8 8)
+			(14 17 17 14 17 17 14) (14 17 17 15 1 1 14)
+			(0 4 4 31 4 4 0))
+			do: [ :letra :filas | Glifos at: letra put: filas ].
+		Glifos ]
 ]
 
 { #category : 'paleta' }
-AplicacionJuego class >> tinta [
+AplicacionJuego class >> luz [
 
-	^ Color r: 0.09 g: 0.09 b: 0.13
+	^ Color gray: 0.96
 ]
 
 { #category : 'paleta' }
@@ -82,27 +73,9 @@ AplicacionJuego class >> metal [
 ]
 
 { #category : 'paleta' }
-AplicacionJuego class >> relieve [
-
-	^ Color gray: 0.83
-]
-
-{ #category : 'paleta' }
-AplicacionJuego class >> sombra [
-
-	^ Color gray: 0.43
-]
-
-{ #category : 'paleta' }
 AplicacionJuego class >> pantalla [
 
 	^ Color r: 0.23 g: 0.24 b: 0.25
-]
-
-{ #category : 'paleta' }
-AplicacionJuego class >> luz [
-
-	^ Color gray: 0.96
 ]
 
 { #category : 'dibujo' }
@@ -144,58 +117,31 @@ AplicacionJuego class >> pintorDeTexto [
 							@ ((y - 1) * escala))) extent: escala @ escala) color: unColor ] ] ] ] ]
 ]
 
-{ #category : 'dibujo' }
-AplicacionJuego class >> glifos [
-	"Cada entero codifica los cinco píxeles de una fila, del bit 5 al bit 1."
+{ #category : 'paleta' }
+AplicacionJuego class >> relieve [
 
-	^ Glifos ifNil: [
-		Glifos := Dictionary new.
-		'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+' with: #(
-			(14 17 17 31 17 17 17) (30 17 17 30 17 17 30)
-			(15 16 16 16 16 16 15) (30 17 17 17 17 17 30)
-			(31 16 16 30 16 16 31) (31 16 16 30 16 16 16)
-			(15 16 16 23 17 17 15) (17 17 17 31 17 17 17)
-			(31 4 4 4 4 4 31) (7 2 2 2 2 18 12)
-			(17 18 20 24 20 18 17) (16 16 16 16 16 16 31)
-			(17 27 21 21 17 17 17) (17 25 21 19 17 17 17)
-			(14 17 17 17 17 17 14) (30 17 17 30 16 16 16)
-			(14 17 17 17 21 18 13) (30 17 17 30 20 18 17)
-			(15 16 16 14 1 1 30) (31 4 4 4 4 4 4)
-			(17 17 17 17 17 17 14) (17 17 17 17 17 10 4)
-			(17 17 17 21 21 27 17) (17 17 10 4 10 17 17)
-			(17 17 10 4 4 4 4) (31 1 2 4 8 16 31)
-			(14 17 19 21 25 17 14) (4 12 4 4 4 4 14)
-			(14 17 1 2 4 8 31) (30 1 1 14 1 1 30)
-			(2 6 10 18 31 2 2) (31 16 16 30 1 1 30)
-			(14 16 16 30 17 17 14) (31 1 2 4 8 8 8)
-			(14 17 17 14 17 17 14) (14 17 17 15 1 1 14)
-			(0 4 4 31 4 4 0))
-			do: [ :letra :filas | Glifos at: letra put: filas ].
-		Glifos ]
+	^ Color gray: 0.83
 ]
 
 { #category : 'paleta' }
-AplicacionJuego class >> estilo [
+AplicacionJuego class >> sombra [
 
-	| recursos |
-	recursos := Dictionary new.
-	recursos
-		at: #tinta put: self tinta;
-		at: #metal put: self metal;
-		at: #relieve put: self relieve;
-		at: #sombra put: self sombra;
-		at: #pantalla put: self pantalla;
-		at: #luz put: self luz;
-		at: #marco put: (self pintorDeMarcosCon: recursos);
-		at: #texto put: self pintorDeTexto.
-	^ recursos
+	^ Color gray: 0.43
+]
+
+{ #category : 'paleta' }
+AplicacionJuego class >> tinta [
+
+	^ Color r: 0.09 g: 0.09 b: 0.13
 ]
 
 { #category : 'ventana' }
-AplicacionJuego >> initializeLabelArea [
+AplicacionJuego >> abrir [
 
-	super initializeLabelArea.
-	self basicLabel hide
+	self world ifNil: [
+		coordinador prepararSiguientePartida.
+		self openInWorld ].
+	^ self
 ]
 
 { #category : 'ventana' }
@@ -205,9 +151,74 @@ AplicacionJuego >> activeTitleFillStyle [
 ]
 
 { #category : 'ventana' }
+AplicacionJuego >> cerrar [
+
+	^ self delete
+]
+
+{ #category : 'inicializacion' }
+AplicacionJuego >> construirInterfaz [
+
+	| contenedor tablero mitad marcoCentrado |
+	contenedor := Morph new
+		color: Color transparent;
+		layoutPolicy: ProportionalLayout new;
+		yourself.
+	tablero := Morph new color: Color transparent; extent: 656 @ 360; yourself.
+	coordinador montarInterfazEn: tablero.
+	mitad := tablero extent // 2.
+	marcoCentrado := LayoutFrame new
+		leftFraction: 0.5 offset: mitad x negated;
+		rightFraction: 0.5 offset: mitad x;
+		topFraction: 0.5 offset: mitad y negated;
+		bottomFraction: 0.5 offset: mitad y;
+		yourself.
+	contenedor addMorph: tablero fullFrame: marcoCentrado.
+	self addMorph: contenedor frame: (0 @ 0 corner: 1 @ 1).
+	self minimumExtent: 680 @ 401.
+	self extent: 680 @ 401
+]
+
+{ #category : 'ventana' }
+AplicacionJuego >> delete [
+
+	coordinador ifNotNil: [ coordinador cerrar ].
+	^ super delete
+]
+
+{ #category : 'dibujo' }
+AplicacionJuego >> drawOn: canvas [
+
+	| titulo |
+	estilo ifNil: [ ^ super drawOn: canvas ].
+	(estilo at: #marco) value: self bounds value: (estilo at: #metal) value: false value: canvas.
+	titulo := (self position + (0 @ 3)) extent: self width @ self labelHeight.
+	(estilo at: #texto) valueWithArguments: {
+		self labelString. titulo. 2. (estilo at: #tinta). canvas }
+]
+
+{ #category : 'ventana' }
 AplicacionJuego >> inactiveTitleFillStyle [
 
 	^ self activeTitleFillStyle
+]
+
+{ #category : 'inicializacion' }
+AplicacionJuego >> initialize [
+
+	super initialize.
+	self setLabel: 'DINO GOOGLE'.
+	coordinador := CoordinadorPartida new.
+	estilo := self class estilo.
+	coordinador configurarEstilo: estilo.
+	self construirInterfaz
+]
+
+{ #category : 'ventana' }
+AplicacionJuego >> initializeLabelArea [
+
+	super initializeLabelArea.
+	self basicLabel hide
 ]
 
 { #category : 'ventana' }
@@ -226,15 +237,4 @@ AplicacionJuego >> preferredCornerStyle [
 AplicacionJuego >> wantsRoundedCorners [
 
 	^ false
-]
-
-{ #category : 'dibujo' }
-AplicacionJuego >> drawOn: canvas [
-
-	| titulo |
-	estilo ifNil: [ ^ super drawOn: canvas ].
-	(estilo at: #marco) value: self bounds value: (estilo at: #metal) value: false value: canvas.
-	titulo := (self position + (0 @ 3)) extent: self width @ self labelHeight.
-	(estilo at: #texto) valueWithArguments: {
-		self labelString. titulo. 2. (estilo at: #tinta). canvas }
 ]

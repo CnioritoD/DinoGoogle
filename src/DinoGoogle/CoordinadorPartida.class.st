@@ -76,6 +76,13 @@ CoordinadorPartida >> configurarEscenario: unEscenario controles: unosControles 
 	reloj := unReloj
 ]
 
+{ #category : 'inicializacion' }
+CoordinadorPartida >> configurarEstilo: unEstilo [
+
+	escenario configurarEstilo: unEstilo.
+	controles configurarEstilo: unEstilo
+]
+
 { #category : 'privado' }
 CoordinadorPartida >> detenerSiTerminoLaPartida [
 
@@ -85,8 +92,10 @@ CoordinadorPartida >> detenerSiTerminoLaPartida [
 { #category : 'resultados' }
 CoordinadorPartida >> guardarResultado: unNick [
 
-	(escenario estado = #finalizada and: [ resultadoGuardado ~= true ])
+	(escenario estado = #finalizada and: [
+		(resultadoGuardado ifNil: [ false ]) not ])
 		ifFalse: [ ^ self ].
+
 	resultadoGuardado := true.
 	self class registrarResultado: {
 		unNick ifEmpty: [ 'Guest' ].
@@ -169,11 +178,4 @@ CoordinadorPartida >> solicitarPararse [
 CoordinadorPartida >> solicitarSalto [
 
 	escenario ejecutarSalto
-]
-
-{ #category : 'inicializacion' }
-CoordinadorPartida >> configurarEstilo: unEstilo [
-
-	escenario configurarEstilo: unEstilo.
-	controles configurarEstilo: unEstilo
 ]

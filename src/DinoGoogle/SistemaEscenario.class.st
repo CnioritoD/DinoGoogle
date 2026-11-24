@@ -19,6 +19,12 @@ SistemaEscenario >> avanzar: segundos [
 ]
 
 { #category : 'inicializacion' }
+SistemaEscenario >> configurarEstilo: unEstilo [
+
+	panel configurarEstilo: unEstilo
+]
+
+{ #category : 'inicializacion' }
 SistemaEscenario >> configurarJuego: unJuego panel: unPanel [
 
 	juego := unJuego.
@@ -113,12 +119,6 @@ SistemaEscenario >> reiniciarJuego [
 SistemaEscenario >> tiempoTranscurrido [
 
 	^ juego tiempoTranscurrido
-]
-
-{ #category : 'inicializacion' }
-SistemaEscenario >> configurarEstilo: unEstilo [
-
-	panel configurarEstilo: unEstilo
 ]
 
 { #category : 'interfaz' }

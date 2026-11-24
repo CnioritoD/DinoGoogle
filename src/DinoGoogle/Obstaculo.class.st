@@ -17,16 +17,16 @@ Obstaculo >> avanzar: segundos velocidad: unaVelocidad [
 	posicion := posicion - ((unaVelocidad * segundos) @ 0)
 ]
 
-{ #category : 'acceso' }
-Obstaculo >> estaContabilizado [
-
-	^ contabilizado
-]
-
 { #category : 'testing' }
 Obstaculo >> esPajaro [
 
 	^ false
+]
+
+{ #category : 'acceso' }
+Obstaculo >> estaContabilizado [
+
+	^ contabilizado
 ]
 
 { #category : 'puntaje' }
