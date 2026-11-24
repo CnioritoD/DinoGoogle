@@ -181,7 +181,7 @@ Juego >> generarMonedaSiCorresponde: segundos [
     tiempoHastaMoneda <= 0 ifTrue: [
         | moneda posicionMoneda |
         posicionMoneda := tamanioEscenario x @
-            (alturaSuelo - (40 + (aleatorio nextInteger: 3) * 30)).
+            (alturaSuelo - (40 + ((aleatorio nextInteger: 3) * 30))).
 
         moneda := Moneda new.
         moneda inicializarEn: posicionMoneda tamanio: 14 @ 14.
