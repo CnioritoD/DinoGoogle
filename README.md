@@ -28,4 +28,4 @@ Presioná **JUGAR** para iniciar la partida.
 ## Estructura del repositorio
 
 - `src/DinoGoogle/` contiene las clases del modelo y la interfaz.
-- `docs/` contiene el [diagrama UML](docs/diagrama-de-clases.svg) y su [fuente editable](docs/diagrama-de-clases.dot).
+- `docs/` contiene el [diagrama UML](docs/diagrama-de-clases.png).
