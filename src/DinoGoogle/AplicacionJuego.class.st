@@ -135,7 +135,7 @@ AplicacionJuego class >> tinta [
 	^ Color r: 0.09 g: 0.09 b: 0.13
 ]
 
-{ #category : 'ventana' }
+{ #category : 'open/close' }
 AplicacionJuego >> abrir [
 
 	self world ifNil: [
@@ -150,13 +150,13 @@ AplicacionJuego >> activeTitleFillStyle [
 	^ Color transparent
 ]
 
-{ #category : 'ventana' }
+{ #category : 'open/close' }
 AplicacionJuego >> cerrar [
 
 	^ self delete
 ]
 
-{ #category : 'inicializacion' }
+{ #category : 'initialization' }
 AplicacionJuego >> construirInterfaz [
 
 	| contenedor tablero mitad marcoCentrado |
@@ -179,7 +179,7 @@ AplicacionJuego >> construirInterfaz [
 	self extent: 680 @ 401
 ]
 
-{ #category : 'ventana' }
+{ #category : 'open/close' }
 AplicacionJuego >> delete [
 
 	coordinador ifNotNil: [ coordinador cerrar ].
@@ -203,7 +203,7 @@ AplicacionJuego >> inactiveTitleFillStyle [
 	^ self activeTitleFillStyle
 ]
 
-{ #category : 'inicializacion' }
+{ #category : 'initialization' }
 AplicacionJuego >> initialize [
 
 	super initialize.

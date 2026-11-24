@@ -68,7 +68,7 @@ CoordinadorPartida >> cerrar [
 	reloj detener
 ]
 
-{ #category : 'inicializacion' }
+{ #category : 'initialization' }
 CoordinadorPartida >> configurarEscenario: unEscenario controles: unosControles reloj: unReloj [
 
 	escenario := unEscenario.
@@ -76,7 +76,7 @@ CoordinadorPartida >> configurarEscenario: unEscenario controles: unosControles 
 	reloj := unReloj
 ]
 
-{ #category : 'inicializacion' }
+{ #category : 'initialization' }
 CoordinadorPartida >> configurarEstilo: unEstilo [
 
 	escenario configurarEstilo: unEstilo.
@@ -114,7 +114,7 @@ CoordinadorPartida >> iniciarPartida [
 	reloj iniciar
 ]
 
-{ #category : 'inicializacion' }
+{ #category : 'initialization' }
 CoordinadorPartida >> initialize [
 
 	super initialize.
