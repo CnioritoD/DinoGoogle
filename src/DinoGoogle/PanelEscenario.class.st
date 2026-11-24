@@ -9,6 +9,7 @@ Class {
 		'alturaSuelo',
 		'puntos',
 		'tiempoTranscurrido'
+		'monedas'
 	],
 	#classVars : [
 		'CacheSprites',
@@ -105,6 +106,21 @@ PanelEscenario >> dibujarObstaculosEn: canvas [
 ]
 
 { #category : 'dibujo' }
+PanelEscenario >> dibujarMonedasEn: canvas [
+    monedas do: [ :limites |
+        | origen |
+        origen := self position + (0 @ 60) + limites origin rounded.
+
+        canvas fillRectangle: ((origen + (3 @ 0)) extent: 8 @ 14)
+            color: (Color fromHexString: 'F5C542').
+        canvas fillRectangle: ((origen + (0 @ 3)) extent: 14 @ 8)
+            color: (Color fromHexString: 'F5C542').
+        canvas fillRectangle: ((origen + (5 @ 3)) extent: 3 @ 8)
+            color: Color white
+    ]
+]
+
+{ #category : 'dibujo' }
 PanelEscenario >> dibujarPajaro: pajaro en: canvas [
 	"El dibujo ocupa la caja de 46 x 22 del pajaro; el ala sube y baja (aletea)."
 
@@ -158,7 +174,8 @@ PanelEscenario >> drawOn: canvas [
 		self dibujarSueloEn: lienzo.
 		lienzo clipBy: (self bounds insetBy: 7) during: [ :escena |
 			self dibujarPersonajeEn: escena.
-			self dibujarObstaculosEn: escena ].
+			self dibujarObstaculosEn: escena
+			self dibujarMonedasEn: escena. ].
 		self dibujarIndicadoresEn: lienzo ]
 ]
 
@@ -325,6 +342,7 @@ PanelEscenario >> mostrarEstado: unEstado [
 	limitesPersonaje := unEstado at: #personaje.
 	agachado := unEstado at: #agachado.
 	obstaculos := unEstado at: #obstaculos.
+	monedas := unEstado at: #monedas.
 	alturaSuelo := unEstado at: #suelo.
 	puntos := unEstado at: #puntos.
 	tiempoTranscurrido := unEstado at: #tiempo.

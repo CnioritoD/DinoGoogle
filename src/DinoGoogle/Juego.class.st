@@ -13,6 +13,8 @@ Class {
 		'aleatorio',
 		'tamanioEscenario',
 		'alturaSuelo'
+		'monedas',
+		'tiempoHastaMoneda'
 	],
 	#category : 'DinoGoogle-Modelo',
 	#package : 'DinoGoogle',
@@ -57,6 +59,10 @@ Juego >> avanzarPaso: segundos [
 	self generarObstaculoSiCorresponde: segundos.
 	personaje avanzar: segundos.
 	self moverObstaculos: segundos.
+	self generarMonedaSiCorresponde: segundos.
+	self moverMonedas: segundos.
+	self recogerMonedas.
+	self retirarMonedasFueraDeEscena.
 	self hayColision ifTrue: [ ^ self finalizar ].
 	self contabilizarObstaculosSuperados.
 	self retirarObstaculosFueraDeEscena
@@ -169,6 +175,46 @@ Juego >> generarObstaculoSiCorresponde: segundos [
 ]
 
 { #category : 'privado' }
+Juego >> generarMonedaSiCorresponde: segundos [
+    tiempoHastaMoneda := tiempoHastaMoneda - segundos.
+
+    tiempoHastaMoneda <= 0 ifTrue: [
+        | moneda posicionMoneda |
+        posicionMoneda := tamanioEscenario x @
+            (alturaSuelo - (40 + (aleatorio nextInteger: 3) * 30)).
+
+        moneda := Moneda new.
+        moneda inicializarEn: posicionMoneda tamanio: 14 @ 14.
+
+        (obstaculos noneSatisfy: [ :each |
+            each limites intersects: moneda limites ])
+            ifTrue: [ monedas add: moneda ].
+
+        tiempoHastaMoneda := 3 + (aleatorio next * 3)
+    ]
+]
+
+{ #category : 'privado' }
+Juego >> moverMonedas: segundos [
+    monedas do: [ :moneda |
+        moneda avanzar: segundos velocidad: velocidadDesplazamiento ]
+]
+
+{ #category : 'privado' }
+Juego >> recogerMonedas [
+    monedas removeAllSuchThat: [ :moneda |
+        (personaje limites intersects: moneda limites)
+            ifTrue: [ puntaje := puntaje + 1. true ]
+            ifFalse: [ false ] ]
+]
+
+{ #category : 'privado' }
+Juego >> retirarMonedasFueraDeEscena [
+    monedas removeAllSuchThat: [ :moneda |
+        moneda estaFueraDelEscenario ]
+]
+
+{ #category : 'privado' }
 Juego >> hayColision [
 
 	^ obstaculos anySatisfy: [ :obstaculo |
@@ -189,6 +235,7 @@ Juego >> initialize [
 	alturaSuelo := 226.
 	personaje := Personaje new.
 	obstaculos := OrderedCollection new.
+	Monedas := OrderedCollection new.
 	aleatorio := Random new.
 	self reiniciar
 ]
@@ -222,12 +269,14 @@ Juego >> puntaje [
 Juego >> reiniciar [
 
 	obstaculos removeAll.
+	monedas removeAll.
 	estado := #enEspera.
 	puntaje := 0.
 	tiempoTranscurrido := 0.
 	velocidadDesplazamiento := 255.
 	intervaloObstaculos := 1.55.
 	tiempoHastaObstaculo := 0.65.
+	tiempoHastaMoneda := 3.
 	personaje reiniciarEn: 86 @ 0 suelo: alturaSuelo
 ]
 
@@ -285,6 +334,7 @@ Juego >> estadoEscenario [
 				#vuela -> vuela.
 				#alaArriba -> (vuela and: [ obstaculo alaArriba ])
 			} asDictionary ]).
+		#monedas -> (monedas collect: [ :moneda | moneda limites ]).
 		#suelo -> alturaSuelo.
 		#puntos -> puntaje.
 		#tiempo -> tiempoTranscurrido
