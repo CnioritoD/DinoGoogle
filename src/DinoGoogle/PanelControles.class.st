@@ -1,171 +1,163 @@
+"
+Dibuja la pantalla inicial, la tabla de resultados y el cuadro de partida terminada.
+"
 Class {
 	#name : 'PanelControles',
 	#superclass : 'Morph',
 	#instVars : [
-		'sistema',
-		'botonInicio',
-		'cuadroFinal',
-		'campoNick',
+		'estilo',
 		'estado',
 		'resultados',
-		'fuenteTabla'
+		'fuenteTabla',
+		'puntaje'
 	],
 	#category : 'DinoGoogle-Interfaz',
 	#package : 'DinoGoogle',
 	#tag : 'Interfaz'
 }
 
-{ #category : 'inicializacion' }
-PanelControles >> boton: texto selector: selector en: posicionLocal tamanio: medida [
+{ #category : 'initialization' }
+PanelControles >> configurarEstilo: unEstilo [
 
-	| boton |
-	boton := SimpleButtonMorph new
-		label: texto font: (LogicalFont familyName: 'Source Sans Pro' pointSize: 16);
-		extent: medida;
-		position: self position + posicionLocal;
-		color: Color white;
-		borderWidth: 1;
-		borderColor: Color black;
-		useRoundedCorners;
-		target: sistema;
-		actionSelector: selector;
-		yourself.
-	boton submorphs first color: Color black.
-	^ boton
+	estilo := unEstilo.
+	self changed
 ]
 
-{ #category : 'privado' }
-PanelControles >> conectarAcciones [
-    botonInicio
-        target: sistema;
-        actionSelector: #solicitarInicio.
-    botonReinicio
-        target: sistema;
-        actionSelector: #solicitarReinicio
-]
-
-{ #category : 'inicializacion' }
-PanelControles >> configurarSistema: unSistema [
-
-	sistema := unSistema.
-	self construirComponentes
-]
-
-{ #category : 'inicializacion' }
-PanelControles >> construirComponentes [
-
-	| titulo etiqueta |
-	botonInicio := self boton: 'Ready' selector: #solicitarInicio
-		en: 226 @ 37 tamanio: 188 @ 46.
-	self addMorph: botonInicio.
-
-	cuadroFinal := BorderedMorph new
-		extent: 340 @ 244;
-		color: (Color gray: 0.52);
-		borderWidth: 0;
-		useRoundedCorners;
-		yourself.
-	self addMorph: cuadroFinal.
-	cuadroFinal position: self position + (150 @ 50).
-
-	titulo := StringMorph contents: 'GAME OVER'.
-	titulo font: (LogicalFont familyName: 'Source Sans Pro' pointSize: 28).
-	titulo color: (Color r: 0.84 g: 0.04 b: 0.06).
-	cuadroFinal addMorph: titulo.
-	titulo position: cuadroFinal position + (((340 - titulo width) // 2) @ 19).
-
-	etiqueta := StringMorph contents: 'Nick name'.
-	etiqueta font: (LogicalFont familyName: 'Source Sans Pro' pointSize: 16).
-	etiqueta color: Color black.
-	cuadroFinal addMorph: etiqueta.
-	etiqueta position: cuadroFinal position + (49 @ 78).
-
-	campoNick := RubTextFieldMorph new
-		font: fuenteTabla;
-		color: Color white;
-		borderWidth: 2;
-		borderColor: Color black;
-		maxLength: 20;
-		extent: 242 @ 40;
-		yourself.
-	campoNick textArea textColor: Color black.
-	cuadroFinal addMorph: campoNick.
-	campoNick position: cuadroFinal position + (49 @ 105).
-
-	cuadroFinal addMorph: (self boton: 'Restart' selector: #solicitarReinicio
-		en: 182 @ 234 tamanio: 126 @ 39).
-	cuadroFinal addMorph: (self boton: 'Exit' selector: #solicitarSalida
-		en: 332 @ 234 tamanio: 126 @ 39).
-	cuadroFinal hide
-]
-
-{ #category : 'dibujo' }
+{ #category : 'drawing' }
 PanelControles >> dibujarFila: valores en: origen columnas: columnas sobre: canvas [
 
 	valores doWithIndex: [ :texto :indice |
 		| x ancho izquierda celda |
 		x := columnas at: indice.
 		ancho := (columnas at: indice + 1) - x.
-		celda := (origen + ((x + 3) @ 0)) extent: (ancho - 6) @ 30.
+		celda := (origen + ((x + 4) @ 0)) extent: (ancho - 8) @ 20.
 		izquierda := ((ancho - (fuenteTabla widthOfString: texto)) // 2) max: 4.
 		canvas clipBy: celda during: [ :lienzo |
 			lienzo drawString: texto from: 1 to: texto size
-				at: origen + ((x + izquierda) @ 6) font: fuenteTabla color: Color black ] ]
+				at: origen + ((x + izquierda) @ 2) font: fuenteTabla color: (estilo at: #tinta) ] ]
 ]
 
-{ #category : 'dibujo' }
-PanelControles >> dibujarTablaEn: canvas [
+{ #category : 'drawing' }
+PanelControles >> dibujarFinalEn: canvas [
 
-	| origen columnas encabezados |
-	origen := self position + (52 @ 112).
-	columnas := #(0 38 202 365 536).
-	encabezados := #('N°' 'Nick Name' 'Time' 'Score').
-	canvas fillRectangle: (origen extent: 536 @ 186) color: Color white.
-	2 to: 4 do: [ :indice |
-		canvas fillRectangle: ((origen + ((columnas at: indice) @ 0)) extent: 2 @ 186)
-			color: (Color gray: 0.52) ].
-	1 to: 5 do: [ :fila |
-		canvas fillRectangle: ((origen + (0 @ (fila * 31))) extent: 536 @ 1)
-			color: (Color gray: 0.52) ].
-	self dibujarFila: encabezados en: origen columnas: columnas sobre: canvas.
-	resultados doWithIndex: [ :resultado :indice |
-		self
-			dibujarFila: { indice printString. resultado first.
-				(resultado second printShowingDecimalPlaces: 2), ' s'. resultado third printString }
-			en: origen + (0 @ (indice * 31))
-			columnas: columnas
-			sobre: canvas ]
+	| origen titulo marcador entrada |
+	origen := self limitesCuadroFinal origin.
+	canvas fillRectangle: self bounds color: (estilo at: #pantalla).
+	self dibujarMarco: self limitesCuadroFinal fondo: (estilo at: #metal) hundido: false en: canvas.
+	titulo := (origen + (30 @ 22)) extent: 506 @ 54.
+	self dibujarMarco: titulo fondo: (estilo at: #relieve) hundido: false en: canvas.
+	self dibujarTexto: 'PARTIDA TERMINADA' centradoEn: titulo escala: 4 en: canvas.
+
+	marcador := (origen + (153 @ 89)) extent: 260 @ 42.
+	self dibujarMarco: marcador fondo: (estilo at: #pantalla) hundido: true en: canvas.
+	self dibujarTextoResaltado: 'PUNTOS ', puntaje printString centradoEn: marcador en: canvas.
+	self dibujarTexto: 'APODO OPCIONAL' centradoEn: ((origen + (153 @ 137)) extent: 260 @ 20)
+		escala: 2 en: canvas.
+	entrada := (origen + (153 @ 159)) extent: 260 @ 38.
+	self dibujarMarco: entrada fondo: (estilo at: #pantalla) hundido: true en: canvas
 ]
 
-{ #category : 'dibujo' }
-PanelControles >> drawOn: canvas [
+{ #category : 'drawing' }
+PanelControles >> dibujarInicioEn: canvas [
 
-	estado = #enEspera ifFalse: [ ^ self ].
-	canvas fillRectangle: self bounds color: (Color gray: 0.52).
+	| origen titulo |
+	origen := self position.
+	self dibujarMarco: self bounds fondo: (estilo at: #metal) hundido: false en: canvas.
+	titulo := (origen + (28 @ 22)) extent: 584 @ 55.
+	self dibujarMarco: titulo fondo: (estilo at: #relieve) hundido: false en: canvas.
+	self dibujarTexto: 'DINO GOOGLE' centradoEn: titulo escala: 5 en: canvas.
+	self dibujarTexto: 'MEJORES PARTIDAS' centradoEn: ((origen + (52 @ 143)) extent: 536 @ 22)
+		escala: 2 en: canvas.
 	self dibujarTablaEn: canvas
 ]
 
-{ #category : 'inicializacion' }
+{ #category : 'drawing' }
+PanelControles >> dibujarMarco: unRectangulo fondo: unColor hundido: hundido en: canvas [
+
+	(estilo at: #marco) value: unRectangulo value: unColor value: hundido value: canvas
+]
+
+{ #category : 'drawing' }
+PanelControles >> dibujarTablaEn: canvas [
+
+	| origen columnas encabezados |
+	origen := self position + (59 @ 177).
+	columnas := #(0 44 229 377 522).
+	encabezados := #('N' 'APODO' 'TIEMPO' 'PUNTOS').
+	self dibujarMarco: ((origen - (7 @ 7)) extent: 536 @ 140)
+		fondo: (estilo at: #relieve) hundido: true en: canvas.
+	canvas fillRectangle: (origen extent: 522 @ 20) color: (estilo at: #pantalla).
+	encabezados doWithIndex: [ :texto :indice |
+		| inicio ancho |
+		inicio := columnas at: indice.
+		ancho := (columnas at: indice + 1) - inicio.
+		self dibujarTextoResaltado: texto centradoEn: ((origen + (inicio @ 0)) extent: ancho @ 20) en: canvas ].
+	1 to: 5 do: [ :fila |
+		canvas fillRectangle: ((origen + (0 @ (fila * 21))) extent: 522 @ 20)
+			color: (Color gray: (fila odd ifTrue: [ 0.9 ] ifFalse: [ 0.79 ])) ].
+	resultados doWithIndex: [ :resultado :indice |
+		self
+			dibujarFila: { indice printString. (resultado first = 'Guest'
+				ifTrue: [ 'Invitado' ] ifFalse: [ resultado first ]).
+				(resultado second printShowingDecimalPlaces: 2), ' s'. resultado third printString }
+			en: origen + (0 @ (indice * 21))
+			columnas: columnas
+			sobre: canvas ].
+	resultados isEmpty ifTrue: [
+		self dibujarTexto: 'SIN RESULTADOS' centradoEn: ((origen + (0 @ 21)) extent: 522 @ 105)
+			escala: 2 en: canvas ]
+]
+
+{ #category : 'drawing' }
+PanelControles >> dibujarTexto: unTexto centradoEn: unRectangulo escala: escala en: canvas [
+
+	(estilo at: #texto) valueWithArguments: { unTexto. unRectangulo. escala. (estilo at: #tinta). canvas }
+]
+
+{ #category : 'drawing' }
+PanelControles >> dibujarTextoResaltado: unTexto centradoEn: unRectangulo en: canvas [
+
+	(estilo at: #texto) valueWithArguments: { unTexto. unRectangulo. 2. (estilo at: #luz). canvas }
+]
+
+{ #category : 'drawing' }
+PanelControles >> drawOn: canvas [
+
+	estilo ifNil: [ ^ self ].
+	estado = #enEspera ifTrue: [ self dibujarInicioEn: canvas ].
+	estado = #finalizada ifTrue: [ self dibujarFinalEn: canvas ]
+]
+
+{ #category : 'initialization' }
 PanelControles >> initialize [
 
 	super initialize.
 	self extent: 640 @ 344.
 	self color: Color transparent.
 	estado := #enEspera.
+	puntaje := 0.
 	resultados := #().
-	fuenteTabla := LogicalFont familyName: 'Source Sans Pro' pointSize: 13
+	fuenteTabla := LogicalFont familyName: 'Source Code Pro' pointSize: 13
+]
+
+{ #category : 'drawing' }
+PanelControles >> limitesCuadroFinal [
+
+	^ self limitesCuadroFinalLocales translateBy: self position
+]
+
+{ #category : 'drawing' }
+PanelControles >> limitesCuadroFinalLocales [
+
+	^ (37 @ 30) extent: 566 @ 282
 ]
 
 { #category : 'interfaz' }
 PanelControles >> mostrarPuntaje: unPuntaje estado: unEstado [
 
-	estado = unEstado ifTrue: [ ^ self ].
+	(estado = unEstado and: [ puntaje = unPuntaje ]) ifTrue: [ ^ self ].
 	estado := unEstado.
-	botonInicio visible: estado = #enEspera.
-	cuadroFinal visible: estado = #finalizada.
-	estado = #finalizada ifTrue: [
-		campoNick setText: ''.
-		self world ifNotNil: [ campoNick textArea takeKeyboardFocus ] ].
+	puntaje := unPuntaje.
 	self changed
 ]
 
@@ -174,10 +166,4 @@ PanelControles >> mostrarResultados: unaColeccion [
 
 	resultados := unaColeccion.
 	estado = #enEspera ifTrue: [ self changed ]
-]
-
-{ #category : 'interfaz' }
-PanelControles >> nick [
-
-	^ campoNick text asString trimBoth
 ]

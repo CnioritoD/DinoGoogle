@@ -1,10 +1,13 @@
+"
+Conecta el modelo Juego con el panel del escenario y convierte las acciones del jugador en mensajes al modelo.
+"
 Class {
 	#name : 'SistemaEscenario',
 	#superclass : 'Object',
 	#instVars : [
-		'coordinador',
 		'juego',
-		'panel'
+		'panel',
+		'entrada'
 	],
 	#category : 'DinoGoogle-Interfaz',
 	#package : 'DinoGoogle',
@@ -18,13 +21,35 @@ SistemaEscenario >> avanzar: segundos [
 	self refrescarPanel
 ]
 
-{ #category : 'inicializacion' }
-SistemaEscenario >> configurarCoordinador: unCoordinador juego: unJuego panel: unPanel [
+{ #category : 'initialization' }
+SistemaEscenario >> configurarEstilo: unEstilo [
 
-	coordinador := unCoordinador.
+	panel configurarEstilo: unEstilo
+]
+
+{ #category : 'initialization' }
+SistemaEscenario >> configurarJuego: unJuego panel: unPanel [
+
 	juego := unJuego.
 	panel := unPanel.
-	panel configurarSistema: self juego: juego
+	panel configurarTamanio: juego tamanioEscenario.
+	entrada := EntradaEscenario new.
+	entrada configurarSistema: self extension: panel extent.
+	self refrescarPanel
+]
+
+{ #category : 'partida' }
+SistemaEscenario >> ejecutarAgacharse [
+
+	juego agacharse.
+	self refrescarPanel
+]
+
+{ #category : 'partida' }
+SistemaEscenario >> ejecutarPararse [
+
+	juego pararse.
+	self refrescarPanel
 ]
 
 { #category : 'partida' }
@@ -57,13 +82,8 @@ SistemaEscenario >> iniciarJuego [
 SistemaEscenario >> montarEn: unContenedor posicion: unaPosicion [
 
 	unContenedor addMorph: panel.
-	panel position: unaPosicion
-]
-
-{ #category : 'acceso' }
-SistemaEscenario >> panel [
-
-	^ panel
+	panel position: unaPosicion.
+	entrada montarEn: unContenedor posicion: unaPosicion
 ]
 
 { #category : 'partida' }
@@ -82,7 +102,7 @@ SistemaEscenario >> puntaje [
 { #category : 'interfaz' }
 SistemaEscenario >> refrescarPanel [
 
-	panel changed
+	panel mostrarEstado: juego estadoEscenario
 ]
 
 { #category : 'partida' }
@@ -90,12 +110,6 @@ SistemaEscenario >> reiniciarJuego [
 
 	juego reiniciar.
 	self iniciarJuego
-]
-
-{ #category : 'partida' }
-SistemaEscenario >> solicitarSalto [
-
-	coordinador solicitarSalto
 ]
 
 { #category : 'acceso' }
@@ -107,5 +121,5 @@ SistemaEscenario >> tiempoTranscurrido [
 { #category : 'interfaz' }
 SistemaEscenario >> tomarFoco [
 
-	panel tomarFoco
+	entrada tomarFoco
 ]

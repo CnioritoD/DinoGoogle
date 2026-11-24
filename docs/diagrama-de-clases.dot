@@ -1,0 +1,180 @@
+digraph DinoGoogle {
+  graph [rankdir=TB, bgcolor="#ffffff", pad=0.30, nodesep=0.38, ranksep=0.60,
+    fontname="Arial", fontsize=24, labelloc=t, labeljust=l,
+    label=<<B>DinoGoogle</B> <FONT POINT-SIZE="16">| Diagrama de clases</FONT><BR ALIGN="LEFT"/>
+      <FONT POINT-SIZE="11" COLOR="#41566c">Pharo 12 · Paquete DinoGoogle · Variables y métodos declarados en cada clase</FONT>>];
+  node [shape=plain, fontname="Arial", fontsize=11, fontcolor="#172431"];
+  edge [fontname="Arial", fontsize=10, color="#435365", fontcolor="#243246",
+    penwidth=1.2, arrowsize=0.83];
+
+  // Las variables y los selectores provienen de src/DinoGoogle/*.class.st.
+
+  AplicacionJuego [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#ffffff">
+    <TR><TD BGCOLOR="#e9f0f8"><FONT POINT-SIZE="13"><B>AplicacionJuego</B></FONT><BR/><FONT POINT-SIZE="10" COLOR="#41566c">Hereda de SystemWindow</FONT></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Variables de instancia</B></FONT><BR ALIGN="LEFT"/>coordinador<BR ALIGN="LEFT"/>estilo</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Variables de clase</B></FONT><BR ALIGN="LEFT"/>Glifos</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Métodos de instancia</B></FONT><BR ALIGN="LEFT"/>abrir<BR ALIGN="LEFT"/>activeTitleFillStyle<BR ALIGN="LEFT"/>construirInterfaz<BR ALIGN="LEFT"/>delete<BR ALIGN="LEFT"/>drawOn:<BR ALIGN="LEFT"/>inactiveTitleFillStyle<BR ALIGN="LEFT"/>initialize<BR ALIGN="LEFT"/>initializeLabelArea<BR ALIGN="LEFT"/>labelHeight<BR ALIGN="LEFT"/>preferredCornerStyle<BR ALIGN="LEFT"/>wantsRoundedCorners</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Métodos de clase</B></FONT><BR ALIGN="LEFT"/>estilo<BR ALIGN="LEFT"/>glifos<BR ALIGN="LEFT"/>luz<BR ALIGN="LEFT"/>metal<BR ALIGN="LEFT"/>pantalla<BR ALIGN="LEFT"/>pintorDeMarcosCon:<BR ALIGN="LEFT"/>pintorDeTexto<BR ALIGN="LEFT"/>relieve<BR ALIGN="LEFT"/>sombra<BR ALIGN="LEFT"/>tinta</TD></TR>
+  </TABLE>>];
+
+  CoordinadorPartida [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#ffffff">
+    <TR><TD BGCOLOR="#e9f0f8"><FONT POINT-SIZE="13"><B>CoordinadorPartida</B></FONT><BR/><FONT POINT-SIZE="10" COLOR="#41566c">Hereda de Object</FONT></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Variables de instancia</B></FONT><BR ALIGN="LEFT"/>escenario<BR ALIGN="LEFT"/>controles<BR ALIGN="LEFT"/>reloj<BR ALIGN="LEFT"/>resultadoGuardado</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Variables de clase</B></FONT><BR ALIGN="LEFT"/>Resultados</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Métodos de instancia</B></FONT><BR ALIGN="LEFT"/>actualizar:<BR ALIGN="LEFT"/>actualizarControles<BR ALIGN="LEFT"/>cerrar<BR ALIGN="LEFT"/>configurarEscenario:controles:reloj:<BR ALIGN="LEFT"/>configurarEstilo:<BR ALIGN="LEFT"/>detenerSiTerminoLaPartida<BR ALIGN="LEFT"/>guardarResultado:<BR ALIGN="LEFT"/>iniciarPartida<BR ALIGN="LEFT"/>initialize<BR ALIGN="LEFT"/>montarInterfazEn:<BR ALIGN="LEFT"/>prepararSiguientePartida<BR ALIGN="LEFT"/>reiniciarPartida<BR ALIGN="LEFT"/>salir</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Métodos de clase</B></FONT><BR ALIGN="LEFT"/>registrarResultado:<BR ALIGN="LEFT"/>resultados</TD></TR>
+  </TABLE>>];
+
+  EntradaControles [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#ffffff">
+    <TR><TD BGCOLOR="#e9f0f8"><FONT POINT-SIZE="13"><B>EntradaControles</B></FONT><BR/><FONT POINT-SIZE="10" COLOR="#41566c">Hereda de Morph</FONT></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Variables de instancia</B></FONT><BR ALIGN="LEFT"/>sistema<BR ALIGN="LEFT"/>limitesCuadroFinal<BR ALIGN="LEFT"/>estilo<BR ALIGN="LEFT"/>estado<BR ALIGN="LEFT"/>botonInicio<BR ALIGN="LEFT"/>cuadroFinal<BR ALIGN="LEFT"/>campoNick</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Variables de clase</B></FONT><BR ALIGN="LEFT"/><FONT COLOR="#526476"><I>Ninguna</I></FONT></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Métodos de instancia</B></FONT><BR ALIGN="LEFT"/>actualizarComponentes<BR ALIGN="LEFT"/>boton:selector:en:tamanio:<BR ALIGN="LEFT"/>configurarEstilo:<BR ALIGN="LEFT"/>configurarSistema:extension:limitesCuadroFinal:<BR ALIGN="LEFT"/>construirComponentes<BR ALIGN="LEFT"/>montarEn:posicion:<BR ALIGN="LEFT"/>mostrarEstado:<BR ALIGN="LEFT"/>nick</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Métodos de clase</B></FONT><BR ALIGN="LEFT"/><FONT COLOR="#526476"><I>Ninguno</I></FONT></TD></TR>
+  </TABLE>>];
+
+  EntradaEscenario [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#ffffff">
+    <TR><TD BGCOLOR="#e9f0f8"><FONT POINT-SIZE="13"><B>EntradaEscenario</B></FONT><BR/><FONT POINT-SIZE="10" COLOR="#41566c">Hereda de Morph</FONT></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Variables de instancia</B></FONT><BR ALIGN="LEFT"/>sistema</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Variables de clase</B></FONT><BR ALIGN="LEFT"/><FONT COLOR="#526476"><I>Ninguna</I></FONT></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Métodos de instancia</B></FONT><BR ALIGN="LEFT"/>configurarSistema:extension:<BR ALIGN="LEFT"/>esFlechaAbajo:<BR ALIGN="LEFT"/>esTeclaDeSalto:<BR ALIGN="LEFT"/>handlesKeyboard:<BR ALIGN="LEFT"/>handlesMouseDown:<BR ALIGN="LEFT"/>keyDown:<BR ALIGN="LEFT"/>keyUp:<BR ALIGN="LEFT"/>montarEn:posicion:<BR ALIGN="LEFT"/>mouseDown:<BR ALIGN="LEFT"/>tomarFoco</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Métodos de clase</B></FONT><BR ALIGN="LEFT"/><FONT COLOR="#526476"><I>Ninguno</I></FONT></TD></TR>
+  </TABLE>>];
+
+  Juego [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#ffffff">
+    <TR><TD BGCOLOR="#e6f2ea"><FONT POINT-SIZE="13"><B>Juego</B></FONT><BR/><FONT POINT-SIZE="10" COLOR="#41566c">Hereda de Object</FONT></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Variables de instancia</B></FONT><BR ALIGN="LEFT"/>personaje<BR ALIGN="LEFT"/>obstaculos<BR ALIGN="LEFT"/>estado<BR ALIGN="LEFT"/>puntaje<BR ALIGN="LEFT"/>tiempoTranscurrido<BR ALIGN="LEFT"/>tiempoHastaObstaculo<BR ALIGN="LEFT"/>aleatorio<BR ALIGN="LEFT"/>monedas<BR ALIGN="LEFT"/>tiempoHastaMoneda</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Variables de clase</B></FONT><BR ALIGN="LEFT"/><FONT COLOR="#526476"><I>Ninguna</I></FONT></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Métodos de instancia</B></FONT><BR ALIGN="LEFT"/>agacharse<BR ALIGN="LEFT"/>agregarCactus:anchos:alturas:separaciones:<BR ALIGN="LEFT"/>alturaSuelo<BR ALIGN="LEFT"/>avanzar:<BR ALIGN="LEFT"/>avanzarPaso:<BR ALIGN="LEFT"/>cantidadDeCactusEnGrupo<BR ALIGN="LEFT"/>contabilizarObstaculosSuperados<BR ALIGN="LEFT"/>crearGrupoDeCactus<BR ALIGN="LEFT"/>crearObstaculo<BR ALIGN="LEFT"/>crearPajaro<BR ALIGN="LEFT"/>estado<BR ALIGN="LEFT"/>estadoEscenario<BR ALIGN="LEFT"/>estaEnCurso<BR ALIGN="LEFT"/>finalizar<BR ALIGN="LEFT"/>generarMonedaSiCorresponde:<BR ALIGN="LEFT"/>generarObstaculoSiCorresponde:<BR ALIGN="LEFT"/>hayColision<BR ALIGN="LEFT"/>iniciar<BR ALIGN="LEFT"/>initialize<BR ALIGN="LEFT"/>intervaloObstaculos<BR ALIGN="LEFT"/>moverMonedas:<BR ALIGN="LEFT"/>moverObstaculos:<BR ALIGN="LEFT"/>pararse<BR ALIGN="LEFT"/>puntaje<BR ALIGN="LEFT"/>recogerMonedas<BR ALIGN="LEFT"/>reiniciar<BR ALIGN="LEFT"/>retirarMonedasFueraDeEscena<BR ALIGN="LEFT"/>retirarObstaculosFueraDeEscena<BR ALIGN="LEFT"/>saltar<BR ALIGN="LEFT"/>sePuedeSaltarGrupoDeAncho:altura:<BR ALIGN="LEFT"/>tamanioEscenario<BR ALIGN="LEFT"/>tiempoTranscurrido<BR ALIGN="LEFT"/>velocidadDesplazamiento</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Métodos de clase</B></FONT><BR ALIGN="LEFT"/><FONT COLOR="#526476"><I>Ninguno</I></FONT></TD></TR>
+  </TABLE>>];
+
+  Moneda [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#ffffff">
+    <TR><TD BGCOLOR="#e6f2ea"><FONT POINT-SIZE="13"><B>Moneda</B></FONT><BR/><FONT POINT-SIZE="10" COLOR="#41566c">Hereda de Obstaculo</FONT></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Variables de instancia</B></FONT><BR ALIGN="LEFT"/><FONT COLOR="#526476"><I>Ninguna</I></FONT></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Variables de clase</B></FONT><BR ALIGN="LEFT"/><FONT COLOR="#526476"><I>Ninguna</I></FONT></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Métodos de instancia</B></FONT><BR ALIGN="LEFT"/><FONT COLOR="#526476"><I>Ninguno</I></FONT></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Métodos de clase</B></FONT><BR ALIGN="LEFT"/><FONT COLOR="#526476"><I>Ninguno</I></FONT></TD></TR>
+  </TABLE>>];
+
+  Obstaculo [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#ffffff">
+    <TR><TD BGCOLOR="#e6f2ea"><FONT POINT-SIZE="13"><B>Obstaculo</B></FONT><BR/><FONT POINT-SIZE="10" COLOR="#41566c">Hereda de Object</FONT></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Variables de instancia</B></FONT><BR ALIGN="LEFT"/>posicion<BR ALIGN="LEFT"/>tamanio<BR ALIGN="LEFT"/>contabilizado</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Variables de clase</B></FONT><BR ALIGN="LEFT"/><FONT COLOR="#526476"><I>Ninguna</I></FONT></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Métodos de instancia</B></FONT><BR ALIGN="LEFT"/>avanzar:velocidad:<BR ALIGN="LEFT"/>esPajaro<BR ALIGN="LEFT"/>estaContabilizado<BR ALIGN="LEFT"/>estaFueraDelEscenario<BR ALIGN="LEFT"/>fueSuperadoPor:<BR ALIGN="LEFT"/>inicializarEn:tamanio:<BR ALIGN="LEFT"/>limites<BR ALIGN="LEFT"/>marcarContabilizado</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Métodos de clase</B></FONT><BR ALIGN="LEFT"/><FONT COLOR="#526476"><I>Ninguno</I></FONT></TD></TR>
+  </TABLE>>];
+
+  Pajaro [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#ffffff">
+    <TR><TD BGCOLOR="#e6f2ea"><FONT POINT-SIZE="13"><B>Pajaro</B></FONT><BR/><FONT POINT-SIZE="10" COLOR="#41566c">Hereda de Obstaculo</FONT></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Variables de instancia</B></FONT><BR ALIGN="LEFT"/><FONT COLOR="#526476"><I>Ninguna</I></FONT></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Variables de clase</B></FONT><BR ALIGN="LEFT"/><FONT COLOR="#526476"><I>Ninguna</I></FONT></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Métodos de instancia</B></FONT><BR ALIGN="LEFT"/>alaArriba<BR ALIGN="LEFT"/>avanzar:velocidad:<BR ALIGN="LEFT"/>esPajaro</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Métodos de clase</B></FONT><BR ALIGN="LEFT"/><FONT COLOR="#526476"><I>Ninguno</I></FONT></TD></TR>
+  </TABLE>>];
+
+  PanelControles [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#ffffff">
+    <TR><TD BGCOLOR="#e9f0f8"><FONT POINT-SIZE="13"><B>PanelControles</B></FONT><BR/><FONT POINT-SIZE="10" COLOR="#41566c">Hereda de Morph</FONT></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Variables de instancia</B></FONT><BR ALIGN="LEFT"/>estilo<BR ALIGN="LEFT"/>estado<BR ALIGN="LEFT"/>resultados<BR ALIGN="LEFT"/>fuenteTabla<BR ALIGN="LEFT"/>puntaje</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Variables de clase</B></FONT><BR ALIGN="LEFT"/><FONT COLOR="#526476"><I>Ninguna</I></FONT></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Métodos de instancia</B></FONT><BR ALIGN="LEFT"/>configurarEstilo:<BR ALIGN="LEFT"/>dibujarFila:en:columnas:sobre:<BR ALIGN="LEFT"/>dibujarFinalEn:<BR ALIGN="LEFT"/>dibujarInicioEn:<BR ALIGN="LEFT"/>dibujarMarco:fondo:hundido:en:<BR ALIGN="LEFT"/>dibujarTablaEn:<BR ALIGN="LEFT"/>dibujarTexto:centradoEn:escala:en:<BR ALIGN="LEFT"/>dibujarTextoResaltado:centradoEn:en:<BR ALIGN="LEFT"/>drawOn:<BR ALIGN="LEFT"/>initialize<BR ALIGN="LEFT"/>limitesCuadroFinal<BR ALIGN="LEFT"/>limitesCuadroFinalLocales<BR ALIGN="LEFT"/>mostrarPuntaje:estado:<BR ALIGN="LEFT"/>mostrarResultados:</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Métodos de clase</B></FONT><BR ALIGN="LEFT"/><FONT COLOR="#526476"><I>Ninguno</I></FONT></TD></TR>
+  </TABLE>>];
+
+  PanelEscenario [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#ffffff">
+    <TR><TD BGCOLOR="#e9f0f8"><FONT POINT-SIZE="13"><B>PanelEscenario</B></FONT><BR/><FONT POINT-SIZE="10" COLOR="#41566c">Hereda de Morph</FONT></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Variables de instancia</B></FONT><BR ALIGN="LEFT"/>estilo<BR ALIGN="LEFT"/>limitesPersonaje<BR ALIGN="LEFT"/>agachado<BR ALIGN="LEFT"/>obstaculos<BR ALIGN="LEFT"/>alturaSuelo<BR ALIGN="LEFT"/>puntos<BR ALIGN="LEFT"/>tiempoTranscurrido<BR ALIGN="LEFT"/>monedas</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Variables de clase</B></FONT><BR ALIGN="LEFT"/>CacheSprites</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Métodos de instancia</B></FONT><BR ALIGN="LEFT"/>configurarEstilo:<BR ALIGN="LEFT"/>configurarTamanio:<BR ALIGN="LEFT"/>dibujarCactus:en:<BR ALIGN="LEFT"/>dibujarCieloEn:<BR ALIGN="LEFT"/>dibujarIndicador:centradoEn:en:<BR ALIGN="LEFT"/>dibujarIndicadoresEn:<BR ALIGN="LEFT"/>dibujarMarco:fondo:hundido:en:<BR ALIGN="LEFT"/>dibujarMonedasEn:<BR ALIGN="LEFT"/>dibujarObstaculosEn:<BR ALIGN="LEFT"/>dibujarPajaro:en:<BR ALIGN="LEFT"/>dibujarPersonajeEn:<BR ALIGN="LEFT"/>dibujarSueloEn:<BR ALIGN="LEFT"/>drawOn:<BR ALIGN="LEFT"/>mostrarEstado:</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Métodos de clase</B></FONT><BR ALIGN="LEFT"/>archivosDe:<BR ALIGN="LEFT"/>cacheSprites<BR ALIGN="LEFT"/>carpetaSpritesPorDefecto<BR ALIGN="LEFT"/>criaturaDeSerieAgachada:<BR ALIGN="LEFT"/>cuadrosNombrados:tamanio:<BR ALIGN="LEFT"/>dibujarCriaturaCon:<BR ALIGN="LEFT"/>dinosaurioAgachado:tamanio:tiempo:<BR ALIGN="LEFT"/>enGrises:<BR ALIGN="LEFT"/>framesPorSegundoSprites<BR ALIGN="LEFT"/>leerArchivo:tamanio:<BR ALIGN="LEFT"/>leerCuadros:tamanio:<BR ALIGN="LEFT"/>limpiarCacheSprites<BR ALIGN="LEFT"/>numeroDe:<BR ALIGN="LEFT"/>pixelesCriaturaAgachada<BR ALIGN="LEFT"/>pixelesCriaturaDePie</TD></TR>
+  </TABLE>>];
+
+  Personaje [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#ffffff">
+    <TR><TD BGCOLOR="#e6f2ea"><FONT POINT-SIZE="13"><B>Personaje</B></FONT><BR/><FONT POINT-SIZE="10" COLOR="#41566c">Hereda de Object</FONT></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Variables de instancia</B></FONT><BR ALIGN="LEFT"/>posicion<BR ALIGN="LEFT"/>tamanio<BR ALIGN="LEFT"/>velocidadVertical<BR ALIGN="LEFT"/>gravedad<BR ALIGN="LEFT"/>impulsoSalto<BR ALIGN="LEFT"/>alturaSuelo<BR ALIGN="LEFT"/>agachado<BR ALIGN="LEFT"/>tamanioDePie<BR ALIGN="LEFT"/>tamanioAgachado</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Variables de clase</B></FONT><BR ALIGN="LEFT"/><FONT COLOR="#526476"><I>Ninguna</I></FONT></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Métodos de instancia</B></FONT><BR ALIGN="LEFT"/>agacharse<BR ALIGN="LEFT"/>aterrizarSiCorresponde<BR ALIGN="LEFT"/>avanzar:<BR ALIGN="LEFT"/>estaAgachado<BR ALIGN="LEFT"/>estaEnSuelo<BR ALIGN="LEFT"/>initialize<BR ALIGN="LEFT"/>limites<BR ALIGN="LEFT"/>pararse<BR ALIGN="LEFT"/>reiniciarEn:suelo:<BR ALIGN="LEFT"/>saltar<BR ALIGN="LEFT"/>tamanio<BR ALIGN="LEFT"/>tiempoSobreAltura:</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Métodos de clase</B></FONT><BR ALIGN="LEFT"/><FONT COLOR="#526476"><I>Ninguno</I></FONT></TD></TR>
+  </TABLE>>];
+
+  SistemaControles [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#ffffff">
+    <TR><TD BGCOLOR="#e9f0f8"><FONT POINT-SIZE="13"><B>SistemaControles</B></FONT><BR/><FONT POINT-SIZE="10" COLOR="#41566c">Hereda de Object</FONT></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Variables de instancia</B></FONT><BR ALIGN="LEFT"/>coordinador<BR ALIGN="LEFT"/>panel<BR ALIGN="LEFT"/>entrada</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Variables de clase</B></FONT><BR ALIGN="LEFT"/><FONT COLOR="#526476"><I>Ninguna</I></FONT></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Métodos de instancia</B></FONT><BR ALIGN="LEFT"/>configurarCoordinador:panel:<BR ALIGN="LEFT"/>configurarEstilo:<BR ALIGN="LEFT"/>montarEn:posicion:<BR ALIGN="LEFT"/>mostrarPuntaje:estado:<BR ALIGN="LEFT"/>mostrarResultados:<BR ALIGN="LEFT"/>solicitarInicio<BR ALIGN="LEFT"/>solicitarReinicio<BR ALIGN="LEFT"/>solicitarSalida</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Métodos de clase</B></FONT><BR ALIGN="LEFT"/><FONT COLOR="#526476"><I>Ninguno</I></FONT></TD></TR>
+  </TABLE>>];
+
+  SistemaEscenario [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#ffffff">
+    <TR><TD BGCOLOR="#e9f0f8"><FONT POINT-SIZE="13"><B>SistemaEscenario</B></FONT><BR/><FONT POINT-SIZE="10" COLOR="#41566c">Hereda de Object</FONT></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Variables de instancia</B></FONT><BR ALIGN="LEFT"/>juego<BR ALIGN="LEFT"/>panel<BR ALIGN="LEFT"/>entrada</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Variables de clase</B></FONT><BR ALIGN="LEFT"/><FONT COLOR="#526476"><I>Ninguna</I></FONT></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Métodos de instancia</B></FONT><BR ALIGN="LEFT"/>avanzar:<BR ALIGN="LEFT"/>configurarEstilo:<BR ALIGN="LEFT"/>configurarJuego:panel:<BR ALIGN="LEFT"/>ejecutarAgacharse<BR ALIGN="LEFT"/>ejecutarPararse<BR ALIGN="LEFT"/>ejecutarSalto<BR ALIGN="LEFT"/>estado<BR ALIGN="LEFT"/>estaEnCurso<BR ALIGN="LEFT"/>iniciarJuego<BR ALIGN="LEFT"/>montarEn:posicion:<BR ALIGN="LEFT"/>prepararJuego<BR ALIGN="LEFT"/>puntaje<BR ALIGN="LEFT"/>refrescarPanel<BR ALIGN="LEFT"/>reiniciarJuego<BR ALIGN="LEFT"/>tiempoTranscurrido<BR ALIGN="LEFT"/>tomarFoco</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Métodos de clase</B></FONT><BR ALIGN="LEFT"/><FONT COLOR="#526476"><I>Ninguno</I></FONT></TD></TR>
+  </TABLE>>];
+
+  SistemaReloj [label=<<TABLE BORDER="1" COLOR="#394452" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#ffffff">
+    <TR><TD BGCOLOR="#e9f0f8"><FONT POINT-SIZE="13"><B>SistemaReloj</B></FONT><BR/><FONT POINT-SIZE="10" COLOR="#41566c">Hereda de Morph</FONT></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Variables de instancia</B></FONT><BR ALIGN="LEFT"/>coordinador<BR ALIGN="LEFT"/>ultimoTiempo</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Variables de clase</B></FONT><BR ALIGN="LEFT"/><FONT COLOR="#526476"><I>Ninguna</I></FONT></TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Métodos de instancia</B></FONT><BR ALIGN="LEFT"/>configurarCoordinador:<BR ALIGN="LEFT"/>detener<BR ALIGN="LEFT"/>iniciar<BR ALIGN="LEFT"/>montarEn:posicion:<BR ALIGN="LEFT"/>step<BR ALIGN="LEFT"/>stepTime<BR ALIGN="LEFT"/>wantsSteps</TD></TR>
+    <HR/><TR><TD ALIGN="LEFT" BALIGN="LEFT"><FONT COLOR="#41566c" POINT-SIZE="9"><B>Métodos de clase</B></FONT><BR ALIGN="LEFT"/><FONT COLOR="#526476"><I>Ninguno</I></FONT></TD></TR>
+  </TABLE>>];
+
+  // El rombo relleno se sitúa del lado del objeto que contiene al componente.
+  edge [dir=back, arrowtail=diamond, arrowhead=none];
+  AplicacionJuego -> CoordinadorPartida;
+  CoordinadorPartida -> SistemaControles;
+  CoordinadorPartida -> SistemaEscenario;
+  CoordinadorPartida -> SistemaReloj;
+  SistemaControles -> EntradaControles;
+  SistemaEscenario -> EntradaEscenario;
+  Juego -> Personaje [headlabel="1", labeldistance=1.6, labelangle=-35];
+  Juego -> Obstaculo [headlabel="0..*", labeldistance=1.6, labelangle=-30];
+  Juego -> Moneda [headlabel="0..*", labeldistance=1.6, labelangle=-35];
+
+  // La asociación representa una referencia conservada en una variable de instancia.
+  edge [dir=forward, arrowtail=none, arrowhead=vee];
+  SistemaControles -> PanelControles;
+  SistemaEscenario -> PanelEscenario;
+  SistemaEscenario -> Juego;
+
+  // Las dependencias representan uso sin una referencia de instancia propia.
+  edge [style=dashed, arrowhead=vee, color="#657487", constraint=false];
+  Juego -> Pajaro [label="crea"];
+  Obstaculo -> Personaje [label="consulta límites"];
+
+  // El triángulo hueco apunta a la superclase.
+  edge [style=solid, color="#435365", arrowhead=onormal];
+  Pajaro -> Obstaculo;
+  Moneda -> Obstaculo;
+
+  {rank=same; AplicacionJuego; CoordinadorPartida}
+  {rank=same; SistemaControles; SistemaEscenario; SistemaReloj}
+  {rank=same; EntradaControles; PanelControles; EntradaEscenario; PanelEscenario; Juego}
+  {rank=same; Personaje; Obstaculo; Moneda; Pajaro}
+  edge [style=invis, constraint=true, weight=10];
+  SistemaControles -> SistemaEscenario -> SistemaReloj;
+  EntradaControles -> PanelControles -> EntradaEscenario -> PanelEscenario -> Juego;
+  Personaje -> Obstaculo -> Moneda -> Pajaro;
+
+  subgraph cluster_leyenda {
+    graph [label="Relaciones UML", fontname="Arial", fontsize=12, style=rounded, color="#b1bac5", margin=12];
+    node [shape=plain, style="", fontname="Arial", fontsize=10];
+    composicion [label="Composición"];
+    asociacion [label="Asociación"];
+    dependencia [label="Dependencia"];
+    herencia [label="Herencia"];
+    node [shape=point, width=0.015, height=0.015, fixedsize=true, label="", style=invis];
+    edge [style=solid, constraint=true, weight=1, arrowtail=none, arrowhead=vee];
+    {rank=same; c; composicion; a; asociacion; d; dependencia; h; herencia}
+    c -> composicion [dir=back, arrowtail=diamond, arrowhead=none];
+    a -> asociacion;
+    d -> dependencia [style=dashed];
+    h -> herencia [arrowhead=onormal];
+    composicion -> a [style=invis];
+    asociacion -> d [style=invis];
+    dependencia -> h [style=invis];
+  }
+  Obstaculo -> c [style=invis];
+}

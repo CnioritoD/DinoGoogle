@@ -1,3 +1,6 @@
+"
+Coordina el escenario, los controles y el reloj. Inicia, reinicia y cierra partidas, y registra sus resultados.
+"
 Class {
 	#name : 'CoordinadorPartida',
 	#superclass : 'Object',
@@ -5,7 +8,6 @@ Class {
 		'escenario',
 		'controles',
 		'reloj',
-		'accionSalida',
 		'resultadoGuardado'
 	],
 	#classVars : [
@@ -19,8 +21,22 @@ Class {
 { #category : 'resultados' }
 CoordinadorPartida class >> registrarResultado: unResultado [
 
-	| tabla |
+	| tabla anterior |
 	tabla := self resultados.
+	"Un mismo nick es un mismo jugador: solo se conserva su mejor resultado.
+	'Guest' es anonimo: cada partida de Guest es una fila aparte."
+	anterior := unResultado first = 'Guest'
+		ifTrue: [ nil ]
+		ifFalse: [
+			tabla
+				detect: [ :each | each first asLowercase = unResultado first asLowercase ]
+				ifNone: [ nil ] ].
+	anterior ifNotNil: [
+		(unResultado third > anterior third or: [
+			 unResultado third = anterior third and: [
+				 unResultado second > anterior second ] ])
+			ifFalse: [ ^ self ].
+		tabla remove: anterior ].
 	tabla add: unResultado.
 	tabla sort: [ :a :b |
 		a third = b third
@@ -49,30 +65,25 @@ CoordinadorPartida >> actualizarControles [
 	controles mostrarPuntaje: escenario puntaje estado: escenario estado
 ]
 
-{ #category : 'ventana' }
-CoordinadorPartida >> alSalir: unBloque [
-
-	accionSalida := unBloque
-]
-
 { #category : 'partida' }
 CoordinadorPartida >> cerrar [
 
 	reloj detener
 ]
 
-{ #category : 'interfaz' }
-CoordinadorPartida >> componentes [
-
-	^ { escenario panel. controles panel. reloj }
-]
-
-{ #category : 'inicializacion' }
+{ #category : 'initialization' }
 CoordinadorPartida >> configurarEscenario: unEscenario controles: unosControles reloj: unReloj [
 
 	escenario := unEscenario.
 	controles := unosControles.
 	reloj := unReloj
+]
+
+{ #category : 'initialization' }
+CoordinadorPartida >> configurarEstilo: unEstilo [
+
+	escenario configurarEstilo: unEstilo.
+	controles configurarEstilo: unEstilo
 ]
 
 { #category : 'privado' }
@@ -84,8 +95,10 @@ CoordinadorPartida >> detenerSiTerminoLaPartida [
 { #category : 'resultados' }
 CoordinadorPartida >> guardarResultado: unNick [
 
-	(escenario estado = #finalizada and: [ resultadoGuardado ~= true ])
+	(escenario estado = #finalizada and: [
+		(resultadoGuardado ifNil: [ false ]) not ])
 		ifFalse: [ ^ self ].
+
 	resultadoGuardado := true.
 	self class registrarResultado: {
 		unNick ifEmpty: [ 'Guest' ].
@@ -104,12 +117,12 @@ CoordinadorPartida >> iniciarPartida [
 	reloj iniciar
 ]
 
-{ #category : 'inicializacion' }
+{ #category : 'initialization' }
 CoordinadorPartida >> initialize [
 
 	super initialize.
 	self configurarEscenario: SistemaEscenario new controles: SistemaControles new reloj: SistemaReloj new.
-	escenario configurarCoordinador: self juego: Juego new panel: PanelEscenario new.
+	escenario configurarJuego: Juego new panel: PanelEscenario new.
 	controles configurarCoordinador: self panel: PanelControles new.
 	reloj configurarCoordinador: self.
 	controles mostrarResultados: self class resultados.
@@ -146,15 +159,8 @@ CoordinadorPartida >> reiniciarPartida [
 	reloj iniciar
 ]
 
-{ #category : 'ventana' }
+{ #category : 'partida' }
 CoordinadorPartida >> salir [
 
-	self cerrar.
-	accionSalida ifNotNil: [ accionSalida value ]
-]
-
-{ #category : 'partida' }
-CoordinadorPartida >> solicitarSalto [
-
-	escenario ejecutarSalto
+	self prepararSiguientePartida
 ]

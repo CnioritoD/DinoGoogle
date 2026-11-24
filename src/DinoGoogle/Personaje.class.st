@@ -1,3 +1,6 @@
+"
+Representa al personaje controlado por el jugador. Calcula el salto y ajusta su posición y sus límites al agacharse y pararse.
+"
 Class {
 	#name : 'Personaje',
 	#superclass : 'Object',
@@ -7,19 +10,32 @@ Class {
 		'velocidadVertical',
 		'gravedad',
 		'impulsoSalto',
-		'alturaSuelo'
+		'alturaSuelo',
+		'agachado',
+		'tamanioDePie',
+		'tamanioAgachado'
 	],
 	#category : 'DinoGoogle-Modelo',
 	#package : 'DinoGoogle',
 	#tag : 'Modelo'
 }
 
+{ #category : 'movimiento' }
+Personaje >> agacharse [
+	"Solo se puede agachar estando en el suelo."
+
+	(agachado or: [ self estaEnSuelo not ]) ifTrue: [ ^ self ].
+	agachado := true.
+	tamanio := tamanioAgachado.
+	posicion := posicion x @ (alturaSuelo - tamanio y)
+]
+
 { #category : 'privado' }
 Personaje >> aterrizarSiCorresponde [
 
-	self estaEnSuelo ifTrue: [
-		posicion := posicion x @ (alturaSuelo - tamanio y).
-		velocidadVertical := 0 ]
+	self estaEnSuelo ifFalse: [ ^ self ].
+	posicion := posicion x @ (alturaSuelo - tamanio y).
+	velocidadVertical := 0
 ]
 
 { #category : 'movimiento' }
@@ -31,17 +47,26 @@ Personaje >> avanzar: segundos [
 	self aterrizarSiCorresponde
 ]
 
+{ #category : 'acceso' }
+Personaje >> estaAgachado [
+
+	^ agachado
+]
+
 { #category : 'privado' }
 Personaje >> estaEnSuelo [
 
 	^ posicion y + tamanio y >= alturaSuelo and: [ velocidadVertical >= 0 ]
 ]
 
-{ #category : 'inicializacion' }
+{ #category : 'initialization' }
 Personaje >> initialize [
 
 	super initialize.
-	tamanio := 36 @ 42.
+	tamanioDePie := 36 @ 42.
+	tamanioAgachado := 58 @ 24.
+	agachado := false.
+	tamanio := tamanioDePie.
 	gravedad := 1600.
 	impulsoSalto := 545.
 	self reiniciarEn: 86 @ 0 suelo: 226
@@ -53,16 +78,21 @@ Personaje >> limites [
 	^ posicion extent: tamanio
 ]
 
-{ #category : 'acceso' }
-Personaje >> posicion [
+{ #category : 'movimiento' }
+Personaje >> pararse [
 
-	^ posicion
+	agachado ifFalse: [ ^ self ].
+	agachado := false.
+	tamanio := tamanioDePie.
+	posicion := posicion x @ (alturaSuelo - tamanio y)
 ]
 
-{ #category : 'inicializacion' }
+{ #category : 'initialization' }
 Personaje >> reiniciarEn: unaPosicion suelo: unNumero [
 
 	alturaSuelo := unNumero.
+	agachado := false.
+	tamanio := tamanioDePie.
 	posicion := unaPosicion x @ (alturaSuelo - tamanio y).
 	velocidadVertical := 0
 ]
@@ -70,11 +100,21 @@ Personaje >> reiniciarEn: unaPosicion suelo: unNumero [
 { #category : 'movimiento' }
 Personaje >> saltar [
 
-	self estaEnSuelo ifTrue: [ velocidadVertical := impulsoSalto negated ]
+	self estaEnSuelo ifFalse: [ ^ self ].
+	self pararse.
+	velocidadVertical := impulsoSalto negated
 ]
 
 { #category : 'acceso' }
 Personaje >> tamanio [
 
 	^ tamanio
+]
+
+{ #category : 'acceso' }
+Personaje >> tiempoSobreAltura: unaAltura [
+	"Segundos que dura un salto por encima de esa altura (medida desde el suelo).
+	 Sale de resolver impulso * t - gravedad * t^2 / 2 = altura."
+
+	^ ((impulsoSalto squared - (2 * gravedad * unaAltura)) max: 0) sqrt / (gravedad / 2)
 ]

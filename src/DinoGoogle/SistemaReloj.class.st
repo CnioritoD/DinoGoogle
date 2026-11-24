@@ -1,3 +1,6 @@
+"
+Mide el tiempo entre pasos de Morphic y avisa al coordinador cuánto debe avanzar la partida.
+"
 Class {
 	#name : 'SistemaReloj',
 	#superclass : 'Morph',
@@ -10,7 +13,7 @@ Class {
 	#tag : 'Interfaz'
 }
 
-{ #category : 'inicializacion' }
+{ #category : 'initialization' }
 SistemaReloj >> configurarCoordinador: unCoordinador [
 
 	coordinador := unCoordinador.
@@ -39,7 +42,7 @@ SistemaReloj >> montarEn: unContenedor posicion: unaPosicion [
 	self position: unaPosicion
 ]
 
-{ #category : 'reloj' }
+{ #category : 'stepping and presenter' }
 SistemaReloj >> step [
 
 	| ahora segundos |
@@ -50,13 +53,13 @@ SistemaReloj >> step [
 	coordinador actualizar: ((segundos max: 0) min: 0.10)
 ]
 
-{ #category : 'reloj' }
+{ #category : 'stepping and presenter' }
 SistemaReloj >> stepTime [
 
 	^ 16
 ]
 
-{ #category : 'reloj' }
+{ #category : 'stepping and presenter' }
 SistemaReloj >> wantsSteps [
 
 	^ ultimoTiempo notNil

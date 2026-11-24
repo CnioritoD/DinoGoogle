@@ -1,3 +1,6 @@
+"
+Representa un obstáculo del escenario. Gestiona su posición, su desplazamiento y si ya se contabilizó al superarlo.
+"
 Class {
 	#name : 'Obstaculo',
 	#superclass : 'Object',
@@ -15,6 +18,12 @@ Class {
 Obstaculo >> avanzar: segundos velocidad: unaVelocidad [
 
 	posicion := posicion - ((unaVelocidad * segundos) @ 0)
+]
+
+{ #category : 'testing' }
+Obstaculo >> esPajaro [
+
+	^ false
 ]
 
 { #category : 'acceso' }
@@ -35,7 +44,7 @@ Obstaculo >> fueSuperadoPor: unPersonaje [
 	^ self limites right <= unPersonaje limites left
 ]
 
-{ #category : 'inicializacion' }
+{ #category : 'initialization' }
 Obstaculo >> inicializarEn: unaPosicion tamanio: unTamanio [
 
 	posicion := unaPosicion.
@@ -53,16 +62,4 @@ Obstaculo >> limites [
 Obstaculo >> marcarContabilizado [
 
 	contabilizado := true
-]
-
-{ #category : 'acceso' }
-Obstaculo >> posicion [
-
-	^ posicion
-]
-
-{ #category : 'acceso' }
-Obstaculo >> tamanio [
-
-	^ tamanio
 ]
