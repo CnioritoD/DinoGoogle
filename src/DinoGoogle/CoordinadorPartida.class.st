@@ -1,4 +1,6 @@
-"Coordina el escenario, los controles y el reloj. Inicia, reinicia y cierra partidas, y registra sus resultados."
+"
+Coordina el escenario, los controles y el reloj. Inicia, reinicia y cierra partidas, y registra sus resultados.
+"
 Class {
 	#name : 'CoordinadorPartida',
 	#superclass : 'Object',
@@ -161,22 +163,4 @@ CoordinadorPartida >> reiniciarPartida [
 CoordinadorPartida >> salir [
 
 	self prepararSiguientePartida
-]
-
-{ #category : 'partida' }
-CoordinadorPartida >> solicitarAgacharse [
-
-	escenario ejecutarAgacharse
-]
-
-{ #category : 'partida' }
-CoordinadorPartida >> solicitarPararse [
-
-	escenario ejecutarPararse
-]
-
-{ #category : 'partida' }
-CoordinadorPartida >> solicitarSalto [
-
-	escenario ejecutarSalto
 ]

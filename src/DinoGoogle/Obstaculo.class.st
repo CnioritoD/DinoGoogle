@@ -1,4 +1,6 @@
-"Representa un obstáculo del escenario. Gestiona su posición, su desplazamiento y si ya se contabilizó al superarlo."
+"
+Representa un obstáculo del escenario. Gestiona su posición, su desplazamiento y si ya se contabilizó al superarlo.
+"
 Class {
 	#name : 'Obstaculo',
 	#superclass : 'Object',
@@ -60,16 +62,4 @@ Obstaculo >> limites [
 Obstaculo >> marcarContabilizado [
 
 	contabilizado := true
-]
-
-{ #category : 'acceso' }
-Obstaculo >> posicion [
-
-	^ posicion
-]
-
-{ #category : 'acceso' }
-Obstaculo >> tamanio [
-
-	^ tamanio
 ]

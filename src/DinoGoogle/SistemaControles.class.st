@@ -1,4 +1,6 @@
-"Conecta la entrada de los controles con el coordinador y actualiza el panel con el estado y los resultados de la partida."
+"
+Conecta la entrada de los controles con el coordinador y actualiza el panel con el estado y los resultados de la partida.
+"
 Class {
 	#name : 'SistemaControles',
 	#superclass : 'Object',
@@ -51,12 +53,6 @@ SistemaControles >> mostrarPuntaje: unPuntaje estado: unEstado [
 SistemaControles >> mostrarResultados: unaColeccion [
 
 	panel mostrarResultados: unaColeccion
-]
-
-{ #category : 'interfaz' }
-SistemaControles >> panel [
-
-	^ panel
 ]
 
 { #category : 'acciones' }

@@ -1,4 +1,6 @@
-"Ventana principal de DinoGoogle. Crea el coordinador y prepara los recursos gráficos que comparten los paneles. Para abrir el juego, evaluá AplicacionJuego new abrir."
+"
+Ventana principal de DinoGoogle. Crea el coordinador y prepara los recursos gráficos que comparten los paneles. Para abrir el juego, evaluá AplicacionJuego new abrir.
+"
 Class {
 	#name : 'AplicacionJuego',
 	#superclass : 'SystemWindow',

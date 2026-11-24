@@ -1,4 +1,6 @@
-"Mantiene el estado de la partida y aplica sus reglas de movimiento, generación de obstáculos y monedas, colisiones y puntaje."
+"
+Mantiene el estado de la partida y aplica sus reglas de movimiento, generación de obstáculos y monedas, colisiones y puntaje.
+"
 Class {
 	#name : 'Juego',
 	#superclass : 'Object',
@@ -22,6 +24,22 @@ Class {
 Juego >> agacharse [
 
 	self estaEnCurso ifTrue: [ personaje agacharse ]
+]
+
+{ #category : 'privado' }
+Juego >> agregarCactus: cantidad anchos: anchos alturas: altos separaciones: separaciones [
+
+	| x obstaculo |
+	x := self tamanioEscenario x.
+	1 to: cantidad do: [ :i |
+		obstaculo := Obstaculo new.
+		obstaculo
+			inicializarEn: x @ (self alturaSuelo - (altos at: i))
+			tamanio: (anchos at: i) @ (altos at: i).
+		"Un grupo vale un solo punto: solo el ultimo cactus se contabiliza."
+		i < cantidad ifTrue: [ obstaculo marcarContabilizado ].
+		obstaculos add: obstaculo.
+		x := x + (anchos at: i) + (separaciones at: i) ]
 ]
 
 { #category : 'acceso' }
@@ -102,22 +120,6 @@ Juego >> crearGrupoDeCactus [
 			altura: ((altos first: cantidad) inject: 0 into: [ :a :b | a max: b ])) not ] ]
 		whileTrue: [ cantidad := cantidad - 1 ].
 	self agregarCactus: cantidad anchos: anchos alturas: altos separaciones: separaciones
-]
-
-{ #category : 'privado' }
-Juego >> agregarCactus: cantidad anchos: anchos alturas: altos separaciones: separaciones [
-
-	| x obstaculo |
-	x := self tamanioEscenario x.
-	1 to: cantidad do: [ :i |
-		obstaculo := Obstaculo new.
-		obstaculo
-			inicializarEn: x @ (self alturaSuelo - (altos at: i))
-			tamanio: (anchos at: i) @ (altos at: i).
-		"Un grupo vale un solo punto: solo el ultimo cactus se contabiliza."
-		i < cantidad ifTrue: [ obstaculo marcarContabilizado ].
-		obstaculos add: obstaculo.
-		x := x + (anchos at: i) + (separaciones at: i) ]
 ]
 
 { #category : 'privado' }
@@ -236,6 +238,12 @@ Juego >> initialize [
 ]
 
 { #category : 'privado' }
+Juego >> intervaloObstaculos [
+
+	^ (1.55 - (tiempoTranscurrido * 0.02)) max: 0.8
+]
+
+{ #category : 'privado' }
 Juego >> moverMonedas: segundos [
     monedas do: [ :moneda |
         moneda avanzar: segundos velocidad: self velocidadDesplazamiento ]
@@ -248,22 +256,10 @@ Juego >> moverObstaculos: segundos [
 		obstaculo avanzar: segundos velocidad: self velocidadDesplazamiento ]
 ]
 
-{ #category : 'acceso' }
-Juego >> obstaculos [
-
-	^ obstaculos
-]
-
 { #category : 'partida' }
 Juego >> pararse [
 
 	personaje pararse
-]
-
-{ #category : 'acceso' }
-Juego >> personaje [
-
-	^ personaje
 ]
 
 { #category : 'acceso' }
@@ -331,12 +327,6 @@ Juego >> tamanioEscenario [
 Juego >> tiempoTranscurrido [
 
 	^ tiempoTranscurrido
-]
-
-{ #category : 'privado' }
-Juego >> intervaloObstaculos [
-
-	^ (1.55 - (tiempoTranscurrido * 0.02)) max: 0.8
 ]
 
 { #category : 'privado' }

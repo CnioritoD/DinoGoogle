@@ -1,4 +1,6 @@
-"Representa al personaje controlado por el jugador. Calcula el salto y ajusta su posición y sus límites al agacharse y pararse."
+"
+Representa al personaje controlado por el jugador. Calcula el salto y ajusta su posición y sus límites al agacharse y pararse.
+"
 Class {
 	#name : 'Personaje',
 	#superclass : 'Object',
@@ -83,12 +85,6 @@ Personaje >> pararse [
 	agachado := false.
 	tamanio := tamanioDePie.
 	posicion := posicion x @ (alturaSuelo - tamanio y)
-]
-
-{ #category : 'acceso' }
-Personaje >> posicion [
-
-	^ posicion
 ]
 
 { #category : 'initialization' }

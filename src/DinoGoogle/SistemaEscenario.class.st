@@ -1,4 +1,6 @@
-"Conecta el modelo Juego con el panel del escenario y convierte las acciones del jugador en mensajes al modelo."
+"
+Conecta el modelo Juego con el panel del escenario y convierte las acciones del jugador en mensajes al modelo.
+"
 Class {
 	#name : 'SistemaEscenario',
 	#superclass : 'Object',
@@ -82,12 +84,6 @@ SistemaEscenario >> montarEn: unContenedor posicion: unaPosicion [
 	unContenedor addMorph: panel.
 	panel position: unaPosicion.
 	entrada montarEn: unContenedor posicion: unaPosicion
-]
-
-{ #category : 'acceso' }
-SistemaEscenario >> panel [
-
-	^ panel
 ]
 
 { #category : 'partida' }

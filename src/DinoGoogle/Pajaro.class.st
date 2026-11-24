@@ -1,4 +1,6 @@
-"Obstáculo volador que aporta el estado de sus alas para la animación del escenario."
+"
+Obstáculo volador que aporta el estado de sus alas para la animación del escenario.
+"
 Class {
 	#name : 'Pajaro',
 	#superclass : 'Obstaculo',

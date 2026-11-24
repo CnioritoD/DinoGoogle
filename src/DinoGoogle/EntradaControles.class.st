@@ -1,4 +1,6 @@
-"Crea los botones y el campo de apodo. Actualiza su visibilidad según el estado de la partida y envía las acciones a SistemaControles."
+"
+Crea los botones y el campo de apodo. Actualiza su visibilidad según el estado de la partida y envía las acciones a SistemaControles.
+"
 Class {
 	#name : 'EntradaControles',
 	#superclass : 'Morph',

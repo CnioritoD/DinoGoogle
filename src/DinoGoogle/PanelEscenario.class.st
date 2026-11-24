@@ -1,4 +1,6 @@
-"Dibuja el personaje, los obstáculos, las monedas y los indicadores. Carga y guarda en caché los cuadros de los sprites."
+"
+Dibuja el personaje, los obstáculos, las monedas y los indicadores. Carga y guarda en caché los cuadros de los sprites.
+"
 Class {
 	#name : 'PanelEscenario',
 	#superclass : 'Morph',
@@ -304,6 +306,12 @@ PanelEscenario >> dibujarCieloEn: canvas [
 ]
 
 { #category : 'drawing' }
+PanelEscenario >> dibujarIndicador: unTexto centradoEn: unRectangulo en: canvas [
+
+	(estilo at: #texto) valueWithArguments: { unTexto. unRectangulo. 2. (estilo at: #luz). canvas }
+]
+
+{ #category : 'drawing' }
 PanelEscenario >> dibujarIndicadoresEn: canvas [
 
 	| puntaje tiempo |
@@ -389,12 +397,6 @@ PanelEscenario >> dibujarSueloEn: canvas [
 		| x |
 		x := (i * 43 - desplazamiento) \\ 620.
 		canvas fillRectangle: ((borde + (x @ 7)) extent: 6 @ 2) color: (estilo at: #sombra) ]
-]
-
-{ #category : 'drawing' }
-PanelEscenario >> dibujarIndicador: unTexto centradoEn: unRectangulo en: canvas [
-
-	(estilo at: #texto) valueWithArguments: { unTexto. unRectangulo. 2. (estilo at: #luz). canvas }
 ]
 
 { #category : 'drawing' }

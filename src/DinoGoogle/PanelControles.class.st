@@ -1,4 +1,6 @@
-"Dibuja la pantalla inicial, la tabla de resultados y el cuadro de partida terminada."
+"
+Dibuja la pantalla inicial, la tabla de resultados y el cuadro de partida terminada.
+"
 Class {
 	#name : 'PanelControles',
 	#superclass : 'Morph',

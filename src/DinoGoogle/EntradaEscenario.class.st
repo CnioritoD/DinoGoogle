@@ -1,4 +1,6 @@
-"Recibe los eventos de teclado y mouse del escenario y traduce los controles a acciones de SistemaEscenario."
+"
+Recibe los eventos de teclado y mouse del escenario y traduce los controles a acciones de SistemaEscenario.
+"
 Class {
 	#name : 'EntradaEscenario',
 	#superclass : 'Morph',

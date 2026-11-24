@@ -1,4 +1,6 @@
-"Mide el tiempo entre pasos de Morphic y avisa al coordinador cuánto debe avanzar la partida."
+"
+Mide el tiempo entre pasos de Morphic y avisa al coordinador cuánto debe avanzar la partida.
+"
 Class {
 	#name : 'SistemaReloj',
 	#superclass : 'Morph',
