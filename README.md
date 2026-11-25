@@ -1,7 +1,5 @@
 # DinoGoogle
 
-DinoGoogle es un juego de desplazamiento lateral desarrollado en Smalltalk con Pharo 12 y Morphic. El personaje salta o se agacha para esquivar obstáculos. Superar un obstáculo o recoger una moneda suma un punto. Una colisión con un obstáculo termina la partida.
-
 [Repositorio de DinoGoogle en GitHub](https://github.com/CnioritoD/DinoGoogle)
 
 ## Requisitos
